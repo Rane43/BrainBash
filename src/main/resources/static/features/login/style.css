@@ -13,17 +13,6 @@ body {
     background-image: url('/assets/images/background-image.webp');
     background-size: cover;
 }
-/* Dark overlay using ::before pseudo-element */
-body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.1); /* Adjust the alpha for darkness */
-    z-index: 1; /* Make sure overlay is on top of the image */
-}
 
 .glass-container {
     width: 300px;
@@ -142,8 +131,8 @@ p {
     padding: 10px;
     width: 100%;
     border-radius: 20px;
-    background: rgba(162, 75, 167, 0.7);
-    border: 3px solid #642e67;
+    background: rgba(255, 6, 94, 0.6);
+    border: 1px solid #f4065e;
     color: #fff;
     font-size: 13px;
 }
