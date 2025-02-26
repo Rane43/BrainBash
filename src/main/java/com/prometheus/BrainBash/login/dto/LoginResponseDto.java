@@ -1,4 +1,4 @@
-package com.tus.prometheus.BrainBash.login.dto;
+package com.prometheus.BrainBash.login.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

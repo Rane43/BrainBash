@@ -1,11 +1,11 @@
-package com.tus.prometheus.BrainBash.login.controller;
+package com.prometheus.BrainBash.login.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.tus.prometheus.BrainBash.login.exception.InvalidCredentialsException;
+import com.prometheus.BrainBash.login.exception.InvalidCredentialsException;
 
 @RestControllerAdvice
 public class LoginExceptionHandler {
