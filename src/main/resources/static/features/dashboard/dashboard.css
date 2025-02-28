@@ -1,0 +1,121 @@
+/* General Body and Layout Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9; /* Light background color */
+    color: #333; /* Dark text color for contrast */
+    margin: 0;
+    padding: 0;
+}
+
+#navbar {
+    background-color: #343a40; /* Dark navbar background */
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#search-container input {
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    width: 250px;
+}
+
+#user-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#user-container i {
+    font-size: 24px;
+}
+
+#user-container button {
+    padding: 8px 15px;
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#user-container button:hover {
+    background-color: #e84118;
+}
+
+/* Carousel Styles */
+.carousel-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    width: 18rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    padding: 20px;
+    text-align: center;
+    margin: 10px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card h1 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.card button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.card button:hover {
+    background-color: #3498db;
+}
+
+/* Card Images */
+.card img {
+    border-radius: 10px;
+    max-height: 200px;
+    object-fit: cover;
+}
+
+/* Carousel Controls */
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: #333;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    filter: invert(1);
+}
