@@ -1,4 +1,4 @@
-package com.prometheus.BrainBash.login.dto;
+package com.prometheus.brainbash.login.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

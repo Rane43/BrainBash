@@ -1,4 +1,4 @@
-package com.prometheus.BrainBash.controller;
+package com.prometheus.brainbash.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
