@@ -12,6 +12,7 @@ body {
     height: 100vh;
     background-image: url('/assets/images/background-image.webp');
     background-size: cover;
+   	background-color: #ccc;
 }
 
 .glass-container {
