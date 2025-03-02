@@ -1,4 +1,4 @@
-package com.prometheus.brainbash.login.exception;
+package com.prometheus.brainbash.exception;
 
 public class InvalidCredentialsException extends Exception {
 	public InvalidCredentialsException(String message) {
