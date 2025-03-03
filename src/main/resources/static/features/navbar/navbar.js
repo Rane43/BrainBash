@@ -6,5 +6,6 @@ $(document).ready(function () {
 	function logout() {
 		TokenStorage.removeToken();
 		alert("Logged out!");
+		Router.loadPage('login');
 	}
 });

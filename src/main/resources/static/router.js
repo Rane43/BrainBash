@@ -5,7 +5,11 @@ const Router = {
 		"dashboard": "/features/dashboard/dashboard.html",
 	},
 	
+	initialized: false,
 	init: function () {
+		if (this.initialized) return;
+		this.initialized = true;
+		
 		/*
 		$(document).off("click", "[data-page]").on("click", "[data-page]", function (event) {
 	    	event.preventDefault();
@@ -18,7 +22,7 @@ const Router = {
 		// Listen for URL hash changes (back/forward navigation)
 	    $(window).off("hashchange").on("hashchange", function () {
 	    	let page = location.hash.substring(1) || this.loginPageRef;
-	    	Router.navigate(page);
+	    	Router.loadPage(page);
 	    });
 		
 	    // Perform the initial page load based on the current hash (default to "login")
