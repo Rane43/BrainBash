@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import com.prometheus.brainbash.service.IJwtService;
 
@@ -16,10 +17,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.Setter;
 
+@Service
+@Setter
 public class JwtService implements IJwtService {
 	
-	private static final String SECRET_KEY = "";
+	private String secretKey = "d0871dd97f055f508f239a990c55ba01b43937a71e8fb1fce2824adb63dd8577f8f1d7379b1a226bb412303e07b1cbac9555bd3c6deaa6333234762972c1b40d";
 	
 	@Override
 	public String generateToken(UserDetails userDetails) {
@@ -43,7 +47,7 @@ public class JwtService implements IJwtService {
 	
 	// Helper functions
 	private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
