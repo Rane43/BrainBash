@@ -13,10 +13,15 @@ import org.springframework.stereotype.Service;
 
 import com.prometheus.brainbash.service.IJwtService;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.Setter;
 
 @Service
@@ -43,6 +48,45 @@ public class JwtService implements IJwtService {
 	            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1-hour expiry
 	            .signWith(getSigningKey(), SignatureAlgorithm.HS256)
 	            .compact();
+	}
+	
+	@Override
+	public boolean isTokenValid(UserDetails userDetails, String token) {
+		try {
+	        // Parse token and validate claims
+	        Claims claims = Jwts.parserBuilder()
+	        					.setSigningKey(getSigningKey())
+	                            .build()
+	                            .parseClaimsJws(token)
+	                            .getBody();
+	        
+	        return userDetails.getUsername().equals(claims.getSubject());
+		} catch (ExpiredJwtException
+				| UnsupportedJwtException
+				| MalformedJwtException
+				| SignatureException
+				| IllegalArgumentException e) {
+			return false;
+		}
+	}
+	
+	@Override
+	public String extractUsername(String jwt) {
+		try {
+	        Claims claims = Jwts.parserBuilder()
+	                            .setSigningKey(getSigningKey())
+	                            .build()
+	                            .parseClaimsJws(jwt)
+	                            .getBody(); 
+
+	        return claims.getSubject();
+		} catch (ExpiredJwtException
+				| UnsupportedJwtException
+				| MalformedJwtException
+				| SignatureException
+				| IllegalArgumentException e) {
+			throw new IllegalArgumentException("Issue with jwt: "+e.getMessage());
+		}
 	}
 	
 	// Helper functions
