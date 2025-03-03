@@ -71,7 +71,7 @@ public class JwtService implements IJwtService {
 	}
 	
 	@Override
-	public String extractUsername(String jwt) {
+	public String extractUsername(String jwt) throws IllegalArgumentException {
 		try {
 	        Claims claims = Jwts.parserBuilder()
 	                            .setSigningKey(getSigningKey())
