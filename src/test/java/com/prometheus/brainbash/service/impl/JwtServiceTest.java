@@ -58,6 +58,26 @@ class JwtServiceTest {
         assertEquals("[ROLE_ADMIN]", claims.get("roles").toString());
 	}
 	
+	@Test
+	void testNonvalidJwt() {
+		
+	}
+	
+	@Test
+	void testValidJwt() {
+		
+	}
+	
+	@Test
+	void testExtractUsernameInvalidJwt() {
+		
+	}
+	
+	@Test 
+	void testExtractUsernameValidJwt() {
+		
+	}
+	
 	// Helper functions
 	private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(TEST_SECRET_KEY);
