@@ -9,9 +9,10 @@ import com.intuit.karate.junit5.Karate;
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class AuthControllerKarateTest {
+	private static final String FOLDER = "classpath:features/karate";
 	
 	@Karate.Test
-	Karate runAllTests() {
-		return Karate.run("classpath:features/karate/login-admin.feature").relativeTo(getClass());
+	Karate runLoginTests() {
+		return Karate.run(FOLDER + "/login-admin.feature").relativeTo(getClass());
 	}
 }
