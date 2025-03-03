@@ -11,5 +11,9 @@ const TokenStorage = {
 	
 	removeToken: function () {
 		return localStorage.removeItem(this.JWT_KEY);
+	},
+	
+	isLoggedIn: function () {
+		return !!localStorage.getItem(this.JWT_KEY);
 	}
 }

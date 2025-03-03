@@ -6,10 +6,10 @@ $(document).ready(function() {
 	
 	
 	// FUNCTIONS ---
-	function login() {	
+	function login() {
 		// Begin login process
-		let username = $("#username").val().trim().toLowerCase();
-		let password = $("#password").val().trim().toLowerCase();
+		let username = $("#username").val().trim().toLowerCase(); // Username is case-insensitive
+		let password = $("#password").val().trim();
 		
 		// Validate username and password
 		if (!username || !password) {
@@ -22,7 +22,7 @@ $(document).ready(function() {
 	        url: `/api/auth/login`,
 	        method: "POST",
 			headers: {
-				"Authorization": `Bearer ${TokenStorage.getToken()}`
+				"contentType": "application/json"
 			},
 	        contentType: "application/json",
 	        data: JSON.stringify({username, password}),
@@ -40,6 +40,7 @@ $(document).ready(function() {
 			TokenStorage.saveToken(token);
 			clearErrors();
 			// Redirect to the landing page
+			Router.navigate("dashboard");
 		}
 	}
 	

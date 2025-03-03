@@ -36,7 +36,14 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             	.requestMatchers("/h2-console/**").permitAll() // Allow access to h2 console for development ***
             	.requestMatchers("/api/auth/login").permitAll() // Allow request to log in
-            	.requestMatchers("/assets/**", "/features/**", "/", "/index.html", "/main.js", "/styles.css").permitAll() // All static content access
+            	.requestMatchers(
+            			"/assets/**", 
+            			"/features/**", 
+            			"/", 
+            			"/index.html", 
+            			"/main.js", 
+            			"/styles.css",
+            			"/router.js").permitAll() // All static content access
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))

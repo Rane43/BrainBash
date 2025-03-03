@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    
+    <!-- Bootstrap requirements -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"/>
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
+    <!-- Personal stylesheet -->
+    <link rel="stylesheet" href="/styles.css"/>
+    
+    
+    <!-- Correct jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+    
+    <!-- Token js -->
+    <script src="/features/auth/token.js"></script>
+</head>
+<body>
+	<div id="login-content">
+		<div class="login-box">
+			<h2>Login</h2>
+	        <!-- Username Field -->
+	        <div class="input-container">
+	        	<h3 class="input-header">Username*</h3>
+	        	<input type="text" id="username" name="username" required placeholder="Username">
+	        </div>
+	         
+	        <!-- Password Field -->
+	        <div class="input-container">
+	        	<h3>Password*</h3>
+	        	<input type="password" id="password" name="password" required placeholder="Password">
+	        </div>
+	         
+	      	<!-- Error Message Field -->
+	      	<div style="display: none;" class="error-message-container" id="login-error-container">
+	        	<p class="error-message" id="login-error"><!-- placeholder for error message --></p>
+	        </div>
+	         
+	        <button id="login-btn" class="btn btn-primary" type="button">Login</button>
+	
+	        <p>Don't have an account? <a href="#" id="register">Register</a></p>
+	    </div>
+	    <script src="/features/login/login.js"></script>
+	</div>
+</body>
+</html>

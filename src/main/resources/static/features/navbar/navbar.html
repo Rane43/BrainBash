@@ -22,17 +22,22 @@
     <script src="/features/auth/token.js"></script>
     
     <!-- Router js -->
-    <script src="router.js"></script>
+    <script src="/router.js"></script>
 </head>
 <body>
-	<div id="navbar">
-
+	<div id="navbar-content">
+    	<div class="navbar-left">
+    		<h1 class="company-name">BrainBash</h1>
+    		<input id="search-bar" type="search" placeholder="Search..."/>
+    	</div>
+        <div class="navbar-right">
+            <i id="user-icon" class="fas fa-user"></i>
+            <button id="logout" type="button" class="btn btn-danger">
+            	<i class="fa fa-sign-out"></i>
+            	Log out
+            </button>
+        </div>
     </div>
-	<div id="content">
-	
-	</div>
-	<div id="footer">
-	
-	</div>
+    <script src="/features/navbar/navbar.js"></script>
 </body>
 </html>
