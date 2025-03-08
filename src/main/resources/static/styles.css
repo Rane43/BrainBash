@@ -98,11 +98,17 @@
 }
 
 /* Navbar right */
+#user-icon {
+    color: white;
+}
+
 .navbar-right .btn {
 	margin: 0px 10px;
 	width: 100px;
 	border-radius: 30px;
 }
+
+
 
 
 /* ------------- DASHBOARD -------------- */

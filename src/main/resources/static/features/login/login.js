@@ -47,7 +47,7 @@ $(document).ready(function() {
 	function failure(xhr) {
 		let statusCode = xhr.status;
 		if (statusCode === 401) {
-			displayErrorMessage("Invalid Username or Password.") // display error response message ?
+			displayErrorMessage("Invalid Username or Password") // display error response message ?
 		} else {
 			reject(new ServerSideError("Encountered unexpected error while trying to log in."));
 		}
