@@ -3,6 +3,7 @@ package com.prometheus.brainbash.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +37,14 @@ public class AuthController {
 		String token = jwtService.generateToken(userDetails);
 		
 		LoginResponseDto loginResponse = new LoginResponseDto(token);
-		return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
-		
+		return ResponseEntity.status(HttpStatus.OK).body(loginResponse);	
 	}
+	
+	
+	
+	// --------------- EXCEPTION HANDLERS ----------------
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<String> handleValidationException(InvalidCredentialsException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
 }
