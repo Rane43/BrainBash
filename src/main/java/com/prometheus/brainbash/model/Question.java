@@ -2,7 +2,8 @@ package com.prometheus.brainbash.model;
 
 
 import lombok.Data;
-import java.util.List;
+
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -29,5 +30,5 @@ public class Question {
     private Quiz quiz;
     
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Answer> answers;
+    private Set<Answer> answers;
 }
