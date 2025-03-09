@@ -2,7 +2,7 @@ $(document).ready(function () {
 	// Dummy question for debugging
 	let question = {
 		text: "Where are you from?",
-		image: "/assets/images/background-image.webp",
+		image: "/assets/images/question-image-test.jpeg",
 		answers: [
 			{
 				text: "Ireland",
@@ -36,14 +36,14 @@ function displayQuiz() {
 }
 		
 function populateQuestion(question) {
-	// Empty previous quiz answers
+	// Empty previous question answers
 	$("#answer-btn-group").html("");
 	
 	// Title
-	$("#quiz-question-title h1").text(question.text);
+	$("#question-question-title h1").text(question.text);
 	
 	// Background image in card upper
-	$("#quiz-card-upper").css("background-image", `url("${question.image}")`);
+	$("#question-image").attr("src", `${question.image}`);
 	
 	// Answers
 	question.answers.forEach(answer => {
@@ -56,7 +56,7 @@ const QuizTemplates = {
 	answerButton: function (answer) {
 		return	$("<button>")
 				.attr("type", "button")
-				.addClass("quiz-btn quiz-answer-btn")
+				.addClass("question-btn question-answer-btn")
 				.text(answer.text);
 	}
 }
