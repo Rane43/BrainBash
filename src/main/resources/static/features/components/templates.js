@@ -5,7 +5,7 @@ const CardTemplates = {
 
 		let img = $("<img>")
 			.addClass("card-img-top")
-			.attr("src", "/assets/images/" + encodeURIComponent(quiz.image))
+			.attr("src", "/assets/images/quiz_images/" + encodeURIComponent(quiz.image))
 			.attr("alt", "Quiz Image");
 
 		let cardBody = $("<div>").addClass("card-body");
