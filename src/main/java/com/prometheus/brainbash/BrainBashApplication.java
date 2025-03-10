@@ -108,7 +108,7 @@ public class BrainBashApplication {
         	Answer answer21 = new Answer();
         	answer21.setQuestion(question2);
         	answer21.setCorrect(true);
-        	answer21.setText("5");
+        	answer21.setText("7");
         	
         	Answer answer22 = new Answer();
         	answer22.setQuestion(question2);

@@ -8,7 +8,7 @@
 	background-color: grey;
 }
 
-#question-card {
+.question-card {
 	height: 800px;
 	margin: 20px;
 	width: 650px;
@@ -20,7 +20,7 @@
 }
 
 /* question CARD UPPER */
-#question-card-upper {
+.question-card-upper {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -30,26 +30,26 @@
 	background-color: #dcdcdc;
 }
 
-#question-image {
+#quiz-image {
 	width: 50%;
 	height: 60%;
 	border-radius: 20px 20px 0 0;
 }
 
-#question-text {
+#question-text, #quiz-title, #final-text-title {
 	color: #002230;
 	text-align: center;
 }
 
 /* question CARD LOWER */
-#question-card-lower {
+.question-card-lower {
 	height: 60%;
 	border-radius: 0 0 20px 20px;
 	background-color: purple;
 	padding: 40px;
 }
 
-#answer-btn-group {
+.btn-group {
 	height: 80%;
 	width: 100%;
 	display: flex;
@@ -59,19 +59,32 @@
 }
 
 .question-btn {
-	margin: 15px;
-	padding: 15px;
-	border-radius: 20px !important;
-	text-align: center;
-	border: 0px;
+    margin: 15px;
+    padding: 15px;
+    border-radius: 20px !important;
+    box-shadow: 4px 12px 20px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    border: 0px;
 }
 
-.question-answer-btn {
+.question-btn:disabled {
+	pointer-events: none;
+}
+
+.question-answer-btn, .correct-answer, .wrong-answer {
 	width: 80%;
 }
 
 .question-answer-btn:hover {
 	background-color: #d5d5d5 !important;
+}
+
+.correct-answer {
+	background-color: #32cd32 !important;
+}
+
+.wrong-answer {
+	background-color: #DC143C !important;
 }
 
 /* question nav buttons */ 
@@ -83,16 +96,14 @@
 	margin-top: 10px;
 }
 
-#prev-btn {
-	width: 150px;
-	margin-right: auto;
-	background-color: #002230;
-	color: white;
-}
-
-#next-btn{
+#next-btn, #finish-btn {
 	width: 150px;
 	margin-left: auto;
 	background-color: #002230;
 	color: white;
+}
+
+#FinalResult {
+	color: #d5d5d5;
+	font-size: 200px;
 }

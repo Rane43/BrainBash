@@ -2,18 +2,13 @@ const QuizGame = {
     currentQuestionIndex: 0,
     score: 0,
     questionIds: [],
-    userAnswers: [],
     currentQuestion: null,
-    answeredQuestions: new Set(),
-    selectedAnswers: [],
+    selectedAnswerId: null,  // Tracks the selected answer id
 
     init(quizGameDto) {
-		console.log(quizGameDto.questionIds);
         this.questionIds = quizGameDto.questionIds;
         this.currentQuestionIndex = 0;
         this.score = 0;
-        this.userAnswers = [];
-        this.answeredQuestions.clear(); // Clear previously answered questions
         this.loadQuestion();
     },
 
@@ -24,8 +19,10 @@ const QuizGame = {
         }
 
         const questionId = this.questionIds[this.currentQuestionIndex];
-        this.selectedAnswers = []; // Clear selected answers for this question
+        this.selectedAnswerId = null;  // Reset selected answer
         this.fetchQuestion(questionId);
+
+        $('#next-btn').hide();
     },
 
     fetchQuestion(questionId) {
@@ -52,90 +49,66 @@ const QuizGame = {
         this.currentQuestion.answerDtos.forEach((answer) => {
             let btn = QuizTemplates.answerButton(answer);
             btn.attr("id", answer.id);
-            
-            if (this.answeredQuestions.has(this.currentQuestion.id)) {
-                btn.prop("disabled", true); // Disable button if question is answered
-                if (this.selectedAnswers.includes(answer.id)) {
-                    btn.addClass("selected"); // Show selected answer
-                }
-            } else {
-                btn.on("click", () => this.toggleAnswerSelection(answer.id, btn));
-            }
-
+            btn.on("click", () => {
+				// Select answer 
+				this.selectedAnswerId = btn.attr("id");
+				// Disable all buttons after selection
+				$("#answer-btn-group button").prop("disabled", true);
+				// Submit Answer
+                this.submitAnswer();
+            });
             answerGroup.append(btn);
         });
-
-        // Add Submit Button only if the current question is not answered
-        if (!this.answeredQuestions.has(this.currentQuestion.id)) {
-            this.addSubmitButton();
-        }
-    },
-
-    addSubmitButton() {
-        const submitBtn = $("<button>")
-            .text("Submit Answer")
-            .addClass("submit-btn")
-            .on("click", () => this.submitAnswer());
-
-        $("#answer-btn-group").append(submitBtn);
-    },
-
-    toggleAnswerSelection(answerId, btn) {
-        if (this.selectedAnswers.includes(answerId)) {
-            this.selectedAnswers = this.selectedAnswers.filter(id => id !== answerId);
-            btn.removeClass("selected"); // Unhighlight
-        } else {
-            this.selectedAnswers.push(answerId);
-            btn.addClass("selected"); // Highlight
-        }
     },
 
     submitAnswer() {
-        if (!this.currentQuestion) return;
+        if (!this.currentQuestion || !this.selectedAnswerId) return;
+		
+		const correctAnswerId = String(this.currentQuestion.answerDtos
+		    .find(a => a.correct)?.id);
 
-        const correctAnswers = new Set(
-            this.currentQuestion.answerDtos.filter(a => a.correct).map(a => a.id)
-        );
 
-        // Check if the user's selected answers are correct
-        const isCorrect = this.checkSelectedAnswers(correctAnswers);
-
+        // Check if the user's selected answer is correct
+        const isCorrect = correctAnswerId === String(this.selectedAnswerId);
         if (isCorrect) {
             this.score++;
         }
 
-        this.userAnswers.push({
-            questionId: this.currentQuestion.id,
-            selectedAnswers: this.selectedAnswers,
-            correct: isCorrect
-        });
-
-        // Mark the current question as answered
-        this.answeredQuestions.add(this.currentQuestion.id);
-
         // Provide feedback to the user
-        this.showAnswerFeedback(isCorrect);
+        this.showAnswerFeedback(correctAnswerId);
 
-        // Move to the next question after a brief delay
-        setTimeout(() => {
-            this.currentQuestionIndex++;
-            this.loadQuestion();
-        }, 1000); // Wait for 1 second before moving to the next question
+        // If the question isn't the last, display next, otherwise, finish button
+        if (this.currentQuestionIndex < this.questionIds.length - 1) {
+            $('#next-btn').show();
+        } else {
+            $('#finish-btn').show();
+        }
     },
 
-    checkSelectedAnswers(correctAnswers) {
-        // Ensure every selected answer is correct and no wrong answers are selected
-        return this.selectedAnswers.every(id => correctAnswers.has(id)) &&
-            correctAnswers.size === this.selectedAnswers.length;
-    },
+    showAnswerFeedback(correctAnswerId) {
+		let answerBtn = $(`#${this.selectedAnswerId}`);
+		if (correctAnswerId === this.selectedAnswerId) {
+			answerBtn.addClass("correct-answer");	
+		} else {
+			answerBtn.addClass("wrong-answer");
+			$(`#${correctAnswerId}`).addClass("correct-answer");
+		}
+		
+		// Hide next/finish buttons after feedback
+	    $('#next-btn').hide();
+	    $('#finish-btn').hide();
 
-    showAnswerFeedback(isCorrect) {
-        const feedback = isCorrect ? "Correct!" : "Incorrect!";
-        $("#answer-feedback").text(feedback).show().fadeOut(1000);
+	    // Show appropriate button
+	    if (this.currentQuestionIndex < this.questionIds.length - 1) {
+	        $('#next-btn').show();
+	    } else {
+	        $('#finish-btn').show();
+	    }
     },
 
     endGame() {
-        alert(`Game over! Your score: ${this.score}`);
+		// Save to database and then display end game view
+		$("#FinalResult").text(`${this.score}!`);
     },
 
     // Additional methods for question navigation
@@ -145,19 +118,14 @@ const QuizGame = {
             this.loadQuestion();
         }
     },
-
-    goToPreviousQuestion() {
-        if (this.currentQuestionIndex > 0) {
-            this.currentQuestionIndex--;
-            this.loadQuestion();
-        }
-    }
 };
+
 
 
 
 // ----------------- Document ready setup ------------------
 $(document).ready(function () {
+    // Uncomment and adjust as needed for initializing the quiz
     $.ajax({
         url: "/api/quizzes/1",
         method: "GET",
@@ -169,13 +137,22 @@ $(document).ready(function () {
     });
 
     $("#play-btn").off("click").on("click", () => {
+		$("#game-main-menu").hide();
+		$("#gameplay-menu").show();
         QuizGame.loadQuestion();
     });
 
-    // Navigation buttons for next and previous questions
+    // Navigation buttons for next and submit buttons
     $("#next-btn").on("click", () => QuizGame.goToNextQuestion());
-    $("#prev-btn").on("click", () => QuizGame.goToPreviousQuestion());
+	
+	$("#finish-btn").on("click", () => {
+		$("#gameplay-menu").hide();
+		$("#finish-game-menu").show();
+		QuizGame.endGame();
+	});
 });
+
+
 
 
 
