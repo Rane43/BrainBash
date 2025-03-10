@@ -39,7 +39,7 @@ public class QuizController {
 		Optional<Quiz> quizOptional = quizRepo.findById(id);
 		
 		if (quizOptional.isEmpty()) {
-			throw new QuizNotFoundException("Quiz with id '" + id + "' cannot be found.");
+			throw new QuizNotFoundException(id);
 		}
 		
 		QuizGameDto quizGameDto = new QuizGameDto();

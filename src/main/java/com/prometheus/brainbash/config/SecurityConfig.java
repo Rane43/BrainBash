@@ -47,7 +47,9 @@ public class SecurityConfig {
             			"/quiz_developer/**",
             			"/api/quizzes/**", // Public while developing
             			"/favicon.ico", // Public while developing
-            			"/api/questions/**" // Public while developing
+            			"/api/questions/**", // Public while developing
+            			"/api/points/**", // Public while developing
+            			"/quizzer/**" // Public while developing
             			).permitAll() // All static content access
                 .anyRequest().authenticated()
             )

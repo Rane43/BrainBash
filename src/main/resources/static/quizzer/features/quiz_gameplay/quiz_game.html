@@ -16,9 +16,11 @@
     
     <!-- Templates Script -->
     <script src="/features/components/templates.js"></script>
+    <!-- Token Storage script -->
+    <script src="/features/auth/token.js"></script>
     
      <!-- Personal stylesheet -->
-    <link rel="stylesheet" href="/quiz_developer/features/quiz_development/quiz_dev.css"/>
+    <link rel="stylesheet" href="/quizzer/features/quiz_gameplay/quiz_game.css"/>
 </head>
 <body>
 	<div id="question-content">
@@ -61,6 +63,8 @@
 		<!-- Finish Game Menu -->
 		<div id="finish-game-menu" class="question-card" style="display: none">
 			<div class="question-card-upper">
+				<h1>Highest score so far: </h1>
+				<h1 id="highest-score"></h1>
 				<h1 id="final-text-title">Your Final Score...</h1>
 			</div>
 			<div class="question-card-lower">
@@ -71,6 +75,6 @@
 		</div>
 		
 	</div>
-    <script src="/quiz_developer/features/quiz_development/quiz_dev.js"></script>
+    <script src="/quizzer/features/quiz_gameplay/quiz_game.js"></script>
 </body>
 </html>

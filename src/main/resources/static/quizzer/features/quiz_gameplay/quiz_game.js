@@ -1,4 +1,5 @@
 const QuizGame = {
+	quizId: null,
     currentQuestionIndex: 0,
     score: 0,
     questionIds: [],
@@ -6,6 +7,7 @@ const QuizGame = {
     selectedAnswerId: null,  // Tracks the selected answer id
 
     init(quizGameDto) {
+		this.quizId = quizGameDto.id;
         this.questionIds = quizGameDto.questionIds;
         this.currentQuestionIndex = 0;
         this.score = 0;
@@ -108,7 +110,33 @@ const QuizGame = {
 
     endGame() {
 		// Save to database and then display end game view
-		$("#FinalResult").text(`${this.score}!`);
+		if (!TokenStorage.isLoggedIn()) {
+			TokenStorage.logout();
+			return;
+		}
+		
+		$.ajax({
+		    url: `/api/points?quiz_id=${this.quizId}`,
+		    method: "PUT",
+		    headers: {
+		        "Authorization": `Bearer ${TokenStorage.getToken()}`
+		    },
+		    contentType: "application/json",
+		    data: JSON.stringify({
+		        quizId: this.quizId,
+		        points: this.score
+		    }),
+		    dataType: "text",
+		    success: (highestPoints) => {
+		        $("#gameplay-menu").hide();
+		        $("#finish-game-menu").show();
+		        $("#FinalResult").text(`${this.score}!`);
+				$("#highest-score").text(highestPoints);
+		    },
+		    error: () => {
+		        // Handle error if needed
+		    }
+		});
     },
 
     // Additional methods for question navigation
@@ -146,8 +174,6 @@ $(document).ready(function () {
     $("#next-btn").on("click", () => QuizGame.goToNextQuestion());
 	
 	$("#finish-btn").on("click", () => {
-		$("#gameplay-menu").hide();
-		$("#finish-game-menu").show();
 		QuizGame.endGame();
 	});
 });
