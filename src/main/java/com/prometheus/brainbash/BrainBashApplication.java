@@ -55,9 +55,23 @@ public class BrainBashApplication {
         	userRepo.save(user);
         	
         	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
         	createTempQuiz(Category.ANATOMY, quizRepo, user);
         	createTempQuiz(Category.HISTORY, quizRepo, user);
-        	
+        	createTempQuiz(Category.HISTORY, quizRepo, user);
+        	createTempQuiz(Category.HISTORY, quizRepo, user);
+        	createTempQuiz(Category.HISTORY, quizRepo, user);
+        	createTempQuiz(Category.HISTORY, quizRepo, user);
+        	createTempQuiz(Category.HISTORY, quizRepo, user);        	
         };
     }
 	

@@ -1,7 +1,10 @@
-// ----- TEMPLATES -----
+// ----------------- QUIZ CARD TEMPLATES -------------------
 const CardTemplates = {
 	createQuizCard: function (quiz) {
-		let card = $("<div>").addClass("card");
+		let card = $("<div>")
+					.addClass("card")
+					.attr("id", quiz.id)
+					.attr("quiz-card", "");
 
 		let img = $("<img>")
 			.addClass("card-img-top")
@@ -15,7 +18,8 @@ const CardTemplates = {
 
 		cardBody.append(title, description);
 		card.append(img, cardBody);
-
+		
+		// Event Listener to open and play the quiz
 		return card;
 	},
 
@@ -33,3 +37,15 @@ const CardTemplates = {
 		return slider;
 	}
 };
+
+
+// ----------------- QUIZ BUTTON TEMPLATES -------------------
+const QuizTemplates = {
+    answerButton: function (answer) {
+        return $("<button>")
+            .attr("type", "button")
+            .addClass("question-btn question-answer-btn")
+            .text(answer.text);
+    }
+};
+

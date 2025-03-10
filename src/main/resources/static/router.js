@@ -3,6 +3,7 @@ const Router = {
 	paths: {
 		"login": "/features/login/login.html",
 		"dashboard": "/features/dashboard/dashboard.html",
+		"quiz_gameplay": "/quizzer/features/quiz_gameplay/quiz_game.html"
 	},
 	
 	initialized: false,
@@ -10,14 +11,11 @@ const Router = {
 		if (this.initialized) return;
 		this.initialized = true;
 		
-		/*
-		$(document).off("click", "[data-page]").on("click", "[data-page]", function (event) {
-	    	event.preventDefault();
-	    	const page = $(this).attr("href").substring(1); // Remove hash symbol
-	        Router.navigate(page);
+		$(document).off("click", "[quiz-card]").on("click", "[quiz-card]", function () {
+	    	const quizId = $(this).attr("id")
+	        Router.navigate(`quiz_gameplay?quiz=${quizId}`);
+			
 	    });
-	    )
-		*/
 		
 		// Listen for URL hash changes (back/forward navigation)
 	    $(window).off("hashchange").on("hashchange", function () {
@@ -45,7 +43,7 @@ const Router = {
 			page = "dashboard"; // Redirect to dashboard when you try to go to login page when already logged in
 		}
 		
-		// PAGES --
+		// -------------- PAGES ------------
 		// Show or hide the navbar and sidebar based on the page.
 	    if (page === "login") {
 	    	$("#navbar").hide();
@@ -55,8 +53,13 @@ const Router = {
 			Router.loadContentInto('/features/navbar/navbar.html', "navbar");
 	    }	
 		
-	   	// Load page content into content space
-		Router.loadContentInto(`${this.paths[page]}`, "content");
+		
+		// Special case
+		if (page.startsWith("quiz_gameplay?quiz=")) {
+			Router.loadContentInto(`${this.paths["quiz_gameplay"]}`, "content");
+		} else {
+			Router.loadContentInto(`${this.paths[page]}`, "content");	
+		}
 		
 		// Load footer
 		// Router.loadContentInto("/components/footer.html", "footer");
@@ -75,8 +78,6 @@ const Router = {
 	        $(responseText).find('script').each(function() {
 	            $.getScript($(this).attr('src'));
 	        });
-
-	        console.log(`Content Loaded & Scripts Executed from ${src}`);
 	    });
 	}
 };

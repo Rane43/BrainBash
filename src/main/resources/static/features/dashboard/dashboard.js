@@ -1,110 +1,42 @@
 $(document).ready(function () {
-	clearContent();
-	populateGeography();
-	populateHistory();
-	populateScience();
-	populateSport();
+	fetchQuizzes();
 });
+
+function fetchQuizzes() {
+	$.ajax({
+		url: "/api/quizzes",
+		method: "GET",
+		headers: {
+			"Authorization": `Bearer ${TokenStorage.getToken()}`
+		},
+		dataType: "json",
+		success: (quizSummaryDtos) => {
+			console.log(quizSummaryDtos);
+			displayQuizzes(quizSummaryDtos);
+		},
+		error: () => {
+			
+		}
+	});
+}
+
+function displayQuizzes(quizSummaryDtos) {
+	const groupedQuizzes = quizSummaryDtos.reduce((acc, quiz) => {
+        const category = quiz.category; // assuming quiz has a 'category' field
+        if (!acc[category]) {
+            acc[category] = [];
+        }
+        acc[category].push(quiz);
+        return acc;
+    }, {});
+	
+	for (const category in groupedQuizzes) {
+        const quizzes = groupedQuizzes[category];
+        $("#dashboard-content").append(CardTemplates.createCategorySlider(category, quizzes));
+    }
+}
 
 
 function clearContent() {
 	$("#dashboard-dashboard-content").empty();
-}
-
-
-function populateGeography() {
-	let quiz1 = {
-		image: "background-image.webp",
-		title: "NEW QUIZ!",
-		description: "Some quick example text to build on the card title and make up the bulk of the card's dashboard-dashboard-content."
-	};
-
-	let quiz2 = {
-		image: "quiz-image-test.jpeg",
-		title: "NEW QUIZ!",
-		description: "Some quick example text to build on the card title and make up the bulk of the card's dashboard-dashboard-content."
-	};
-	let quiz3 = {
-		image: "background-image.webp",
-		title: "NEW QUIZ!",
-		description: "Some quick example text to build on the card title and make up the bulk of the card's dashboard-dashboard-content."
-	};
-
-	let quiz4 = {
-		image: "quiz-image-test.jpeg",
-		title: "NEW QUIZ!",
-		description: "Some quick example text to build on the card title and make up the bulk of the card's dashboard-dashboard-content."
-	};
-
-	let quiz5 = {
-		image: "background-image.webp",
-		title: "NEW QUIZ!",
-		description: "Some quick example text to build on the card title and make up the bulk of the card's dashboard-dashboard-content."
-	};
-
-	let quiz6 = {
-		image: "quiz-image-test.jpeg",
-		title: "NEW QUIZ!",
-		description: "Some quick example text to build on the card title and make up the bulk of the card's dashboard-dashboard-content."
-	};
-
-
-	let quizzes = [quiz1, quiz2, quiz3, quiz4, quiz5, quiz6];
-
-	$("#dashboard-content").append(CardTemplates.createCategorySlider("Geography", quizzes));
-}
-
-function populateHistory() {
-	let quiz1 = {
-		image: "background-image.webp",
-		title: "NEW QUIZ!",
-		description: "Some quick example text to build on the card title and make up the bulk of the card's dashboard-dashboard-content."
-	};
-
-	let quiz2 = {
-		image: "quiz-image-test.jpeg",
-		title: "NEW QUIZ!",
-		description: "Some quick example text to build on the card title and make up the bulk of the card's dashboard-dashboard-content."
-	};
-
-	let quizzes = [quiz1, quiz2];
-
-	$("#dashboard-content").append(CardTemplates.createCategorySlider("History", quizzes));
-}
-
-function populateScience() {
-	let quiz1 = {
-		image: "background-image.webp",
-		title: "NEW QUIZ!",
-		description: "Some quick example text to build on the card title and make up the bulk of the card's dashboard-dashboard-content."
-	};
-
-	let quiz2 = {
-		image: "quiz-image-test.jpeg",
-		title: "NEW QUIZ!",
-		description: "Some quick example text to build on the card title and make up the bulk of the card's dashboard-dashboard-content."
-	};
-
-	let quizzes = [quiz1, quiz2];
-
-	$("#dashboard-content").append(CardTemplates.createCategorySlider("Science", quizzes));
-}
-
-
-function populateSport() {
-	let quiz1 = {
-		image: "background-image.webp",
-		title: "NEW QUIZ!",
-		description: "Some quick example text to build on the card title and make up the bulk of the card's dashboard-dashboard-content."
-	};
-
-	let quiz2 = {
-		image: "quiz-image-test.jpeg",
-		title: "NEW QUIZ!",
-		description: "Some quick example text to build on the card title and make up the bulk of the card's dashboard-dashboard-content."
-	};
-
-	let quizzes = [quiz1, quiz2];
-
-	$("#dashboard-content").append(CardTemplates.createCategorySlider("Sport", quizzes));
 }
