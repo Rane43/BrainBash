@@ -1,7 +1,7 @@
 package com.prometheus.brainbash.model;
 
-
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
@@ -15,7 +15,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@Data
+
+@Getter
+@Setter
 @Entity
 @Table(name = "questions")
 public class Question {

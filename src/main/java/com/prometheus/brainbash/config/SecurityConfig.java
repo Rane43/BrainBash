@@ -44,7 +44,11 @@ public class SecurityConfig {
             			"/main.js", 
             			"/styles.css",
             			"/router.js",
-            			"/quiz_developer/**").permitAll() // All static content access
+            			"/quiz_developer/**",
+            			"/api/quizzes/**", // Public while developing
+            			"/favicon.ico", // Public while developing
+            			"/api/questions/**" // Public while developing
+            			).permitAll() // All static content access
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))

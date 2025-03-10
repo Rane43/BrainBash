@@ -16,9 +16,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+
+@Setter
+@Getter
 @Entity
 @Table(name="quizzes")
 public class Quiz {
@@ -56,5 +59,5 @@ public class Quiz {
     @Enumerated(EnumType.STRING)
     private Category category;
     
-    private Boolean published;
+    private boolean published;
 }
