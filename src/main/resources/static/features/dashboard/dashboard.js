@@ -11,11 +11,10 @@ function fetchQuizzes() {
 		},
 		dataType: "json",
 		success: (quizSummaryDtos) => {
-			console.log(quizSummaryDtos);
 			displayQuizzes(quizSummaryDtos);
 		},
 		error: () => {
-			
+			console.log("Error retrieving quizzes...");
 		}
 	});
 }

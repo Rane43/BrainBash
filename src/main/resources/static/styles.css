@@ -84,6 +84,10 @@
 	color: white;
 }
 
+#brand-name:hover {
+	cursor: pointer;
+}
+
 .company-name, #search-bar {
     display: inline-block;
     vertical-align: middle;
@@ -146,6 +150,7 @@
 	box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2);
 	transform: translateY(-5px);
 	transform: scale(1.01);
+	cursor: pointer;
 }
 
 .card img {
