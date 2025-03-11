@@ -59,5 +59,4 @@ public class Quiz {
     @Enumerated(EnumType.STRING)
     private Category category;
     
-    private boolean published;
 }

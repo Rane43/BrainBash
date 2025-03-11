@@ -21,6 +21,8 @@ public class UserService implements IUserService {
 	
 	@Override
 	public User createUser(String username, String password, Role role) throws UserAlreadyExistsException {
+		username = username.toLowerCase();
+		
 	    // Check if the user already exists
 	    if (userRepo.findByUsername(username).isPresent()) {
 	        throw new UserAlreadyExistsException(username);

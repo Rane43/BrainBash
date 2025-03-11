@@ -18,9 +18,32 @@ const TokenStorage = {
 	    if (!token) {
 	        return null; // or some default value indicating no username
 	    }
-
+		
 	    const payload = JSON.parse(atob(token.split('.')[1])); // Decode the token payload
-	    return payload.sub || null; // Return the username or null if it's not available
+	    console.log(payload);
+		return payload.sub || null; // Return the username or null if it's not available
+	},
+	
+	isQuizzer: function () {
+	    const token = localStorage.getItem(this.JWT_KEY);
+	    if (!token) {
+	        return null; // or some default value indicating no username
+	    }
+
+	    const payload = JSON.parse(atob(token.split('.')[1]));
+	    if (!payload.roles) return false;
+	    return payload.roles.includes("ROLE_QUIZZER");
+	},
+
+	isQuizDesigner: function () {
+	    const token = localStorage.getItem(this.JWT_KEY);
+	    if (!token) {
+	        return null; // or some default value indicating no username
+	    }
+
+	    const payload = JSON.parse(atob(token.split('.')[1]));
+	    if (!payload.roles) return false;
+	    return payload.roles.includes("ROLE_QUIZ_DESIGNER");
 	},
 	
 	isLoggedIn: function () {

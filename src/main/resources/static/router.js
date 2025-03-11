@@ -2,7 +2,8 @@
 const Router = {
 	paths: {
 		"login": "/features/login/login.html",
-		"dashboard": "/features/dashboard/dashboard.html",
+		"quizzer-dashboard": "/quizzer/features/dashboard/dashboard.html",
+		"quiz-developer-dashboard": "/quiz_developer/features/dashboard/dashboard.html",
 		"quiz_gameplay": "/quizzer/features/quiz_gameplay/quiz_game.html"
 	},
 	
@@ -34,13 +35,24 @@ const Router = {
     	Router.loadPage(page);
 	},
 	
+	loadDashboard: function () {
+		if (TokenStorage.isQuizzer()) {
+			Router.loadPage("quizzer-dashboard");
+		} else if (TokenStorage.isQuizDesigner()) {
+			Router.loadPage("quiz-developer-dashboard");
+		} else {
+			Router.loadPage("quiz-developer-dashboard");
+		}
+	},
+	
 	loadPage: function (page) {
 		// Enforce authentication: if not authenticated and page isn’t "login", force login.
 		if (!TokenStorage.isLoggedIn()) {
       		page = "login"; // Redirect to login
       		history.pushState(null, "", "#login");
    		} else if (page === "login") {
-			page = "dashboard"; // Redirect to dashboard when you try to go to login page when already logged in
+			Router.loadDashboard(); // Redirect to quizzer-dashboard when you try to go to login page when already logged in
+			return;
 		}
 		
 		// -------------- PAGES ------------
@@ -53,6 +65,7 @@ const Router = {
 			Router.loadContentInto('/features/navbar/navbar.html', "navbar");
 	    }	
 		
+		console.log("sup");
 		
 		// Special case
 		if (page.startsWith("quiz_gameplay?quiz=")) {

@@ -25,7 +25,7 @@ const CardTemplates = {
 
 	createCategorySlider: function (categoryTitle, quizzes) {
 		let slider = $("<div>").addClass("category-slider");
-		let title = $("<h1>").addClass("category-title").text(categoryTitle);
+		let title = $("<h3>").addClass("category-title").text(categoryTitle);
 
 		let container = $("<div>").addClass("card-container");
 

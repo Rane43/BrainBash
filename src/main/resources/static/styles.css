@@ -128,6 +128,12 @@
 
 
 /* ------------- DASHBOARD -------------- */
+#your-quizzes-header {
+	padding: 10px 40px;
+	display: flex;
+	justify-content: space-between;
+}
+
 .category-slider {
 	margin: 20px;
 }

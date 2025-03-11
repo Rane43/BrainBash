@@ -19,6 +19,7 @@ import com.prometheus.brainbash.model.Question;
 import com.prometheus.brainbash.model.Quiz;
 import com.prometheus.brainbash.model.Role;
 import com.prometheus.brainbash.model.User;
+import com.prometheus.brainbash.service.IUserService;
 
 @SpringBootApplication
 public class BrainBashApplication {
@@ -46,16 +47,10 @@ public class BrainBashApplication {
 	
 	// Temp Quiz created
 	@Bean
-    CommandLineRunner init(UserRepository userRepo, PasswordEncoder passwordEncoder, QuizRepository quizRepo) {
+    CommandLineRunner init(IUserService userService, PasswordEncoder passwordEncoder, QuizRepository quizRepo) {
         return args -> {
         	// User to create quiz
-        	User user = new User();
-        	user.setUsername("Rane43");
-        	user.setPassword(passwordEncoder.encode("Password123!"));
-        	user.setRole(Role.ROLE_QUIZ_DESIGNER);
-        	
-        	// Save user
-        	userRepo.save(user);
+        	User user = userService.createUser("Rane43", "Password123!", Role.ROLE_QUIZ_DESIGNER);
         	
         	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
         	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
@@ -90,7 +85,6 @@ public class BrainBashApplication {
     	quiz.setCreator(user);
     	quiz.setDevelopers(Set.of(user));
     	quiz.setImage("question-image-test.jpeg");
-    	quiz.setPublished(false);
     	
     	// ------------------ Question 1 --------------------
     	// First question for the quiz

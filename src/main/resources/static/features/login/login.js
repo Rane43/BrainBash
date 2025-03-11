@@ -1,6 +1,4 @@
 $(document).ready(function() {
-	console.log("login.js loaded!");
-	
 	// Event Listener for register button
 	$().off("click").on("click", register);
 	
@@ -29,16 +27,11 @@ $(document).ready(function() {
 		let password = $("#register-password").val().trim();
 		let role = $("#register-role").val();
 		
-		console.log(username);
-		console.log(password);
-		console.log(role);
-		
 		// Validate username and password
 		if (!username || !password || !role) {
 			displayRegisterErrorMessage("Please supply all required fields");
 			return;
 		}
-		
 		
 		// Make request
 		$.ajax({
@@ -63,7 +56,7 @@ $(document).ready(function() {
 			TokenStorage.saveToken(token);
 			clearRegisterErrors();
 			// Redirect to the landing page
-			Router.navigate("dashboard");
+			Router.loadDashboard();
 		}
 	}
 	
@@ -96,7 +89,9 @@ $(document).ready(function() {
 		// Begin login process
 		let username = $("#username").val().trim().toLowerCase(); // Username is case-insensitive
 		let password = $("#password").val().trim();
-		let role = $("#register-role").val();
+		
+		console.log(username);
+		console.log(password);
 		
 		// Validate username and password
 		if (!username || !password) {
@@ -127,7 +122,7 @@ $(document).ready(function() {
 			TokenStorage.saveToken(token);
 			clearLoginErrors();
 			// Redirect to the landing page
-			Router.navigate("dashboard");
+			Router.loadDashboard();
 		}
 	}
 	

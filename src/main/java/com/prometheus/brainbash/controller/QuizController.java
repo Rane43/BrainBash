@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +20,7 @@ import com.prometheus.brainbash.dto.QuizSummaryDto;
 import com.prometheus.brainbash.exception.QuizNotFoundException;
 import com.prometheus.brainbash.mapper.QuizMapper;
 import com.prometheus.brainbash.model.Quiz;
+import com.prometheus.brainbash.service.IJwtService;
 
 import jakarta.validation.Valid;
 
@@ -27,19 +28,33 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/quizzes")
 public class QuizController {
 	private QuizRepository quizRepo;
+	private IJwtService jwtService;
 	
-	public QuizController(QuizRepository quizRepo) {
+	public QuizController(QuizRepository quizRepo, IJwtService jwtService) {
 		this.quizRepo = quizRepo;
+		this.jwtService = jwtService;
 	}
 	
 	@GetMapping
-	public List<QuizSummaryDto> getAllQuizzes() {
+	public List<QuizSummaryDto> getAllQuizSummaries() {
 		return quizRepo.findAll().stream().map((quiz) -> {
 			QuizSummaryDto quizSummaryDto = new QuizSummaryDto();
 			QuizMapper.toQuizSummaryDto(quiz, quizSummaryDto);
 			return quizSummaryDto;
 		}).toList();
 	}
+	
+	@GetMapping("/mine")
+	public List<QuizSummaryDto> getAllMyQuizSummaries(@RequestHeader("Authorization") String bearerToken) {
+		String username = jwtService.extractUsername(bearerToken.substring(7));
+		
+		return quizRepo.findByCreator_Username(username).stream().map((quiz) -> {
+			QuizSummaryDto quizSummaryDto = new QuizSummaryDto();
+			QuizMapper.toQuizSummaryDto(quiz, quizSummaryDto);
+			return quizSummaryDto;
+		}).toList();
+	}
+	
 	
 	@PostMapping
 	public void createQuiz(@Valid @RequestBody Quiz quiz) {
