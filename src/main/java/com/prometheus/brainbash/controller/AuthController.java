@@ -41,6 +41,19 @@ public class AuthController {
 	}
 	
 	
+	@PostMapping("/register")
+	public ResponseEntity<LoginResponseDto> register(@Valid @RequestBody LoginDto loginDto) throws InvalidCredentialsException {
+		// Usernames are case insensitive
+		String username = loginDto.getUsername().toLowerCase();
+		
+		UserDetails userDetails = authService.authenticate(username, loginDto.getPassword());
+		String token = jwtService.generateToken(userDetails);
+		
+		LoginResponseDto loginResponse = new LoginResponseDto(token);
+		return ResponseEntity.status(HttpStatus.OK).body(loginResponse);	
+	}
+	
+	
 	
 	// --------------- EXCEPTION HANDLERS ----------------
     @ExceptionHandler(InvalidCredentialsException.class)

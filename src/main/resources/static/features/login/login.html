@@ -24,6 +24,32 @@
 </head>
 <body>
 	<div id="login-content">
+		<!-- Register box -->
+		<div class="login-box">
+			<h2>Register</h2>
+	        <!-- Username Field -->
+	        <div class="input-container">
+	        	<h3 class="input-header">Username*</h3>
+	        	<input type="text" id="register-username" name="username" required placeholder="Username">
+	        </div>
+	         
+	        <!-- Password Field -->
+	        <div class="input-container">
+	        	<h3>Password*</h3>
+	        	<input type="password" id="register-password" name="password" required placeholder="Password">
+	        </div>
+	         
+	      	<!-- Error Message Field -->
+	      	<div style="display: none;" class="error-message-container" id="login-error-container">
+	        	<p class="error-message" id="register-error"><!-- placeholder for error message --></p>
+	        </div>
+	         
+	        <button id="register-btn" class="btn btn-primary" type="button">Register</button>
+	
+	        <p>Already have an account? <a href="#" id="login">Login</a></p>
+	    </div>
+	    
+	    <!-- Log in box -->
 		<div class="login-box">
 			<h2>Login</h2>
 	        <!-- Username Field -->

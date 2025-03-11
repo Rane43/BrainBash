@@ -1,11 +1,71 @@
 $(document).ready(function() {
 	console.log("login.js loaded!");
 	
+	// Event Listener for register button
+	$().off("click").on("click", register);
+	
 	// Event Listener for login button
 	$("#login-btn").off("click").on("click", login);
 	
 	
-	// FUNCTIONS ---
+	// Event listeners for register link and log in links
+	
+	
+	
+	// -------------- FUNCTIONS ------------------
+	// ----------------- Register ----------------
+	function register() {
+		let username = $("#register-username").val().trim().toLowerCase(); // Username is case-insensitive
+		let password = $("#register-password").val().trim();
+		
+		// Validate username and password
+		if (!username || !password) {
+			displayLoginErrorMessage("Username and password must not be empty.");
+			return;
+		}
+		
+		
+		// Make request
+		$.ajax({
+	        url: `/api/auth/register`,
+	        method: "POST",
+			headers: {
+				"contentType": "application/json"
+			},
+	        contentType: "application/json",
+	        data: JSON.stringify({username, password}),
+	        success: registerSuccess,
+	        error: registerFailure
+	    });
+		
+	}
+	
+	function registerSuccess(response) {
+		let token = response.token;
+		if (!token) {
+			displayRegisterErrorMessage("No token received from backend.");	
+		} else {
+			TokenStorage.saveToken(token);
+			clearErrors();
+			// Redirect to the landing page
+			Router.navigate("dashboard");
+		}
+	}
+	
+	function registerFailure() {
+		let statusCode = xhr.status;
+		reject(new ServerSideError("Encountered unexpected error while trying to log in."));
+	}
+	
+	function displayRegisterErrorMessage(msg) {
+		$("#register-error").text(msg);
+	}
+	
+	
+	
+	
+	
+	// ------------------ Login ----------------
 	function login() {
 		// Begin login process
 		let username = $("#username").val().trim().toLowerCase(); // Username is case-insensitive
@@ -13,7 +73,7 @@ $(document).ready(function() {
 		
 		// Validate username and password
 		if (!username || !password) {
-			displayErrorMessage("Username and password must not be empty.");
+			displayLoginErrorMessage("Username and password must not be empty.");
 			return;
 		}
 		
@@ -26,16 +86,16 @@ $(document).ready(function() {
 			},
 	        contentType: "application/json",
 	        data: JSON.stringify({username, password}),
-	        success: success,
-	        error: failure
+	        success: loginSucess,
+	        error: loginFailure
 	    });
 	}
 		
 	// Callback functions --
-	function success(response) {
+	function loginSucess(response) {
 		let token = response.token;
 		if (!token) {
-			displayErrorMessage("No token received from backend.");	
+			displayLoginErrorMessage("No token received from backend.");	
 		} else {
 			TokenStorage.saveToken(token);
 			clearErrors();
@@ -44,24 +104,24 @@ $(document).ready(function() {
 		}
 	}
 	
-	function failure(xhr) {
+	function loginFailure(xhr) {
 		let statusCode = xhr.status;
 		if (statusCode === 401) {
-			displayErrorMessage("Invalid Username or Password") // display error response message ?
+			displayLoginErrorMessage("Invalid Username or Password") // display error response message ?
 		} else {
 			reject(new ServerSideError("Encountered unexpected error while trying to log in."));
 		}
 	}
 	
-	function displayErrorMessage(errorMessage) {
-		clearErrors();
+	function displayLoginErrorMessage(errorMessage) {
+		clearLoginErrors();
 		
 		// Display current error message
 		$("#login-error-container").show();
 		$("#login-error").text(errorMessage);
 	}
 	
-	function clearErrors() {
+	function clearLoginErrors() {
 		// Clear previous error messages
 		$("#login-error-container").hide();
 	}
