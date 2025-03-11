@@ -13,6 +13,16 @@ const TokenStorage = {
 		return localStorage.removeItem(this.JWT_KEY);
 	},
 	
+	getUsername: function () {
+	    const token = localStorage.getItem(this.JWT_KEY);
+	    if (!token) {
+	        return null; // or some default value indicating no username
+	    }
+
+	    const payload = JSON.parse(atob(token.split('.')[1])); // Decode the token payload
+	    return payload.sub || null; // Return the username or null if it's not available
+	},
+	
 	isLoggedIn: function () {
 	    const token = localStorage.getItem(this.JWT_KEY);
 	    if (!token) {

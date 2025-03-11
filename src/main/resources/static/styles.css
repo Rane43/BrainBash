@@ -103,6 +103,17 @@
 }
 
 /* Navbar right */
+.navbar-right {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#user-name {
+	color: white;
+	padding: 0 10px;
+}
+
 #user-icon {
     color: white;
 }
