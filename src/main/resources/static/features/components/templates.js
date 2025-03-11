@@ -23,29 +23,16 @@ const CardTemplates = {
 		return card;
 	},
 
-	createCategorySlider: function (categoryTitle, quizzes) {
+	createCategorySlider: function (categoryTitle, quizCards) {
 		let slider = $("<div>").addClass("category-slider");
 		let title = $("<h3>").addClass("category-title").text(categoryTitle);
 
 		let container = $("<div>").addClass("card-container");
-
-		quizzes.forEach(quiz => {
-			container.append(this.createQuizCard(quiz));
+		quizCards.forEach((quizCard) => {
+			container.append(quizCard);
 		});
 
 		slider.append(title, container);
 		return slider;
 	}
-};
-
-
-// ----------------- QUIZ BUTTON TEMPLATES -------------------
-const QuizTemplates = {
-    answerButton: function (answer) {
-        return $("<button>")
-            .attr("type", "button")
-            .addClass("question-btn question-answer-btn")
-            .text(answer.text);
-    }
-};
-
+}

@@ -226,7 +226,7 @@
 	text-align: center;
 }
 
-/* question CARD LOWER */
+/* QUESTION CARD LOWER */
 .question-card-lower {
 	height: 60%;
 	border-radius: 0 0 20px 20px;
@@ -291,4 +291,11 @@
 #FinalResult {
 	color: #d5d5d5;
 	font-size: 200px;
+}
+
+
+/* -------------------- QUIZ CREATION -----------------------*/
+.image-slide {
+	display: flex;
+	justify-content: center;
 }

@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
+    	
         // If Token isn't present, move on.
     	String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -51,7 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Optional<User> userOptional = userRepo.findByUsername(username);
                 
                 if (!userOptional.isPresent()) {
-                	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                	filterChain.doFilter(request, response);
                 	return;
                 }
                 

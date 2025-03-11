@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.prometheus.brainbash.dao.UserRepository;
 import com.prometheus.brainbash.exception.UserAlreadyExistsException;
+import com.prometheus.brainbash.exception.UserNotFoundException;
 import com.prometheus.brainbash.model.Role;
 import com.prometheus.brainbash.model.User;
 import com.prometheus.brainbash.service.IUserService;
@@ -36,6 +37,11 @@ public class UserService implements IUserService {
 	    
 	    // Save the user to the repository
 	    return userRepo.save(user);
+	}
+
+	@Override
+	public User getUser(String username) throws UserNotFoundException {
+		return userRepo.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 	}
 	
 }

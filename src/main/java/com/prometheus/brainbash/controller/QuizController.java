@@ -1,8 +1,11 @@
 package com.prometheus.brainbash.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,12 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prometheus.brainbash.dao.QuizRepository;
+import com.prometheus.brainbash.dao.UserRepository;
+import com.prometheus.brainbash.dto.QuizCreationDto;
 import com.prometheus.brainbash.dto.QuizGameDto;
 import com.prometheus.brainbash.dto.QuizSummaryDto;
 import com.prometheus.brainbash.exception.QuizNotFoundException;
+import com.prometheus.brainbash.exception.UserNotFoundException;
 import com.prometheus.brainbash.mapper.QuizMapper;
 import com.prometheus.brainbash.model.Quiz;
+import com.prometheus.brainbash.model.User;
 import com.prometheus.brainbash.service.IJwtService;
+import com.prometheus.brainbash.service.IUserService;
+import com.prometheus.brainbash.service.impl.UserService;
 
 import jakarta.validation.Valid;
 
@@ -28,12 +37,40 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/quizzes")
 public class QuizController {
 	private QuizRepository quizRepo;
+	private IUserService userService;
 	private IJwtService jwtService;
 	
-	public QuizController(QuizRepository quizRepo, IJwtService jwtService) {
+	public QuizController(QuizRepository quizRepo, UserService userService, IJwtService jwtService) {
 		this.quizRepo = quizRepo;
+		this.userService = userService;
 		this.jwtService = jwtService;
 	}
+	
+	/*
+	 * For reference
+	 */
+	
+	/*
+	@GetMapping("/courses")
+    public List<EntityModel<CourseDTO>> getAllCourses() {
+        List<Course> courses = courseRepository.findAll();
+        List<EntityModel<CourseDTO>> courseDTOs = new ArrayList<>();
+        
+        for (Course course : courses) {
+            CourseDTO courseDTO = courseMapper.toDto(course);
+            EntityModel<CourseDTO> entityModel = EntityModel.of(courseDTO);
+            
+            // Only add links if necessary
+            entityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(JpaDemoController.class)
+                .getCourseModules(course.getId())).withRel("modules").withType("GET"));
+            
+            courseDTOs.add(entityModel);
+        }
+        
+        return courseDTOs;
+    }
+	*/
+	
 	
 	@GetMapping
 	public List<QuizSummaryDto> getAllQuizSummaries() {
@@ -57,8 +94,15 @@ public class QuizController {
 	
 	
 	@PostMapping
-	public void createQuiz(@Valid @RequestBody Quiz quiz) {
+	public long createQuiz(@RequestHeader("Authorization") String bearerToken, @Valid @RequestBody QuizCreationDto quizCreationDto) throws UserNotFoundException {
+		String username = jwtService.extractUsername(bearerToken.substring(7));
+		User user = userService.getUser(username);
 		
+		Quiz quiz = new Quiz();
+		QuizMapper.quizCreationDtoToQuiz(quizCreationDto, user, quiz);
+		quizRepo.save(quiz);
+		
+		return quiz.getId();
 	}
 	
 	@GetMapping("/{id}")
@@ -73,6 +117,13 @@ public class QuizController {
 		QuizMapper.toQuizGameDto(quizOptional.get(), quizGameDto);
 		
 		return quizGameDto;
+	}
+	
+	
+	// --------------------- EXCEPTION HANDLER --------------------------
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 	}
 	
 	@ExceptionHandler(QuizNotFoundException.class)

@@ -20,6 +20,10 @@ function fetchQuizzes() {
 }
 
 function displayQuizzes(quizSummaryDtos) {
+	// Empty previous content
+	$("#quiz-display").empty();
+	
+	// Display new content
 	const groupedQuizzes = quizSummaryDtos.reduce((acc, quiz) => {
         const category = quiz.category; // assuming quiz has a 'category' field
         if (!acc[category]) {
@@ -31,11 +35,9 @@ function displayQuizzes(quizSummaryDtos) {
 	
 	for (const category in groupedQuizzes) {
         const quizzes = groupedQuizzes[category];
-        $("#dashboard-content").append(CardTemplates.createCategorySlider(category, quizzes));
+		// Collect quiz cards created from quizzes
+		const quizCards = quizzes.map(CardTemplates.createQuizCard);
+		
+        $("#quiz-display").append(CardTemplates.createCategorySlider(category, quizCards));
     }
-}
-
-
-function clearContent() {
-	$("#dashboard-dashboard-content").empty();
 }
