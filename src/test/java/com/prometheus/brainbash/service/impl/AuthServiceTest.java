@@ -67,8 +67,8 @@ class AuthServiceTest {
 		String encodedPassword = passwordEncoder.encode(validPassword);
 		user.setPassword(encodedPassword);
 		
-		Set<Role> roles = Set.of(Role.ROLE_ADMIN);
-		user.setAuthorities(roles);
+		Role role = Role.ROLE_ADMIN;
+		user.setRole(role);
 		
 		when(userRepo.findByUsername(username)).thenReturn(Optional.of(user));
 		
@@ -91,8 +91,8 @@ class AuthServiceTest {
 		String encodedPassword = passwordEncoder.encode(password);
 		user.setPassword(encodedPassword);
 		
-		Set<Role> roles = Set.of(Role.ROLE_ADMIN);
-		user.setAuthorities(roles);
+		Role role = Role.ROLE_ADMIN;
+		user.setRole(role);
 		
 		when(userRepo.findByUsername(username)).thenReturn(Optional.of(user));
 		
@@ -100,7 +100,7 @@ class AuthServiceTest {
 		
 		assertEquals(username, userDetails.getUsername());
 		assertEquals(encodedPassword, userDetails.getPassword());
-		assertEquals(roles, userDetails.getAuthorities());
+		assertEquals(Set.of(role), userDetails.getAuthorities());
 		
 		verify(userRepo, new Times(1)).findByUsername(username);
 	}

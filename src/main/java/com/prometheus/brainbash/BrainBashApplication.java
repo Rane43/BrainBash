@@ -17,6 +17,7 @@ import com.prometheus.brainbash.model.Category;
 import com.prometheus.brainbash.model.DifficultyRating;
 import com.prometheus.brainbash.model.Question;
 import com.prometheus.brainbash.model.Quiz;
+import com.prometheus.brainbash.model.Role;
 import com.prometheus.brainbash.model.User;
 
 @SpringBootApplication
@@ -51,6 +52,8 @@ public class BrainBashApplication {
         	User user = new User();
         	user.setUsername("Rane43");
         	user.setPassword(passwordEncoder.encode("Password123!"));
+        	user.setRole(Role.ROLE_QUIZ_DESIGNER);
+        	
         	// Save user
         	userRepo.save(user);
         	

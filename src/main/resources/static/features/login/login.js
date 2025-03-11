@@ -9,7 +9,7 @@ $(document).ready(function() {
 	
 	
 	// Event listeners for register link and log in links
-	
+	$("#register-btn").off("click").on("click", register);
 	
 	
 	// -------------- FUNCTIONS ------------------
@@ -17,10 +17,15 @@ $(document).ready(function() {
 	function register() {
 		let username = $("#register-username").val().trim().toLowerCase(); // Username is case-insensitive
 		let password = $("#register-password").val().trim();
+		let role = $("#register-role").val();
+		
+		console.log(username);
+		console.log(password);
+		console.log(role);
 		
 		// Validate username and password
-		if (!username || !password) {
-			displayLoginErrorMessage("Username and password must not be empty.");
+		if (!username || !password || !role) {
+			displayRegisterErrorMessage("Please supply all required fields");
 			return;
 		}
 		
@@ -33,7 +38,7 @@ $(document).ready(function() {
 				"contentType": "application/json"
 			},
 	        contentType: "application/json",
-	        data: JSON.stringify({username, password}),
+	        data: JSON.stringify({username, password, role}),
 	        success: registerSuccess,
 	        error: registerFailure
 	    });
@@ -46,19 +51,30 @@ $(document).ready(function() {
 			displayRegisterErrorMessage("No token received from backend.");	
 		} else {
 			TokenStorage.saveToken(token);
-			clearErrors();
+			clearRegisterErrors();
 			// Redirect to the landing page
 			Router.navigate("dashboard");
 		}
 	}
 	
-	function registerFailure() {
+	function registerFailure(xhr) {
 		let statusCode = xhr.status;
-		reject(new ServerSideError("Encountered unexpected error while trying to log in."));
+		if (statusCode === 409) {
+			displayRegisterErrorMessage("Username is taken.");
+		} else {
+			displayRegisterErrorMessage("Encountered unexpected error while trying to log in.");
+		}
 	}
 	
 	function displayRegisterErrorMessage(msg) {
+		clearRegisterErrors();
+		
+		$("#register-error-container").show();
 		$("#register-error").text(msg);
+	}
+	
+	function clearRegisterErrors() {
+		$("register-error-container").hide();
 	}
 	
 	
@@ -70,6 +86,7 @@ $(document).ready(function() {
 		// Begin login process
 		let username = $("#username").val().trim().toLowerCase(); // Username is case-insensitive
 		let password = $("#password").val().trim();
+		let role = $("#register-role").val();
 		
 		// Validate username and password
 		if (!username || !password) {
@@ -98,7 +115,7 @@ $(document).ready(function() {
 			displayLoginErrorMessage("No token received from backend.");	
 		} else {
 			TokenStorage.saveToken(token);
-			clearErrors();
+			clearLoginErrors();
 			// Redirect to the landing page
 			Router.navigate("dashboard");
 		}
@@ -109,7 +126,7 @@ $(document).ready(function() {
 		if (statusCode === 401) {
 			displayLoginErrorMessage("Invalid Username or Password") // display error response message ?
 		} else {
-			reject(new ServerSideError("Encountered unexpected error while trying to log in."));
+			displayLoginErrorMessage("Encountered unexpected error while trying to log in.");
 		}
 	}
 	

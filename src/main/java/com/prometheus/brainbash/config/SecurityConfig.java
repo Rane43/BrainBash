@@ -36,6 +36,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             	.requestMatchers("/h2-console/**").permitAll() // Allow access to h2 console for development ***
             	.requestMatchers("/api/auth/login").permitAll() // Allow request to log in
+            	.requestMatchers("/api/auth/register").permitAll() // Allow request to register
             	.requestMatchers(
             			"/assets/**", 
             			"/features/**", 

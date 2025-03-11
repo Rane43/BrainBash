@@ -38,9 +38,19 @@
 	        	<h3>Password*</h3>
 	        	<input type="password" id="register-password" name="password" required placeholder="Password">
 	        </div>
-	         
+	        
+	        <!-- Role Field --> 
+	        <div class="input-container">
+	        	<h3>Role*</h3>
+	        	<select id="register-role">
+	        		<option value="ROLE_QUIZZER" >ROLE_QUIZZER</option>
+	        		<option value="ROLE_QUIZ_DESIGNER" >ROLE_QUIZ_DESIGNER</option>
+	        	</select>
+	        </div>
+	        
+	        
 	      	<!-- Error Message Field -->
-	      	<div style="display: none;" class="error-message-container" id="login-error-container">
+	      	<div style="display: none;" class="error-message-container" id="register-error-container">
 	        	<p class="error-message" id="register-error"><!-- placeholder for error message --></p>
 	        </div>
 	         

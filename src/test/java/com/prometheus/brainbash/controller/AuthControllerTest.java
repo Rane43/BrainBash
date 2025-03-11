@@ -19,11 +19,13 @@ import com.prometheus.brainbash.exception.InvalidCredentialsException;
 import com.prometheus.brainbash.model.User;
 import com.prometheus.brainbash.service.IAuthService;
 import com.prometheus.brainbash.service.IJwtService;
+import com.prometheus.brainbash.service.IUserService;
 
 /*
  * Mock tests for AuthController
  */
 class AuthControllerTest {
+	private IUserService userService;
 	private IAuthService authService;
 	private IJwtService jwtService;
 	
@@ -31,10 +33,11 @@ class AuthControllerTest {
 	
 	@BeforeEach
 	void setup() {
+		userService = mock(IUserService.class);
 		authService = mock(IAuthService.class);
 		jwtService = mock(IJwtService.class);
 		
-		authController = new AuthController(authService, jwtService);
+		authController = new AuthController(userService, authService, jwtService);
 	}
 	
 	@Test

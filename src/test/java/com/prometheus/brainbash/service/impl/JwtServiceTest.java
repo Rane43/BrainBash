@@ -49,9 +49,7 @@ class JwtServiceTest {
 		
 		User user = new User();
 		user.setUsername(username);
-		
-		Set<Role> roles = Set.of(Role.ROLE_ADMIN);
-		user.setAuthorities(roles);
+		user.setRole(Role.ROLE_ADMIN);
 		
 		String token = jwtService.generateToken(user);
 		
@@ -125,7 +123,7 @@ class JwtServiceTest {
     	User user = new User();
 		user.setUsername(USERNAME);
 		user.setPassword(new BCryptPasswordEncoder().encode(PASSWORD));
-		user.setAuthorities(ROLES);
+		user.setRole(Role.ROLE_ADMIN);
 		
     	return user;
     }
