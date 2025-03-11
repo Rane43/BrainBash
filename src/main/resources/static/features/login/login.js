@@ -4,12 +4,22 @@ $(document).ready(function() {
 	// Event Listener for register button
 	$().off("click").on("click", register);
 	
-	// Event Listener for login button
+	// Event Listener for login and register buttons
 	$("#login-btn").off("click").on("click", login);
-	
+	$("#register-btn").off("click").on("click", register);
 	
 	// Event listeners for register link and log in links
-	$("#register-btn").off("click").on("click", register);
+	$("#link-to-login").off("click").on("click", (event) => {
+		$("#reg-card").hide();
+		$("#login-card").show();
+		return false; // Prevent redirect
+	});
+	$("#link-to-register").off("click").on("click", (event) => {
+		$("#login-card").hide();
+		$("#reg-card").show();
+		return false; // Prevent redirect
+	});
+	
 	
 	
 	// -------------- FUNCTIONS ------------------

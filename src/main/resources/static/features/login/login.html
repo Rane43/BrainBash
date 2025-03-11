@@ -25,7 +25,7 @@
 <body>
 	<div id="login-content">
 		<!-- Register box -->
-		<div class="login-box">
+		<div id="reg-card" class="login-box" style="display: none;">
 			<h2>Register</h2>
 	        <!-- Username Field -->
 	        <div class="input-container">
@@ -56,11 +56,11 @@
 	         
 	        <button id="register-btn" class="btn btn-primary" type="button">Register</button>
 	
-	        <p>Already have an account? <a href="#" id="login">Login</a></p>
+	        <p>Already have an account? <a href="#" id="link-to-login">Login</a></p>
 	    </div>
 	    
 	    <!-- Log in box -->
-		<div class="login-box">
+		<div id="login-card" class="login-box">
 			<h2>Login</h2>
 	        <!-- Username Field -->
 	        <div class="input-container">
@@ -81,7 +81,7 @@
 	         
 	        <button id="login-btn" class="btn btn-primary" type="button">Login</button>
 	
-	        <p>Don't have an account? <a href="#" id="register">Register</a></p>
+	        <p>Don't have an account? <a href="#" id="link-to-register">Register</a></p>
 	    </div>
 	    <script src="/features/login/login.js"></script>
 	</div>
