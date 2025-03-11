@@ -36,3 +36,14 @@ const CardTemplates = {
 		return slider;
 	}
 }
+
+
+// ----------------- QUIZ BUTTON TEMPLATES -------------------
+const QuizTemplates = {
+    answerButton: function (answer) {
+        return $("<button>")
+            .attr("type", "button")
+            .addClass("question-btn question-answer-btn")
+            .text(answer.text);
+    }
+};
