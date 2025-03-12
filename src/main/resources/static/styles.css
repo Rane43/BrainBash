@@ -89,7 +89,7 @@
 	cursor: pointer;
 }
 
-.company-name, .nav-search-item {
+.company-name, #search-bar {
     display: inline-block;
     vertical-align: middle;
 }
@@ -284,7 +284,7 @@
 	margin-top: 10px;
 }
 
-#next-btn, #finish-btn, .question-btn {
+#next-btn, #finish-btn {
 	width: 150px;
 	margin-left: auto;
 	background-color: #002230;
