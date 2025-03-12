@@ -28,6 +28,8 @@ import com.prometheus.brainbash.exception.UnauthorizedAccessToQuizException;
 import com.prometheus.brainbash.exception.UserNotFoundException;
 import com.prometheus.brainbash.mapper.QuestionMapper;
 import com.prometheus.brainbash.mapper.QuizMapper;
+import com.prometheus.brainbash.model.AgeRating;
+import com.prometheus.brainbash.model.DifficultyRating;
 import com.prometheus.brainbash.model.Question;
 import com.prometheus.brainbash.model.Quiz;
 import com.prometheus.brainbash.model.User;
@@ -89,13 +91,20 @@ public class QuizController {
 	}
 	
 	@GetMapping("/search")
-	public List<QuizSummaryDto> getQuizSummariesByTitle(@RequestParam String middleTitle) {
-		return quizRepo.findByTitleContains(middleTitle)
-				.stream().map((quiz) -> {
-					QuizSummaryDto quizSummaryDto = new QuizSummaryDto();
-					QuizMapper.toQuizSummaryDto(quiz, quizSummaryDto);
-					return quizSummaryDto;
-				}).toList();
+	public List<QuizSummaryDto> getQuizSummariesByTitleAndFilters(
+	        @RequestParam String middleTitle, 
+	        @RequestParam DifficultyRating difficultyRating,
+	        @RequestParam AgeRating ageRating) {
+
+	    // Query the repository with the request params
+	    return quizRepo.findByTitleContainsAndDifficultyRatingAndAgeRating(middleTitle, difficultyRating, ageRating)
+	            .stream()
+	            .map(quiz -> {
+	                QuizSummaryDto quizSummaryDto = new QuizSummaryDto();
+	                QuizMapper.toQuizSummaryDto(quiz, quizSummaryDto);
+	                return quizSummaryDto;
+	            })
+	            .toList();
 	}
 	
 	@GetMapping("/mine")

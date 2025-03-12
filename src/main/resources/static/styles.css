@@ -89,14 +89,17 @@
 	cursor: pointer;
 }
 
-.company-name, #search-bar {
+.company-name, .nav-search-item {
     display: inline-block;
     vertical-align: middle;
 }
 
 #search-bar {
-	height: 40px;
 	width: 300px;
+}
+
+.nav-search-item {
+	height: 40px;
 	margin: 10px;
 	border-radius: 5px;
 	padding: 10px;

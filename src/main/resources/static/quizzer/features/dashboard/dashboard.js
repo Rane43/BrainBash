@@ -1,27 +1,38 @@
 $(document).ready(function () {
 	fetchQuizzes();
+	fetchAgeRatings();
+	fetchDifficultyRatings();
 	
 	$("#search-bar").on("keyup", function () {
-	    displayQuizzesByTitle();
+	    displayQuizzesBySearch();
 	});
+	
+	$("#age-rating-dropdown").on("change", function () {
+		displayQuizzesBySearch();
+	});
+	
+	$("#difficulty-rating-dropdown").on("change", function () {
+		displayQuizzesBySearch();
+	})
 });
 
 
 
-function displayQuizzesByTitle() {
-	let searchText = $("#search-bar").val().trim()
-	console.log(searchText);
+function displayQuizzesBySearch() {
+	let searchText = $("#search-bar").val().trim();
+	let ageRating = $("#age-rating-dropdown").val();
+	let difficultyRating = $("#difficulty-rating-dropdown").val();
 	
 	if (!searchText) {
 		fetchQuizzes()
 	} else {
-		fetchQuizzesByTitle(searchText);	
+		fetchQuizzesBySearch(searchText, difficultyRating, ageRating);	
 	}
 }
 
-function fetchQuizzesByTitle(searchText) {
+function fetchQuizzesBySearch(searchText, difficultyRating, ageRating) {
 	$.ajax({
-		url: `/api/quizzes/search?middleTitle=${searchText}`,
+		url: `/api/quizzes/search?middleTitle=${searchText}&difficultyRating=${difficultyRating}&ageRating=${ageRating}`,
 		method: "GET",
 		headers: {
 			"Authorization": `Bearer ${TokenStorage.getToken()}`
@@ -36,7 +47,83 @@ function fetchQuizzesByTitle(searchText) {
 	});
 }
 
+// Fetch Queries options
+/* CATEGORIES */
+function fetchCategories() {
+	$.ajax({
+		url: "/api/categories",
+		method: "GET",
+		dataType: "json",
+		success: (categories) => {
+			// Populate Categories
+			let selectDropdown = document.getElementById("category-dropdown");
+			selectDropdown.innerHTML = "";
+			
+			categories.forEach((category) => {
+				let option = document.createElement("option");
+				option.setAttribute("value", category);
+				option.text=category;
+				selectDropdown.add(option);
+			});
+		}, 
+		error: () => {
+			console.log("Error retrieving categories");
+		}
+	});
+}
 
+/* AGE RATING */
+function fetchAgeRatings() {
+	$.ajax({
+		url: "/api/age-ratings",
+		method: "GET",
+		dataType: "json",
+		success: (ageRatings) => {
+			// Populate Categories
+			let selectDropdown = document.getElementById("age-rating-dropdown");
+			selectDropdown.innerHTML = "";
+			
+			ageRatings.forEach((ageRating) => {
+				let option = document.createElement("option");
+				option.setAttribute("value", ageRating);
+				option.text=ageRating;
+				selectDropdown.add(option);
+			});
+		}, 
+		error: () => {
+			console.log("Error retrieving categories");
+		}
+	});
+}
+
+
+/* DIFFICULTY RATING */
+function fetchDifficultyRatings() {
+	$.ajax({
+		url: "/api/difficulty-ratings",
+		method: "GET",
+		dataType: "json",
+		success: (difficultyRatings) => {
+			// Populate Categories
+			let selectDropdown = document.getElementById("difficulty-rating-dropdown");
+			selectDropdown.innerHTML = "";
+			
+			difficultyRatings.forEach((difficultyRating) => {
+				let option = document.createElement("option");
+				option.setAttribute("value", difficultyRating);
+				option.text=difficultyRating;
+				selectDropdown.add(option);
+			});
+		}, 
+		error: () => {
+			console.log("Error retrieving categories");
+		}
+	});
+}
+
+
+
+// --------- Fetch queries -----------
 function fetchQuizzes() {
 	$.ajax({
 		url: "/api/quizzes",
