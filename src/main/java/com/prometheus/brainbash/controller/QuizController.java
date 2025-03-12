@@ -1,47 +1,52 @@
 package com.prometheus.brainbash.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.prometheus.brainbash.dao.QuestionRepository;
 import com.prometheus.brainbash.dao.QuizRepository;
-import com.prometheus.brainbash.dao.UserRepository;
+import com.prometheus.brainbash.dto.QuestionCreationDto;
 import com.prometheus.brainbash.dto.QuizCreationDto;
 import com.prometheus.brainbash.dto.QuizGameDto;
 import com.prometheus.brainbash.dto.QuizSummaryDto;
 import com.prometheus.brainbash.exception.QuizNotFoundException;
+import com.prometheus.brainbash.exception.UnauthorizedAccessToQuizException;
 import com.prometheus.brainbash.exception.UserNotFoundException;
+import com.prometheus.brainbash.mapper.QuestionMapper;
 import com.prometheus.brainbash.mapper.QuizMapper;
+import com.prometheus.brainbash.model.Question;
 import com.prometheus.brainbash.model.Quiz;
 import com.prometheus.brainbash.model.User;
 import com.prometheus.brainbash.service.IJwtService;
 import com.prometheus.brainbash.service.IUserService;
 import com.prometheus.brainbash.service.impl.UserService;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/quizzes")
 public class QuizController {
 	private QuizRepository quizRepo;
+	private QuestionRepository questionRepo;
 	private IUserService userService;
 	private IJwtService jwtService;
 	
-	public QuizController(QuizRepository quizRepo, UserService userService, IJwtService jwtService) {
+	public QuizController(QuizRepository quizRepo, QuestionRepository questionRepo, UserService userService, IJwtService jwtService) {
 		this.quizRepo = quizRepo;
+		this.questionRepo = questionRepo;
 		this.userService = userService;
 		this.jwtService = jwtService;
 	}
@@ -120,7 +125,44 @@ public class QuizController {
 	}
 	
 	
+	// ------------- Questions for Quiz -------------
+	@PutMapping("/{quizId}/questions")
+	@Transactional
+	public long addQuestion(
+			@RequestHeader("Authorization") String bearerToken, 
+			@PathVariable long quizId,
+			@Valid @RequestBody QuestionCreationDto questionCreationDto
+	) throws UserNotFoundException, QuizNotFoundException, UnauthorizedAccessToQuizException {
+		String username = jwtService.extractUsername(bearerToken.substring(7));
+		User user = userService.getUser(username);
+		Optional<Quiz> quizOptional = quizRepo.findById(quizId);
+		
+		if (quizOptional.isEmpty()) throw new QuizNotFoundException(quizId);
+		
+		Quiz quiz = quizOptional.get();
+		if (!quiz.getDevelopers().contains(user)) throw new UnauthorizedAccessToQuizException(quizId);
+		
+		// Else Add Question to quiz
+		Question question = new Question();
+		QuestionMapper.toQuestion(questionCreationDto, quiz, question);
+		
+		question = questionRepo.save(question);
+		
+		quiz.addQuestion(question);
+		quizRepo.save(quiz);
+		
+		return question.getId();
+	}
+	
+	
+	
+	
 	// --------------------- EXCEPTION HANDLER --------------------------
+	@ExceptionHandler(UnauthorizedAccessToQuizException.class)
+	public ResponseEntity<String> handleUnauthorizedAccessToQuizException(UnauthorizedAccessToQuizException e) {
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+	}
+	
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

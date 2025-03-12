@@ -13,7 +13,6 @@ $(document).ready(function () {
 	        this.questionIds = quizGameDto.questionIds;
 	        this.currentQuestionIndex = 0;
 	        this.score = 0;
-	        this.loadQuestion();
 	    },
 
 	    loadQuestion() {

@@ -67,7 +67,7 @@ class AuthServiceTest {
 		String encodedPassword = passwordEncoder.encode(validPassword);
 		user.setPassword(encodedPassword);
 		
-		Role role = Role.ROLE_ADMIN;
+		Role role = Role.ROLE_QUIZZER;
 		user.setRole(role);
 		
 		when(userRepo.findByUsername(username)).thenReturn(Optional.of(user));
@@ -91,7 +91,7 @@ class AuthServiceTest {
 		String encodedPassword = passwordEncoder.encode(password);
 		user.setPassword(encodedPassword);
 		
-		Role role = Role.ROLE_ADMIN;
+		Role role = Role.ROLE_QUIZZER;
 		user.setRole(role);
 		
 		when(userRepo.findByUsername(username)).thenReturn(Optional.of(user));

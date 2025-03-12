@@ -41,6 +41,7 @@ public class QuestionController {
 	}
 	
 
+	// ----------------------- QUESTION HANDLER -------------------------
 	@ExceptionHandler(QuestionNotFoundException.class)
 	public ResponseEntity<String> handleQuizNotFoundException(QuestionNotFoundException e) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

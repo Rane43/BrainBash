@@ -4,17 +4,13 @@ import java.util.Set;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -46,4 +42,20 @@ public class User implements UserDetails {
 	public Set<Role> getAuthorities() {
 		return Set.of(role);
 	}
+	
+	// Methods
+	@Override
+	public boolean equals(Object object) {
+	    if (this == object) return true;
+	    if (object == null || getClass() != object.getClass()) return false;
+	    User user = (User) object;
+	    return id != null && id.equals(user.getId());
+	}
+	
+	@Override
+	public int hashCode() {
+	    return id != null ? id.hashCode() : 0;
+	}
+
 }
+

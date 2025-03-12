@@ -20,7 +20,6 @@ const TokenStorage = {
 	    }
 		
 	    const payload = JSON.parse(atob(token.split('.')[1])); // Decode the token payload
-	    console.log(payload);
 		return payload.sub || null; // Return the username or null if it's not available
 	},
 	

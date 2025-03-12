@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.prometheus.brainbash.dao.QuizRepository;
-import com.prometheus.brainbash.dao.UserRepository;
 import com.prometheus.brainbash.model.AgeRating;
 import com.prometheus.brainbash.model.Answer;
 import com.prometheus.brainbash.model.Category;
@@ -52,39 +51,40 @@ public class BrainBashApplication {
         	// User to create quiz
         	User user = userService.createUser("Rane43", "Password123!", Role.ROLE_QUIZ_DESIGNER);
         	
-        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
-        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
-        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
-        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
-        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
-        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
-        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
-        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
-        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
-        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
-        	createTempQuiz(Category.GEOGRAPHY, quizRepo, user);
-        	createTempQuiz(Category.ANATOMY, quizRepo, user);
-        	createTempQuiz(Category.HISTORY, quizRepo, user);
-        	createTempQuiz(Category.HISTORY, quizRepo, user);
-        	createTempQuiz(Category.HISTORY, quizRepo, user);
-        	createTempQuiz(Category.HISTORY, quizRepo, user);
-        	createTempQuiz(Category.HISTORY, quizRepo, user);
-        	createTempQuiz(Category.HISTORY, quizRepo, user);        	
+        	final String DEFAULT_IMAGE = "default-image.jpeg";
+        	final String OTHER_IMAGE = "background-image.webp";
+        	
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 1", "Geography Description 1", DEFAULT_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 2", "Geography Description 2", OTHER_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 3", "Geography Description 3", DEFAULT_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 4", "Geography Description 4", OTHER_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 5", "Geography Description 5", DEFAULT_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 6", "Geography Description 6", OTHER_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 7", "Geography Description 7", DEFAULT_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 8", "Geography Description 8", OTHER_IMAGE, quizRepo, user); 
+        	
+        	createTempQuiz(Category.ANATOMY, "Anatomy Quiz 1", "Anatomy Description 1", OTHER_IMAGE, quizRepo, user);    
+
+        	createTempQuiz(Category.HISTORY, "History Quiz 1", "History Description 1", DEFAULT_IMAGE, quizRepo, user);  
+        	createTempQuiz(Category.HISTORY, "History Quiz 2", "History Description 2", OTHER_IMAGE, quizRepo, user);  
+        	createTempQuiz(Category.HISTORY, "History Quiz 3", "History Description 3", DEFAULT_IMAGE, quizRepo, user);  
+        	createTempQuiz(Category.HISTORY, "History Quiz 4", "History Description 4", OTHER_IMAGE, quizRepo, user);  
+        	createTempQuiz(Category.HISTORY, "History Quiz 5", "History Description 5", DEFAULT_IMAGE, quizRepo, user);  
         };
     }
 	
-	private void createTempQuiz(Category category, QuizRepository quizRepo, User user) {
+	private void createTempQuiz(Category category, String title, String description, String image, QuizRepository quizRepo, User user) {
     	// Quiz itself
     	Quiz quiz = new Quiz();
-    	quiz.setTitle("Geography Quiz");
-    	quiz.setDescription("Easy teen geography quiz");
+    	quiz.setTitle(title);
+    	quiz.setDescription(description);
     	quiz.setAgeRating(AgeRating.TEEN);
     	quiz.setCategory(category);
     	quiz.setDifficultyRating(DifficultyRating.EASY);
     	// Add user as creator and as one of the developers
     	quiz.setCreator(user);
     	quiz.setDevelopers(Set.of(user));
-    	quiz.setImage("question-image-test.jpeg");
+    	quiz.setImage(image);
     	
     	// ------------------ Question 1 --------------------
     	// First question for the quiz

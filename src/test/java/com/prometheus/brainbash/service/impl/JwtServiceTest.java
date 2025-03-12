@@ -35,7 +35,7 @@ class JwtServiceTest {
 	
 	private static final String USERNAME = "USER-NAME_123";
 	private static final String PASSWORD = "TestPassword123!";
-	private static final Set<Role> ROLES = Set.of(Role.ROLE_ADMIN);
+	private static final Set<Role> ROLES = Set.of(Role.ROLE_QUIZZER);
 	
 	@BeforeEach
 	void setup() {
@@ -49,7 +49,7 @@ class JwtServiceTest {
 		
 		User user = new User();
 		user.setUsername(username);
-		user.setRole(Role.ROLE_ADMIN);
+		user.setRole(Role.ROLE_QUIZZER);
 		
 		String token = jwtService.generateToken(user);
 		
@@ -123,7 +123,7 @@ class JwtServiceTest {
     	User user = new User();
 		user.setUsername(USERNAME);
 		user.setPassword(new BCryptPasswordEncoder().encode(PASSWORD));
-		user.setRole(Role.ROLE_ADMIN);
+		user.setRole(Role.ROLE_QUIZZER);
 		
     	return user;
     }

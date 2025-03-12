@@ -1,5 +1,6 @@
 package com.prometheus.brainbash.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -36,7 +37,7 @@ public class Quiz {
     private String image;
     
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Question> questions;
+    private Set<Question> questions = new HashSet<>();
     
     @ManyToOne
     @JoinColumn(name = "creator_id", nullable = false)
@@ -58,5 +59,11 @@ public class Quiz {
     
     @Enumerated(EnumType.STRING)
     private Category category;
+    
+    
+    // Extra Methods
+    public void addQuestion(Question question) {
+    	questions.add(question);
+    }
     
 }

@@ -40,8 +40,6 @@ const Router = {
 			Router.loadPage("quizzer-dashboard");
 		} else if (TokenStorage.isQuizDesigner()) {
 			Router.loadPage("quiz-developer-dashboard");
-		} else {
-			Router.loadPage("quiz-developer-dashboard");
 		}
 	},
 	
@@ -63,9 +61,7 @@ const Router = {
 	    	$("#navbar").show();
 			// Load navbar
 			Router.loadContentInto('/features/navbar/navbar.html', "navbar");
-	    }	
-		
-		console.log("sup");
+	    }
 		
 		// Special case
 		if (page.startsWith("quiz_gameplay?quiz=")) {
@@ -73,6 +69,9 @@ const Router = {
 		} else {
 			Router.loadContentInto(`${this.paths[page]}`, "content");	
 		}
+		
+		// Push state
+		history.pushState(null, "", `#${page}`);
 		
 		// Load footer
 		// Router.loadContentInto("/components/footer.html", "footer");
