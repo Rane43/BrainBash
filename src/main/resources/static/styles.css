@@ -281,7 +281,7 @@
 	margin-top: 10px;
 }
 
-#next-btn, #finish-btn {
+#next-btn, #finish-btn, .question-btn {
 	width: 150px;
 	margin-left: auto;
 	background-color: #002230;

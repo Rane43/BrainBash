@@ -58,7 +58,12 @@ $(document).ready(function () {
 			this.loadQuestion();
 		},
 		
+		/*
+		* Updates question
+		*/
 		saveQuestion: function () {
+			if (!this.currentQuestion) return;
+			
 		    let questionText = $("#questionText").val().trim();
 			
 		    let answer1 = $("#answer1").val().trim();
@@ -69,10 +74,10 @@ $(document).ready(function () {
 		    let correctAnswerIndex = $("#answer").val();
 		    
 		    let answers = [
-		        { text: answer1, correct: correctAnswerIndex == 0 },
-		        { text: answer2, correct: correctAnswerIndex == 1 },
-		        { text: answer3, correct: correctAnswerIndex == 2 },
-		        { text: answer4, correct: correctAnswerIndex == 3 }
+		        { text: answer1, correct: correctAnswerIndex == 1 },
+		        { text: answer2, correct: correctAnswerIndex == 2 },
+		        { text: answer3, correct: correctAnswerIndex == 3 },
+		        { text: answer4, correct: correctAnswerIndex == 4 }
 		    ];
 
 		    let createQuestionDto = {
@@ -81,8 +86,8 @@ $(document).ready(function () {
 		    };
 
 		    $.ajax({
-		        url: `/api/quizzes/${this.quizId}/questions`,
-		        method: "PUT",
+		        url: `/api/quizzes/${this.quizId}/questions/`,
+		        method: "POST",
 				headers: {"Authorization": `Bearer ${TokenStorage.getToken()}`},
 		        contentType: "application/json",
 		        data: JSON.stringify(createQuestionDto),

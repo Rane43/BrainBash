@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prometheus.brainbash.dao.QuestionRepository;
@@ -21,6 +22,7 @@ import com.prometheus.brainbash.dto.QuestionCreationDto;
 import com.prometheus.brainbash.dto.QuizCreationDto;
 import com.prometheus.brainbash.dto.QuizGameDto;
 import com.prometheus.brainbash.dto.QuizSummaryDto;
+import com.prometheus.brainbash.exception.QuestionNotFoundException;
 import com.prometheus.brainbash.exception.QuizNotFoundException;
 import com.prometheus.brainbash.exception.UnauthorizedAccessToQuizException;
 import com.prometheus.brainbash.exception.UserNotFoundException;
@@ -86,6 +88,16 @@ public class QuizController {
 		}).toList();
 	}
 	
+	@GetMapping("/search")
+	public List<QuizSummaryDto> getQuizSummariesByTitle(@RequestParam String middleTitle) {
+		return quizRepo.findByTitleContains(middleTitle)
+				.stream().map((quiz) -> {
+					QuizSummaryDto quizSummaryDto = new QuizSummaryDto();
+					QuizMapper.toQuizSummaryDto(quiz, quizSummaryDto);
+					return quizSummaryDto;
+				}).toList();
+	}
+	
 	@GetMapping("/mine")
 	public List<QuizSummaryDto> getAllMyQuizSummaries(@RequestHeader("Authorization") String bearerToken) {
 		String username = jwtService.extractUsername(bearerToken.substring(7));
@@ -126,7 +138,7 @@ public class QuizController {
 	
 	
 	// ------------- Questions for Quiz -------------
-	@PutMapping("/{quizId}/questions")
+	@PostMapping("/{quizId}/questions")
 	@Transactional
 	public long addQuestion(
 			@RequestHeader("Authorization") String bearerToken, 
@@ -153,7 +165,6 @@ public class QuizController {
 		
 		return question.getId();
 	}
-	
 	
 	
 	

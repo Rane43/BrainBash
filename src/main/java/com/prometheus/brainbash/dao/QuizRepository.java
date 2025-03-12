@@ -9,4 +9,6 @@ import com.prometheus.brainbash.model.Quiz;
 
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
 	List<Quiz> findByCreator_Username(String username);
+	
+	List<Quiz> findByTitleContains(String middleTitle);
 }

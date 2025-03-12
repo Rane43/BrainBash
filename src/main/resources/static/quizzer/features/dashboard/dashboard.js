@@ -1,6 +1,41 @@
 $(document).ready(function () {
 	fetchQuizzes();
+	
+	$("#search-bar").on("keyup", function () {
+	    displayQuizzesByTitle();
+	});
 });
+
+
+
+function displayQuizzesByTitle() {
+	let searchText = $("#search-bar").val().trim()
+	console.log(searchText);
+	
+	if (!searchText) {
+		fetchQuizzes()
+	} else {
+		fetchQuizzesByTitle(searchText);	
+	}
+}
+
+function fetchQuizzesByTitle(searchText) {
+	$.ajax({
+		url: `/api/quizzes/search?middleTitle=${searchText}`,
+		method: "GET",
+		headers: {
+			"Authorization": `Bearer ${TokenStorage.getToken()}`
+		},
+		dataType: "json",
+		success: (quizSummaryDtos) => {
+			displayQuizzes(quizSummaryDtos);
+		},
+		error: () => {
+			console.log("Error retrieving quizzes...");
+		}
+	});
+}
+
 
 function fetchQuizzes() {
 	$.ajax({

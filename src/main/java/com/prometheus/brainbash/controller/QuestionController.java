@@ -31,7 +31,7 @@ public class QuestionController {
 		Optional<Question> questionOptional = questionRepo.findById(id);
 		
 		if (questionOptional.isEmpty()) {
-			throw new QuestionNotFoundException("Question with id '" + id + "' cannot be found.");
+			throw new QuestionNotFoundException(id);
 		}
 		
 		QuestionDto questionDto = new QuestionDto();
