@@ -30,7 +30,7 @@ $(document).ready(function () {
 
 	    fetchQuestion(questionId) {
 	        $.ajax({
-	            url: `/api/questions/${questionId}`,
+	            url: `/api/quizzes/questions/${questionId}`,
 	            method: "GET",
 	            dataType: "json",
 	            success: (questionDto) => {

@@ -1,24 +1,21 @@
 package com.prometheus.brainbash.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.prometheus.brainbash.dao.QuestionRepository;
-import com.prometheus.brainbash.dao.QuizRepository;
 import com.prometheus.brainbash.dto.QuestionCreationDto;
+import com.prometheus.brainbash.dto.QuestionDto;
 import com.prometheus.brainbash.dto.QuizCreationDto;
 import com.prometheus.brainbash.dto.QuizGameDto;
 import com.prometheus.brainbash.dto.QuizSummaryDto;
@@ -26,16 +23,10 @@ import com.prometheus.brainbash.exception.QuestionNotFoundException;
 import com.prometheus.brainbash.exception.QuizNotFoundException;
 import com.prometheus.brainbash.exception.UnauthorizedAccessToQuizException;
 import com.prometheus.brainbash.exception.UserNotFoundException;
-import com.prometheus.brainbash.mapper.QuestionMapper;
-import com.prometheus.brainbash.mapper.QuizMapper;
 import com.prometheus.brainbash.model.AgeRating;
 import com.prometheus.brainbash.model.DifficultyRating;
-import com.prometheus.brainbash.model.Question;
-import com.prometheus.brainbash.model.Quiz;
-import com.prometheus.brainbash.model.User;
-import com.prometheus.brainbash.service.IJwtService;
-import com.prometheus.brainbash.service.IUserService;
-import com.prometheus.brainbash.service.impl.UserService;
+import com.prometheus.brainbash.service.IQuestionService;
+import com.prometheus.brainbash.service.IQuizService;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -43,16 +34,47 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/quizzes")
 public class QuizController {
-	private QuizRepository quizRepo;
-	private QuestionRepository questionRepo;
-	private IUserService userService;
-	private IJwtService jwtService;
+	private IQuizService quizService;
+	private IQuestionService questionService;
 	
-	public QuizController(QuizRepository quizRepo, QuestionRepository questionRepo, UserService userService, IJwtService jwtService) {
-		this.quizRepo = quizRepo;
-		this.questionRepo = questionRepo;
-		this.userService = userService;
-		this.jwtService = jwtService;
+	public QuizController(IQuizService quizService, IQuestionService questionService) {
+		this.quizService = quizService;
+		this.questionService = questionService;
+	}
+	
+	
+	/* ------------------- CRUD QUIZZES -------------------------- */
+	@GetMapping // -- GET /api/quizzes
+	public ResponseEntity<List<QuizSummaryDto>> getAllQuizSummaries() {
+		return ResponseEntity.status(HttpStatus.OK).body(quizService.findAll());
+	}
+	
+	@GetMapping("/{id}") // -- GET /api/quizzes/{id}
+	public ResponseEntity<QuizGameDto> getQuizById(@PathVariable long id) throws QuizNotFoundException {
+		return ResponseEntity.status(HttpStatus.OK).body(quizService.findById(id));
+	}
+	
+	@GetMapping("/mine") // {"Authorization": "Bearer {token}"} -- GET /api/quizzes/mine 
+	@PreAuthorize("hasRole('QUIZ_DESIGNER')")
+	public ResponseEntity<List<QuizSummaryDto>> getAllMyQuizSummaries(@RequestHeader("Authorization") String bearerToken) {
+		return ResponseEntity.status(HttpStatus.OK).body(quizService.findMine(bearerToken));
+	}
+	
+	@GetMapping("/search") // -- GET /api/quizzes/search 
+	public ResponseEntity<List<QuizSummaryDto>> getQuizSummariesByTitleAndFilters(
+	        @RequestParam String middleTitle, 
+	        @RequestParam DifficultyRating difficultyRating,
+	        @RequestParam AgeRating ageRating) {
+		
+	    return ResponseEntity.status(HttpStatus.OK).body(
+	    		quizService.findBySearch(middleTitle, difficultyRating, ageRating));
+	}
+	
+	
+	@PostMapping // -- POST /api/quizzes {request body}
+	@Transactional
+	public ResponseEntity<Long> createQuiz(@RequestHeader("Authorization") String bearerToken, @Valid @RequestBody QuizCreationDto quizCreationDto) throws UserNotFoundException {
+		return ResponseEntity.status(HttpStatus.CREATED).body(quizService.save(bearerToken, quizCreationDto));
 	}
 	
 	/*
@@ -81,115 +103,19 @@ public class QuizController {
 	*/
 	
 	
-	@GetMapping
-	public List<QuizSummaryDto> getAllQuizSummaries() {
-		return quizRepo.findAll().stream().map((quiz) -> {
-			QuizSummaryDto quizSummaryDto = new QuizSummaryDto();
-			QuizMapper.toQuizSummaryDto(quiz, quizSummaryDto);
-			return quizSummaryDto;
-		}).toList();
+	/* ------------------- CRUD QUESTIONS -------------------------- */
+	@GetMapping("/questions/{id}")  // -- GET /api/quizzes/questions/{id}
+	public ResponseEntity<QuestionDto> getQuestionById(@PathVariable long id) throws QuestionNotFoundException {
+		return ResponseEntity.status(HttpStatus.OK).body(questionService.findById(id));
 	}
 	
-	@GetMapping("/search")
-	public List<QuizSummaryDto> getQuizSummariesByTitleAndFilters(
-	        @RequestParam String middleTitle, 
-	        @RequestParam DifficultyRating difficultyRating,
-	        @RequestParam AgeRating ageRating) {
-
-	    // Query the repository with the request params
-	    return quizRepo.findByTitleContainsAndDifficultyRatingAndAgeRating(middleTitle, difficultyRating, ageRating)
-	            .stream()
-	            .map(quiz -> {
-	                QuizSummaryDto quizSummaryDto = new QuizSummaryDto();
-	                QuizMapper.toQuizSummaryDto(quiz, quizSummaryDto);
-	                return quizSummaryDto;
-	            })
-	            .toList();
-	}
-	
-	@GetMapping("/mine")
-	public List<QuizSummaryDto> getAllMyQuizSummaries(@RequestHeader("Authorization") String bearerToken) {
-		String username = jwtService.extractUsername(bearerToken.substring(7));
-		
-		return quizRepo.findByCreator_Username(username).stream().map((quiz) -> {
-			QuizSummaryDto quizSummaryDto = new QuizSummaryDto();
-			QuizMapper.toQuizSummaryDto(quiz, quizSummaryDto);
-			return quizSummaryDto;
-		}).toList();
-	}
-	
-	
-	@PostMapping
-	public long createQuiz(@RequestHeader("Authorization") String bearerToken, @Valid @RequestBody QuizCreationDto quizCreationDto) throws UserNotFoundException {
-		String username = jwtService.extractUsername(bearerToken.substring(7));
-		User user = userService.getUser(username);
-		
-		Quiz quiz = new Quiz();
-		QuizMapper.quizCreationDtoToQuiz(quizCreationDto, user, quiz);
-		quizRepo.save(quiz);
-		
-		return quiz.getId();
-	}
-	
-	@GetMapping("/{id}")
-	public QuizGameDto getQuizById(@PathVariable long id) throws QuizNotFoundException {
-		Optional<Quiz> quizOptional = quizRepo.findById(id);
-		
-		if (quizOptional.isEmpty()) {
-			throw new QuizNotFoundException(id);
-		}
-		
-		QuizGameDto quizGameDto = new QuizGameDto();
-		QuizMapper.toQuizGameDto(quizOptional.get(), quizGameDto);
-		
-		return quizGameDto;
-	}
-	
-	
-	// ------------- Questions for Quiz -------------
-	@PostMapping("/{quizId}/questions")
+	@PostMapping("/{quizId}/questions") // {"Authorization": "Bearer {token}"} -- POST /api/quizzes/{quizId}/questions {request body}
 	@Transactional
-	public long addQuestion(
+	public ResponseEntity<Long> createQuestion(
 			@RequestHeader("Authorization") String bearerToken, 
 			@PathVariable long quizId,
 			@Valid @RequestBody QuestionCreationDto questionCreationDto
 	) throws UserNotFoundException, QuizNotFoundException, UnauthorizedAccessToQuizException {
-		String username = jwtService.extractUsername(bearerToken.substring(7));
-		User user = userService.getUser(username);
-		Optional<Quiz> quizOptional = quizRepo.findById(quizId);
-		
-		if (quizOptional.isEmpty()) throw new QuizNotFoundException(quizId);
-		
-		Quiz quiz = quizOptional.get();
-		if (!quiz.getDevelopers().contains(user)) throw new UnauthorizedAccessToQuizException(quizId);
-		
-		// Else Add Question to quiz
-		Question question = new Question();
-		QuestionMapper.toQuestion(questionCreationDto, quiz, question);
-		
-		question = questionRepo.save(question);
-		
-		quiz.addQuestion(question);
-		quizRepo.save(quiz);
-		
-		return question.getId();
-	}
-	
-	
-	
-	// --------------------- EXCEPTION HANDLER --------------------------
-	@ExceptionHandler(UnauthorizedAccessToQuizException.class)
-	public ResponseEntity<String> handleUnauthorizedAccessToQuizException(UnauthorizedAccessToQuizException e) {
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-	}
-	
-	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-	}
-	
-	@ExceptionHandler(QuizNotFoundException.class)
-	public ResponseEntity<String> handleQuizNotFoundException(QuizNotFoundException e) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(bearerToken, quizId, questionCreationDto));
 	}
 }

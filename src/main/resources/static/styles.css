@@ -95,12 +95,14 @@
 }
 
 #search-bar {
-	width: 300px;
+	width: 500px;
 }
 
 .nav-search-item {
 	height: 40px;
+	border: 1px solid #002230;
 	margin: 10px;
+	width: 150px;
 	border-radius: 5px;
 	padding: 10px;
 }
@@ -131,6 +133,20 @@
 
 
 /* ------------- DASHBOARD -------------- */
+.center-div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#search-div {
+	width: 100%;
+	padding: 10px 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
 #your-quizzes-header {
 	padding: 10px 40px;
 	display: flex;
