@@ -60,7 +60,7 @@ public class QuizService implements IQuizService {
 	        AgeRating ageRating) {
 
 	    // Query the repository with the request params
-	    return quizRepo.findByTitleContainsAndDifficultyRatingAndAgeRating(middleTitle, difficultyRating, ageRating)
+	    return quizRepo.findBySearch(middleTitle, difficultyRating, ageRating)
 	            .stream()
 	            .map(quiz -> {
 	                QuizSummaryDto quizSummaryDto = new QuizSummaryDto();

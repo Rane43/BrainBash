@@ -60,11 +60,15 @@ public class QuizController {
 		return ResponseEntity.status(HttpStatus.OK).body(quizService.findMine(bearerToken));
 	}
 	
-	@GetMapping("/search") // -- GET /api/quizzes/search 
+	@GetMapping("/search") // -- GET /api/quizzes/search?middleTitle={}&difficultyRating={}&ageRating={} 
 	public ResponseEntity<List<QuizSummaryDto>> getQuizSummariesByTitleAndFilters(
-	        @RequestParam String middleTitle, 
-	        @RequestParam DifficultyRating difficultyRating,
-	        @RequestParam AgeRating ageRating) {
+	        @RequestParam(required=false) String middleTitle, 
+	        @RequestParam(required=false) DifficultyRating difficultyRating,
+	        @RequestParam(required=false) AgeRating ageRating) {
+		
+		System.out.println(middleTitle);
+		System.out.println(difficultyRating);
+		System.out.println(ageRating);
 		
 	    return ResponseEntity.status(HttpStatus.OK).body(
 	    		quizService.findBySearch(middleTitle, difficultyRating, ageRating));

@@ -23,11 +23,7 @@ function displayQuizzesBySearch() {
 	let ageRating = $("#age-rating-dropdown").val();
 	let difficultyRating = $("#difficulty-rating-dropdown").val();
 	
-	if (!searchText) {
-		fetchQuizzes()
-	} else {
-		fetchQuizzesBySearch(searchText, difficultyRating, ageRating);	
-	}
+	fetchQuizzesBySearch(searchText, difficultyRating, ageRating);	
 }
 
 function fetchQuizzesBySearch(searchText, difficultyRating, ageRating) {
@@ -48,30 +44,6 @@ function fetchQuizzesBySearch(searchText, difficultyRating, ageRating) {
 }
 
 // Fetch Queries options
-/* CATEGORIES */
-function fetchCategories() {
-	$.ajax({
-		url: "/api/categories",
-		method: "GET",
-		dataType: "json",
-		success: (categories) => {
-			// Populate Categories
-			let selectDropdown = document.getElementById("category-dropdown");
-			selectDropdown.innerHTML = "";
-			
-			categories.forEach((category) => {
-				let option = document.createElement("option");
-				option.setAttribute("value", category);
-				option.text=category;
-				selectDropdown.add(option);
-			});
-		}, 
-		error: () => {
-			console.log("Error retrieving categories");
-		}
-	});
-}
-
 /* AGE RATING */
 function fetchAgeRatings() {
 	$.ajax({
@@ -80,20 +52,26 @@ function fetchAgeRatings() {
 		dataType: "json",
 		success: (ageRatings) => {
 			// Populate Categories
-			let selectDropdown = document.getElementById("age-rating-dropdown");
-			selectDropdown.innerHTML = "";
+			let ageRatingDropdown = document.getElementById("age-rating-dropdown");
+			ageRatingDropdown.innerHTML = "";
 			
+			// Default 'All Age Ratings'
+			addOption(ageRatingDropdown, "", "All Age Ratings");
 			ageRatings.forEach((ageRating) => {
-				let option = document.createElement("option");
-				option.setAttribute("value", ageRating);
-				option.text=ageRating;
-				selectDropdown.add(option);
+				addOption(ageRatingDropdown, ageRating, ageRating);
 			});
 		}, 
 		error: () => {
 			console.log("Error retrieving categories");
 		}
 	});
+}
+
+function addOption(dropdown, value, text) {
+	let option = document.createElement("option");
+	option.setAttribute("value", value);
+	option.text=text;
+	dropdown.add(option);
 }
 
 
