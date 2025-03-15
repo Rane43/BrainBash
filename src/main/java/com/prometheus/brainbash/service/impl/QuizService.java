@@ -11,6 +11,7 @@ import com.prometheus.brainbash.dto.QuizCreationDto;
 import com.prometheus.brainbash.dto.QuizGameDto;
 import com.prometheus.brainbash.dto.QuizSummaryDto;
 import com.prometheus.brainbash.exception.QuizNotFoundException;
+import com.prometheus.brainbash.exception.UnauthorizedAccessToQuizException;
 import com.prometheus.brainbash.exception.UserNotFoundException;
 import com.prometheus.brainbash.mapper.QuizMapper;
 import com.prometheus.brainbash.model.AgeRating;
@@ -59,7 +60,6 @@ public class QuizService implements IQuizService {
 	        DifficultyRating difficultyRating,
 	        AgeRating ageRating) {
 
-	    // Query the repository with the request params
 	    return quizRepo.findBySearch(middleTitle, difficultyRating, ageRating)
 	            .stream()
 	            .map(quiz -> {
@@ -94,6 +94,25 @@ public class QuizService implements IQuizService {
 		quizRepo.save(quiz);
 		
 		return quiz.getId();
+	}
+
+	@Override
+	public List<QuizSummaryDto> findMineBySearch(
+			String bearerToken, 
+			String middleTitle,
+			DifficultyRating difficultyRating, 
+			AgeRating ageRating) throws UnauthorizedAccessToQuizException, UserNotFoundException {
+		String username = jwtService.extractUsername(bearerToken.substring(7));
+		User user = userRepo.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+		
+		return quizRepo.findMineBySearch(user, middleTitle, difficultyRating, ageRating)
+		            .stream()
+		            .map(quiz -> {
+		                QuizSummaryDto quizSummaryDto = new QuizSummaryDto();
+		                QuizMapper.toQuizSummaryDto(quiz, quizSummaryDto);
+		                return quizSummaryDto;
+		            })
+		            .toList();
 	}
 
 }

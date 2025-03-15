@@ -38,7 +38,7 @@ const CardTemplates = {
 }
 
 
-// ----------------- QUIZ BUTTON TEMPLATES -------------------
+// ------------------- QUIZ BUTTON TEMPLATES -------------------
 const QuizTemplates = {
     answerButton: function (answer) {
         return $("<button>")
@@ -47,3 +47,30 @@ const QuizTemplates = {
             .text(answer.text);
     }
 };
+
+
+// ------------------ QUIZ CREATION TEMPLATES ------------------
+const QuizCreationTemplates = {
+	quizCreationImage: function (imageName) {
+		const div = $('<div>').addClass('carousel-item w-100 h-100');
+		const img = $('<img>')
+			.addClass('d-block w-100 h-100')
+			.attr('src', `/assets/images/quiz_images/${encodeURIComponent(imageName)}`)
+			.attr('image-name', imageName);
+
+		div.append(img);
+		return div;
+	},
+	
+	imageIndicatorQuizCreation: function (num) {
+		return $('<li>')
+			.attr('data-target', '#carouselExampleIndicators')
+			.attr('data-slide-to',`${num}`);
+	}
+};
+
+
+
+
+
+

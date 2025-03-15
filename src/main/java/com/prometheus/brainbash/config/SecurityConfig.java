@@ -53,7 +53,8 @@ public class SecurityConfig {
             			"/favicon.ico", // Public while developing
             			"/api/questions/**", // Public while developing
             			"/api/points/**", // Public while developing
-            			"/quizzer/**" // Public while developing
+            			"/quizzer/**", // Public while developing
+            			"/api/images/**" // Public while developing
             			).permitAll() // All static content access
                 .anyRequest().authenticated()
             )

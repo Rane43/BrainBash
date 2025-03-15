@@ -44,20 +44,20 @@ public class QuizController {
 	
 	
 	/* ------------------- CRUD QUIZZES -------------------------- */
-	@GetMapping // -- GET /api/quizzes
-	public ResponseEntity<List<QuizSummaryDto>> getAllQuizSummaries() {
-		return ResponseEntity.status(HttpStatus.OK).body(quizService.findAll());
-	}
-	
 	@GetMapping("/{id}") // -- GET /api/quizzes/{id}
 	public ResponseEntity<QuizGameDto> getQuizById(@PathVariable long id) throws QuizNotFoundException {
 		return ResponseEntity.status(HttpStatus.OK).body(quizService.findById(id));
 	}
 	
-	@GetMapping("/mine") // {"Authorization": "Bearer {token}"} -- GET /api/quizzes/mine 
+	@GetMapping("/mine/search") // {"Authorization": "Bearer {token}"} -- GET /api/quizzes/mine/search?middleTitle={}&difficultyRating={}&ageRating={} 
 	@PreAuthorize("hasRole('QUIZ_DESIGNER')")
-	public ResponseEntity<List<QuizSummaryDto>> getAllMyQuizSummaries(@RequestHeader("Authorization") String bearerToken) {
-		return ResponseEntity.status(HttpStatus.OK).body(quizService.findMine(bearerToken));
+	public ResponseEntity<List<QuizSummaryDto>> getMyQuizSummariesByTitleAndFilters(
+			@RequestHeader("Authorization") String bearerToken,
+	        @RequestParam(required=false) String middleTitle, 
+	        @RequestParam(required=false) DifficultyRating difficultyRating,
+	        @RequestParam(required=false) AgeRating ageRating) throws UserNotFoundException, UnauthorizedAccessToQuizException {
+	    return ResponseEntity.status(HttpStatus.OK).body(
+	    		quizService.findMineBySearch(bearerToken, middleTitle, difficultyRating, ageRating));
 	}
 	
 	@GetMapping("/search") // -- GET /api/quizzes/search?middleTitle={}&difficultyRating={}&ageRating={} 
@@ -65,11 +65,7 @@ public class QuizController {
 	        @RequestParam(required=false) String middleTitle, 
 	        @RequestParam(required=false) DifficultyRating difficultyRating,
 	        @RequestParam(required=false) AgeRating ageRating) {
-		
-		System.out.println(middleTitle);
-		System.out.println(difficultyRating);
-		System.out.println(ageRating);
-		
+
 	    return ResponseEntity.status(HttpStatus.OK).body(
 	    		quizService.findBySearch(middleTitle, difficultyRating, ageRating));
 	}

@@ -51,7 +51,7 @@ public class BrainBashApplication {
         	// User to create quiz
         	User user = userService.createUser("Rane43", "Password123!", Role.ROLE_QUIZ_DESIGNER);
         	
-        	final String DEFAULT_IMAGE = "default-image.jpeg";
+        	final String DEFAULT_IMAGE = "landscape1.webp";
         	final String OTHER_IMAGE = "background-image.webp";
         	
         	

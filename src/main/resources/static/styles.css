@@ -314,7 +314,16 @@
 
 
 /* -------------------- QUIZ CREATION -----------------------*/
-.image-slide {
-	display: flex;
-	justify-content: center;
+
+#quiz-creation-carousel {
+	height: 300px;
 }
+
+.quiz-creation-container {
+	margin: 50px;
+}
+
+
+
+
+

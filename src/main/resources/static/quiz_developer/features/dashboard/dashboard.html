@@ -43,10 +43,21 @@
                     </div>
                     <div class="modal-body" id="contents">
                     	<!-- Image Field -->
-                    	<div class="image-slide">
-  		                  	<img id="quiz-image-selected" src="/assets/images/quiz_images/default-image.jpeg" height="200" />
-                    	</div>
-                    	
+                    	<div id="carouselExampleIndicators" class="carousel slide quiz-creation-container" data-ride="carousel" data-interval="false">
+							<ol class="carousel-indicators" id="image-indicators">
+							</ol>
+							<div class="carousel-inner" id="quiz-creation-carousel">
+							</div>
+							<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+							    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							    <span class="sr-only">Previous</span>
+							</a>
+							<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+							    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+							    <span class="sr-only">Next</span>
+							</a>
+						</div>
+						
                         <!-- Title Field -->
 				        <div class="input-container">
 				        	<h3 class="input-header">Title*</h3>
@@ -62,21 +73,21 @@
 				        <!-- Age Rating Field --> 
 				        <div class="input-container">
 				        	<h3 class="input-header">Age Rating*</h3>
-				        	<select id="age-rating-dropdown">
+				        	<select id="modal-age-rating-dropdown">
 				        	</select>
 				        </div>
 				        
 				        <!-- Difficulty Rating Field --> 
 				        <div class="input-container">
 				        	<h3 class="input-header">Difficulty Rating*</h3>
-				        	<select id="difficulty-rating-dropdown">
+				        	<select id="modal-difficulty-rating-dropdown">
 				        	</select>
 				        </div>
 				        
 				        <!-- Category Field --> 
 				        <div class="input-container">
 				        	<h3 class="input-header">Category*</h3>
-				        	<select id="category-dropdown">
+				        	<select id="modal-category-dropdown">
 				        	</select>
 				        </div>
                     </div>
@@ -89,6 +100,20 @@
 		<div id="your-quizzes-header">
 			<h1>Your Quizzes: </h1>
 			<button id="create-quiz-button" class="btn">Create Quiz</button>
+		</div>
+		<div class="center-div">
+			<div id="search-div">
+				<input type="search" id="search-bar" class="nav-search-item" placeholder="Search by title..."></input>
+	    		
+	    		<div class="filters">
+	    			<!-- Age Rating Field -->
+			        <select class= "nav-search-item" id="age-rating-dropdown">
+			        </select>
+			        <!-- Difficulty Rating Field -->
+		        	<select class= "nav-search-item" id="difficulty-rating-dropdown">
+		        	</select>
+	    		</div>
+			</div>
 		</div>
 	    <div id="quiz-display">
 	    </div>

@@ -6,6 +6,7 @@ import com.prometheus.brainbash.dto.QuizCreationDto;
 import com.prometheus.brainbash.dto.QuizGameDto;
 import com.prometheus.brainbash.dto.QuizSummaryDto;
 import com.prometheus.brainbash.exception.QuizNotFoundException;
+import com.prometheus.brainbash.exception.UnauthorizedAccessToQuizException;
 import com.prometheus.brainbash.exception.UserNotFoundException;
 import com.prometheus.brainbash.model.AgeRating;
 import com.prometheus.brainbash.model.DifficultyRating;
@@ -24,4 +25,10 @@ public interface IQuizService {
 			String middleTitle, 
 	        DifficultyRating difficultyRating,
 	        AgeRating ageRating);
+	
+	public List<QuizSummaryDto> findMineBySearch(
+			String bearerToken, 
+			String middleTitle, 
+			DifficultyRating difficultyRating, 
+			AgeRating ageRating) throws UnauthorizedAccessToQuizException, UserNotFoundException;
 }
