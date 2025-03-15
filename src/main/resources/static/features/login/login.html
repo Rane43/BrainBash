@@ -24,7 +24,43 @@
 </head>
 <body>
 	<div id="login-content">
-		<div class="login-box">
+		<!-- Register box -->
+		<div id="reg-card" class="login-box" style="display: none;">
+			<h2>Register</h2>
+	        <!-- Username Field -->
+	        <div class="input-container">
+	        	<h3 class="input-header">Username*</h3>
+	        	<input type="text" id="register-username" name="username" required placeholder="Username">
+	        </div>
+	         
+	        <!-- Password Field -->
+	        <div class="input-container">
+	        	<h3>Password*</h3>
+	        	<input type="password" id="register-password" name="password" required placeholder="Password">
+	        </div>
+	        
+	        <!-- Role Field --> 
+	        <div class="input-container">
+	        	<h3>Role*</h3>
+	        	<select id="register-role">
+	        		<option value="ROLE_QUIZZER" >ROLE_QUIZZER</option>
+	        		<option value="ROLE_QUIZ_DESIGNER" >ROLE_QUIZ_DESIGNER</option>
+	        	</select>
+	        </div>
+	        
+	        
+	      	<!-- Error Message Field -->
+	      	<div style="display: none;" class="error-message-container" id="register-error-container">
+	        	<p class="error-message" id="register-error"><!-- placeholder for error message --></p>
+	        </div>
+	         
+	        <button id="register-btn" class="btn btn-primary" type="button">Register</button>
+	
+	        <p>Already have an account? <a href="#" id="link-to-login">Login</a></p>
+	    </div>
+	    
+	    <!-- Log in box -->
+		<div id="login-card" class="login-box">
 			<h2>Login</h2>
 	        <!-- Username Field -->
 	        <div class="input-container">
@@ -45,7 +81,7 @@
 	         
 	        <button id="login-btn" class="btn btn-primary" type="button">Login</button>
 	
-	        <p>Don't have an account? <a href="#" id="register">Register</a></p>
+	        <p>Don't have an account? <a href="#" id="link-to-register">Register</a></p>
 	    </div>
 	    <script src="/features/login/login.js"></script>
 	</div>

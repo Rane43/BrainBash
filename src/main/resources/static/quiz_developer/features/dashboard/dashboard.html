@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
+    <!-- Bootstrap requirements -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"/>
+    
+    <!-- Personal stylesheet -->
+    <link rel="stylesheet" href="/styles.css"/> 
+    
+    <!-- Correct jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+    
+    <!-- Token Storage -->
+    <script src="/features/auth/token.js"></script>
+    <!-- Templates Script -->
+    <script src="/features/components/templates.js"></script>
+</head>
+<body>
+	<!-- 
+    private String title;
+    private String description;
+    private String image;
+    private AgeRating ageRating;
+    private DifficultyRating difficultyRating;
+    private Category category;
+	 -->
+	<div id="dashboard">
+		<!-- Quiz Creation Modal -->
+		<div class="modal fade" id="quiz-modal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body" id="contents">
+                    	<!-- Image Field -->
+                    	<div id="carouselExampleIndicators" class="carousel slide quiz-creation-container" data-ride="carousel" data-interval="false">
+							<ol class="carousel-indicators" id="image-indicators">
+							</ol>
+							<div class="carousel-inner" id="quiz-creation-carousel">
+							</div>
+							<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+							    <span class="carousel-control-prev-icon"></span>
+							    <span class="sr-only">Previous</span>
+							</a>
+							<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+							    <span class="carousel-control-next-icon"></span>
+							    <span class="sr-only">Next</span>
+							</a>
+						</div>
+						
+                        <!-- Title Field -->
+				        <div class="input-container">
+				        	<h3 class="input-header">Title*</h3>
+				        	<input type="text" id="quiz-creation-title" name="quiz-title" required placeholder="Title">
+				        </div>
+				         
+				        <!-- Description Field -->
+				        <div class="input-container">
+				        	<h3 class="input-header">Description*</h3>
+				        	<input type="text" id="quiz-description" name="description" required placeholder="Description">
+				        </div>
+				        
+				        <!-- Age Rating Field --> 
+				        <div class="input-container">
+				        	<h3 class="input-header">Age Rating*</h3>
+				        	<select id="modal-age-rating-dropdown">
+				        	</select>
+				        </div>
+				        
+				        <!-- Difficulty Rating Field --> 
+				        <div class="input-container">
+				        	<h3 class="input-header">Difficulty Rating*</h3>
+				        	<select id="modal-difficulty-rating-dropdown">
+				        	</select>
+				        </div>
+				        
+				        <!-- Category Field --> 
+				        <div class="input-container">
+				        	<h3 class="input-header">Category*</h3>
+				        	<select id="modal-category-dropdown">
+				        	</select>
+				        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="submit-quiz-creation" type="button" class="btn btn-default">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div id="your-quizzes-header">
+			<h1>Your Quizzes: </h1>
+			<button id="create-quiz-button" class="btn">Create Quiz</button>
+		</div>
+		<div class="center-div">
+			<div id="search-div">
+				<input type="search" id="search-bar" class="nav-search-item" placeholder="Search by title..."></input>
+	    		
+	    		<div class="filters">
+	    			<!-- Age Rating Field -->
+			        <select class= "nav-search-item" id="age-rating-dropdown">
+			        </select>
+			        <!-- Difficulty Rating Field -->
+		        	<select class= "nav-search-item" id="difficulty-rating-dropdown">
+		        	</select>
+	    		</div>
+			</div>
+		</div>
+	    <div id="quiz-display">
+	    </div>
+	</div>
+    <script src="/quiz_developer/features/dashboard/dashboard.js"></script>
+</body>
+</html>

@@ -22,10 +22,23 @@
 </head>
 <body>
 	<div id="dashboard">
-	    <div id="dashboard-content">
-	    
+		<div class="center-div">
+			<div id="search-div">
+				<input type="search" id="search-bar" class="nav-search-item" placeholder="Search by title..."></input>
+	    		
+	    		<div class="filters">
+	    			<!-- Age Rating Field -->
+			        <select class= "nav-search-item" id="age-rating-dropdown">
+			        </select>
+			        <!-- Difficulty Rating Field -->
+		        	<select class= "nav-search-item" id="difficulty-rating-dropdown">
+		        	</select>
+	    		</div>
+			</div>
+		</div>
+	    <div id="quiz-display">
 	    </div>
 	</div>
-    <script src="/features/dashboard/dashboard.js"></script>
+    <script src="/quizzer/features/dashboard/dashboard.js"></script>
 </body>
 </html>

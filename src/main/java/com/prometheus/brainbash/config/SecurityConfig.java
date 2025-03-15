@@ -36,6 +36,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             	.requestMatchers("/h2-console/**").permitAll() // Allow access to h2 console for development ***
             	.requestMatchers("/api/auth/login").permitAll() // Allow request to log in
+            	.requestMatchers("/api/auth/register").permitAll() // Allow request to register
             	.requestMatchers(
             			"/assets/**", 
             			"/features/**", 
@@ -43,7 +44,18 @@ public class SecurityConfig {
             			"/index.html", 
             			"/main.js", 
             			"/styles.css",
-            			"/router.js").permitAll() // All static content access
+            			"/router.js",
+            			"/quiz_developer/**",
+            			"/api/quizzes/**", // Public while developing
+            			"/api/categories", // Public while developing
+            			"/api/age-ratings", // Public while developing
+            			"/api/difficulty-ratings", // Public while developing
+            			"/favicon.ico", // Public while developing
+            			"/api/questions/**", // Public while developing
+            			"/api/points/**", // Public while developing
+            			"/quizzer/**", // Public while developing
+            			"/api/images/**" // Public while developing
+            			).permitAll() // All static content access
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))

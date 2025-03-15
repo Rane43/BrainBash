@@ -1,7 +1,8 @@
 --- 'Password123!' is unhashed password always ---
 
---- Development Admin ---
-INSERT INTO users (username, password) VALUES ('admin', '$2a$10$F9KzBJhx/QVIxlruB7TtoeaatybKcZOYKXJH4nbsKwJAhkKqTGfUG');
+--- Development Quizzer ---
+INSERT INTO users (username, password, role) VALUES ('quizzer', '$2a$10$F9KzBJhx/QVIxlruB7TtoeaatybKcZOYKXJH4nbsKwJAhkKqTGfUG', 'ROLE_QUIZZER');
 
-INSERT INTO user_roles (user_id, role) 
-VALUES ((SELECT id FROM users WHERE username = 'admin'), 'ROLE_ADMIN');
+
+--- Development Quiz Designer ---
+INSERT INTO users (username, password, role) VALUES ('quiz_designer', '$2a$10$F9KzBJhx/QVIxlruB7TtoeaatybKcZOYKXJH4nbsKwJAhkKqTGfUG', 'ROLE_QUIZ_DESIGNER');

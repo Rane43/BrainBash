@@ -1,19 +1,101 @@
 $(document).ready(function() {
-	console.log("login.js loaded!");
+	// Event Listener for register button
+	$().off("click").on("click", register);
 	
-	// Event Listener for login button
+	// Event Listener for login and register buttons
 	$("#login-btn").off("click").on("click", login);
+	$("#register-btn").off("click").on("click", register);
+	
+	// Event listeners for register link and log in links
+	$("#link-to-login").off("click").on("click", (event) => {
+		$("#reg-card").hide();
+		$("#login-card").show();
+		return false; // Prevent redirect
+	});
+	$("#link-to-register").off("click").on("click", (event) => {
+		$("#login-card").hide();
+		$("#reg-card").show();
+		return false; // Prevent redirect
+	});
 	
 	
-	// FUNCTIONS ---
+	
+	// -------------- FUNCTIONS ------------------
+	// ----------------- Register ----------------
+	function register() {
+		let username = $("#register-username").val().trim().toLowerCase(); // Username is case-insensitive
+		let password = $("#register-password").val().trim();
+		let role = $("#register-role").val();
+		
+		// Validate username and password
+		if (!username || !password || !role) {
+			displayRegisterErrorMessage("Please supply all required fields");
+			return;
+		}
+		
+		// Make request
+		$.ajax({
+	        url: `/api/auth/register`,
+	        method: "POST",
+			headers: {
+				"contentType": "application/json"
+			},
+	        contentType: "application/json",
+	        data: JSON.stringify({username, password, role}),
+	        success: registerSuccess,
+	        error: registerFailure
+	    });
+		
+	}
+	
+	function registerSuccess(response) {
+		let token = response.token;
+		if (!token) {
+			displayRegisterErrorMessage("No token received from backend.");	
+		} else {
+			TokenStorage.saveToken(token);
+			clearRegisterErrors();
+			// Redirect to the landing page
+			Router.loadDashboard();
+		}
+	}
+	
+	function registerFailure(xhr) {
+		let statusCode = xhr.status;
+		if (statusCode === 409) {
+			displayRegisterErrorMessage("Username is taken.");
+		} else {
+			displayRegisterErrorMessage("Encountered unexpected error while trying to log in.");
+		}
+	}
+	
+	function displayRegisterErrorMessage(msg) {
+		clearRegisterErrors();
+		
+		$("#register-error-container").show();
+		$("#register-error").text(msg);
+	}
+	
+	function clearRegisterErrors() {
+		$("register-error-container").hide();
+	}
+	
+	
+	
+	
+	
+	// ------------------ Login ----------------
 	function login() {
 		// Begin login process
 		let username = $("#username").val().trim().toLowerCase(); // Username is case-insensitive
 		let password = $("#password").val().trim();
 		
+		console.log(username);
+		console.log(password);
+		
 		// Validate username and password
 		if (!username || !password) {
-			displayErrorMessage("Username and password must not be empty.");
+			displayLoginErrorMessage("Username and password must not be empty.");
 			return;
 		}
 		
@@ -26,42 +108,42 @@ $(document).ready(function() {
 			},
 	        contentType: "application/json",
 	        data: JSON.stringify({username, password}),
-	        success: success,
-	        error: failure
+	        success: loginSucess,
+	        error: loginFailure
 	    });
 	}
 		
 	// Callback functions --
-	function success(response) {
+	function loginSucess(response) {
 		let token = response.token;
 		if (!token) {
-			displayErrorMessage("No token received from backend.");	
+			displayLoginErrorMessage("No token received from backend.");	
 		} else {
 			TokenStorage.saveToken(token);
-			clearErrors();
+			clearLoginErrors();
 			// Redirect to the landing page
-			Router.navigate("dashboard");
+			Router.loadDashboard();
 		}
 	}
 	
-	function failure(xhr) {
+	function loginFailure(xhr) {
 		let statusCode = xhr.status;
 		if (statusCode === 401) {
-			displayErrorMessage("Invalid Username or Password") // display error response message ?
+			displayLoginErrorMessage("Invalid Username or Password") // display error response message ?
 		} else {
-			reject(new ServerSideError("Encountered unexpected error while trying to log in."));
+			displayLoginErrorMessage("Encountered unexpected error while trying to log in.");
 		}
 	}
 	
-	function displayErrorMessage(errorMessage) {
-		clearErrors();
+	function displayLoginErrorMessage(errorMessage) {
+		clearLoginErrors();
 		
 		// Display current error message
 		$("#login-error-container").show();
 		$("#login-error").text(errorMessage);
 	}
 	
-	function clearErrors() {
+	function clearLoginErrors() {
 		// Clear previous error messages
 		$("#login-error-container").hide();
 	}
