@@ -162,6 +162,8 @@ function displayQuizzes(quizSummaryDtos) {
 	// Empty previous content
 	$("#quiz-display").empty();
 	
+	console.log("quiz developer display quizzes...");
+	
 	// Display new content
 	const groupedQuizzes = quizSummaryDtos.reduce((acc, quiz) => {
         const category = quiz.category; // assuming quiz has a 'category' field

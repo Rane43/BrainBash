@@ -174,7 +174,7 @@ $(document).ready(function () {
 			$("#play-btn").off("click").on("click", () => {
 				$("#game-main-menu").hide();
 				$("#gameplay-menu").show();
-			       QuizGame.loadQuestion();
+			    QuizGame.loadQuestion();
 			});
 			   
 		    $("#next-btn").off("click").on("click", () => QuizGame.goToNextQuestion());
