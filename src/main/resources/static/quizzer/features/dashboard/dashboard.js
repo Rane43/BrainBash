@@ -120,6 +120,9 @@ function displayQuizzes(quizSummaryDtos) {
         const quizzes = groupedQuizzes[category];
 		// Collect quiz cards created from quizzes
 		const quizCards = quizzes.map(CardTemplates.createQuizCard);
+		quizCards.forEach(card => {
+			card.attr("quiz-card", "");
+		});
 		
         $("#quiz-display").append(CardTemplates.createCategorySlider(category, quizCards));
     }

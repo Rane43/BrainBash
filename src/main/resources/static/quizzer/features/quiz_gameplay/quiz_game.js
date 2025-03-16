@@ -155,7 +155,6 @@ $(document).ready(function () {
 	const hash = window.location.hash;
 	const urlParams = new URLSearchParams(hash.split('?')[1]);
 	const quizId = urlParams.get('quiz');
-	console.log(quizId);
 	
 	// Make request to 
     $.ajax({
@@ -186,7 +185,7 @@ $(document).ready(function () {
 		},
         error: (response) => {
 			// If quiz can't be found, redirect to dashboard
-			Router.navigate("dashboard");
+			Router.navigate("quizzer-dashboard");
         }
     });
 });

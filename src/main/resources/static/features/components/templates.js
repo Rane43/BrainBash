@@ -1,10 +1,9 @@
 // ----------------- QUIZ CARD TEMPLATES -------------------
 const CardTemplates = {
-	createQuizCard: function (quiz) {
+	createQuizCard: function (quiz, editor) {
 		let card = $("<div>")
 					.addClass("card")
 					.attr("id", quiz.id)
-					.attr("quiz-card", "");
 
 		let img = $("<img>")
 			.addClass("card-img-top")
