@@ -79,6 +79,16 @@ public class QuizController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(quizService.save(bearerToken, quizCreationDto));
 	}
 	
+	@DeleteMapping("/{quizId}")
+	@Transactional
+	public ResponseEntity<Void> deleteQuiz(
+			@RequestHeader("Authorization") String bearerToken,
+			@PathVariable long quizId
+	) throws UnauthorizedAccessToQuizException, UserNotFoundException, QuizNotFoundException {
+		quizService.delete(bearerToken, quizId);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
 	/*
 	 * For reference
 	 */

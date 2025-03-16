@@ -31,4 +31,6 @@ public interface IQuizService {
 			String middleTitle, 
 			DifficultyRating difficultyRating, 
 			AgeRating ageRating) throws UnauthorizedAccessToQuizException, UserNotFoundException;
+	
+	public void delete(String bearerToken, long quizId) throws UnauthorizedAccessToQuizException, UserNotFoundException, QuizNotFoundException;
 }

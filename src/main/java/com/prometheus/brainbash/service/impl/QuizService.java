@@ -115,4 +115,18 @@ public class QuizService implements IQuizService {
 		            .toList();
 	}
 
+	@Override
+	public void delete(String bearerToken, long quizId)
+			throws UnauthorizedAccessToQuizException, UserNotFoundException, QuizNotFoundException {
+		
+		String username = jwtService.extractUsername(bearerToken.substring(7));
+		User user = userRepo.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+		
+		Quiz quiz = quizRepo.findById(quizId).orElseThrow(() -> new QuizNotFoundException(quizId));
+		
+		if (!quiz.getDevelopers().contains(user)) throw new UnauthorizedAccessToQuizException(quizId);
+		
+		quizRepo.delete(quiz);
+	}
+
 }

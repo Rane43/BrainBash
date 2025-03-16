@@ -215,6 +215,23 @@ const QuizEditor = {
 				console.log("Error deleting quiz...");
 			}
 		})
+	},
+	
+	deleteQuiz: function () {
+		// Delete quiz and load back to dashboard
+		$.ajax({
+			url: `/api/quizzes/${this.quizId}`,
+			method: "DELETE",
+			headers: {
+				"Authorization": `Bearer ${TokenStorage.getToken()}`
+			},
+			success: () => {
+				Router.loadPage("quiz_designer_dashboard");
+			},
+			error: () => {
+				console.log("Failed to delete quiz");
+			}
+		})
 	}
 }
 
@@ -290,6 +307,10 @@ $(document).ready(function () {
 			// Delete question event listener
 			$("#delete-question-btn").off("click").on("click", () => {
 				QuizEditor.deleteQuestion();
+			});
+			// Delete quiz event listener
+			$("#delete-quiz-btn").off("click").on("click", () => {
+				QuizEditor.deleteQuiz();
 			});
 			
 		},
