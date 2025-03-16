@@ -139,8 +139,8 @@ public class QuizController {
 	public ResponseEntity<Void> deleteQuestion(
 			@RequestHeader("Authorization") String bearerToken, 
 			@PathVariable long questionId
-	) {
-		quizService.deleteQuestion(bearerToken, questionId);
+	) throws UserNotFoundException, QuestionNotFoundException, UnauthorizedAccessToQuizException {
+		questionService.delete(bearerToken, questionId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

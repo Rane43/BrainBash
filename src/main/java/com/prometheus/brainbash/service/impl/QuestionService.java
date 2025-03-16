@@ -18,6 +18,8 @@ import com.prometheus.brainbash.model.User;
 import com.prometheus.brainbash.service.IJwtService;
 import com.prometheus.brainbash.service.IQuestionService;
 
+import jakarta.transaction.Transactional;
+
 
 @Service
 public class QuestionService implements IQuestionService {
@@ -47,6 +49,7 @@ public class QuestionService implements IQuestionService {
 	}
 	
 	@Override
+	@Transactional
 	public long createQuestion(
 			String bearerToken, 
 			long quizId, 
@@ -74,6 +77,7 @@ public class QuestionService implements IQuestionService {
 
 
 	@Override
+	@Transactional
 	public void updateQuestion(
 			String bearerToken, 
 			long questionId, 
@@ -97,4 +101,19 @@ public class QuestionService implements IQuestionService {
 		questionRepo.save(question);
 	}
 
+
+	@Override
+	@Transactional
+	public void delete(String bearerToken, long questionId)
+			throws UserNotFoundException, QuestionNotFoundException, UnauthorizedAccessToQuizException {
+		String username = jwtService.extractUsername(bearerToken.substring(7));
+		User user = userRepo.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+		
+		Question question = questionRepo.findById(questionId).orElseThrow(() -> new QuestionNotFoundException(questionId));
+		Quiz quiz = question.getQuiz();
+		
+		if (!quiz.getDevelopers().contains(user)) throw new UnauthorizedAccessToQuizException(quiz.getId());
+		
+		questionRepo.delete(question);
+	}
 }

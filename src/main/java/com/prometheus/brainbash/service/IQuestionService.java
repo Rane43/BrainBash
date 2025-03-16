@@ -22,4 +22,6 @@ public interface IQuestionService {
 			long questionId,
 			QuestionRequestDto questionDto
 	) throws UserNotFoundException, QuestionNotFoundException, UnauthorizedAccessToQuizException;
+	
+	public void delete(String bearerToken, long questionId) throws UserNotFoundException, QuestionNotFoundException, UnauthorizedAccessToQuizException;;
 }

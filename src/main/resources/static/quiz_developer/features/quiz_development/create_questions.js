@@ -185,6 +185,36 @@ const QuizEditor = {
 				console.log("Error creating question...");
 			}
 		});
+	},
+	
+	deleteQuestion: function () {
+		if (this.questionIds.length === 1) {
+			alert("Cannot delete last question of quiz");
+			return;
+		}
+		
+		$.ajax({
+			url: `/api/quizzes/questions/${this.currentQuestion.id}`,
+			method: "DELETE",
+			headers: {
+				"Authorization": `Bearer ${TokenStorage.getToken()}`
+			},
+			success: () => {
+				// Remove question from questionIds
+				this.questionIds = this.questionIds.filter(id => id !== this.currentQuestion.id);
+
+				if (this.currentQuestionIndex === this.questionIds.length) {
+					this.currentQuestionIndex--;
+				}
+
+				// Load different question
+				this.loadCurrentQuestion();
+				
+			},
+			error: () => {
+				console.log("Error deleting quiz...");
+			}
+		})
 	}
 }
 
@@ -199,7 +229,7 @@ function addOption(dropdown, value, text) {
 
 $(document).ready(function () {
 	// Quiz id obtained from url
-	let id = 15; // Hardcoded for development
+	let id = 1; // Hardcoded for development
 	
 	// Fetch quiz
 	$.ajax({
@@ -256,6 +286,10 @@ $(document).ready(function () {
 			// New question event listener
 			$("#new-question-btn").off("click").on("click", () => {
 				QuizEditor.addQuestion();
+			});
+			// Delete question event listener
+			$("#delete-question-btn").off("click").on("click", () => {
+				QuizEditor.deleteQuestion();
 			});
 			
 		},
