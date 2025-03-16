@@ -90,9 +90,6 @@ $(document).ready(function() {
 		let username = $("#username").val().trim().toLowerCase(); // Username is case-insensitive
 		let password = $("#password").val().trim();
 		
-		console.log(username);
-		console.log(password);
-		
 		// Validate username and password
 		if (!username || !password) {
 			displayLoginErrorMessage("Username and password must not be empty.");

@@ -38,8 +38,7 @@ const Router = {
 	},
 
 	navigate: function (page) {
-    	// Update the URL hash and load the corresponding page
-    	history.pushState(null, "", `#${page}`);
+    	// Load page
     	Router.loadPage(page);
 	},
 	
@@ -54,8 +53,7 @@ const Router = {
 	loadPage: function (page) {
 		// Enforce authentication: if not authenticated and page isn’t "login", force login.
 		if (!TokenStorage.isLoggedIn()) {
-      		page = "login"; // Redirect to login
-      		history.pushState(null, "", "#login");
+      		page = "login";
    		} else if (page === "login") {
 			Router.loadDashboard(); // Redirect to quizzer-dashboard when you try to go to login page when already logged in
 			return;

@@ -92,9 +92,15 @@ $(document).ready(function () {
 			if (this.currentQuestionIndex < 0 || this.currentQuestionIndex >= this.questionIds.length) return;
 			
 			if (this.currentQuestionIndex < 1) {
-				$("#prev-btn").hide();	
+				// Previous button event listener
+				$("#prev-btn").off("click").on("click", () => {
+					$("#edit-quiz-main-menu").show();
+					$("#edit-question-card").hide();
+				});
 			} else {
-				$("#prev-btn").show();
+				$("#prev-btn").off("click").on("click", () => {
+					QuizEditor.prevQuestion();
+				});
 			};
 			
 			if (this.currentQuestionIndex >= this.questionIds.length - 1) {
@@ -125,18 +131,6 @@ $(document).ready(function () {
 				inputGroup.append(inputAns);
 	        });
 	    },
-		
-		test: function () {
-			console.log(this.quizId);
-			console.log(this.quizTitle);
-			console.log(this.quizDescription);
-			console.log(this.quizImage);
-			console.log(this.questionIds);
-			console.log(this.ageRating);
-			console.log(this.difficultyRating); 
-			console.log(this.category);
-			console.log(this.currentQuestion);
-		},
 		
 		prevQuestion: function () {
 			if (this.currentQuestionIndex < 1) return;
@@ -248,7 +242,6 @@ $(document).ready(function () {
 	const hash = window.location.hash;
 	const urlParams = new URLSearchParams(hash.split('?')[1]);
 	const quizId = urlParams.get('quiz');
-	console.log(quizId);
 	
 	// Fetch quiz
 	$.ajax({
@@ -259,7 +252,6 @@ $(document).ready(function () {
 		success: (quizGameDto) => {
 			// Initialise QuizEditor
 			QuizEditor.init(quizGameDto);
-			QuizEditor.test();
 			
 			// Event Listeners
 			const editBtn = $("#edit-question-btn");
@@ -313,6 +305,11 @@ $(document).ready(function () {
 			// Delete quiz event listener
 			$("#delete-quiz-btn").off("click").on("click", () => {
 				QuizEditor.deleteQuiz();
+			});
+			// Edit quiz event listener
+			$("#edit-quiz-btn").off("click").on("click", () => {
+				$("#edit-quiz-main-menu").hide();
+				$("#edit-question-card").show();
 			});
 			
 		},
