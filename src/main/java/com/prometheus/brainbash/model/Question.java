@@ -3,6 +3,7 @@ package com.prometheus.brainbash.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -32,5 +33,5 @@ public class Question {
     private Quiz quiz;
     
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Answer> answers;
+    private Set<Answer> answers = new HashSet<>();
 }

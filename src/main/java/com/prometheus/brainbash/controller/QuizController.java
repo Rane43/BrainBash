@@ -5,16 +5,18 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.prometheus.brainbash.dto.QuestionCreationDto;
+import com.prometheus.brainbash.dto.QuestionRequestDto;
 import com.prometheus.brainbash.dto.QuestionDto;
 import com.prometheus.brainbash.dto.QuizCreationDto;
 import com.prometheus.brainbash.dto.QuizGameDto;
@@ -114,8 +116,31 @@ public class QuizController {
 	public ResponseEntity<Long> createQuestion(
 			@RequestHeader("Authorization") String bearerToken, 
 			@PathVariable long quizId,
-			@Valid @RequestBody QuestionCreationDto questionCreationDto
+			@Valid @RequestBody QuestionRequestDto questionCreationDto
 	) throws UserNotFoundException, QuizNotFoundException, UnauthorizedAccessToQuizException {
 		return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(bearerToken, quizId, questionCreationDto));
+	}
+	
+	
+	@PutMapping("/questions/{questionId}")
+	@Transactional
+	public ResponseEntity<Void> updateQuestion(
+			@RequestHeader("Authorization") String bearerToken, 
+			@PathVariable long questionId,
+			@Valid @RequestBody QuestionRequestDto questionRequestDto
+	) throws UserNotFoundException, QuestionNotFoundException, UnauthorizedAccessToQuizException 
+	{
+		questionService.updateQuestion(bearerToken, questionId, questionRequestDto);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+	
+	@DeleteMapping("/questions/{questionId}")
+	@Transactional
+	public ResponseEntity<Void> deleteQuestion(
+			@RequestHeader("Authorization") String bearerToken, 
+			@PathVariable long questionId
+	) {
+		quizService.deleteQuestion(bearerToken, questionId);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

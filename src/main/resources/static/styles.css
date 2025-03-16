@@ -307,6 +307,12 @@
 	color: white;
 }
 
+.nav-btn {
+	width: 150px;
+	background-color: #002230;
+	color: white;
+}
+
 #FinalResult {
 	color: #d5d5d5;
 	font-size: 200px;
@@ -322,6 +328,8 @@
 .quiz-creation-container {
 	margin: 50px;
 }
+
+
 
 
 

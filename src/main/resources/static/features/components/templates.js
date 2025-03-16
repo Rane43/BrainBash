@@ -66,6 +66,12 @@ const QuizCreationTemplates = {
 		return $('<li>')
 			.attr('data-target', '#carouselExampleIndicators')
 			.attr('data-slide-to',`${num}`);
+	},
+	
+	answerInput: function (answerText) {
+		return $('<input>')
+			.addClass("question-btn question-answer-btn")
+			.attr("value", answerText);
 	}
 };
 
