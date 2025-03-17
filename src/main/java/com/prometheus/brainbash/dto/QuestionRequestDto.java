@@ -4,6 +4,7 @@ import java.util.Set;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,5 +16,6 @@ public class QuestionRequestDto {
     private String text;
     
 	@NotNull(message = "Answer Dtos cannot be null.")
+	@Size(min=3, max=3, message = "There must be exactly 3 answers")
     private Set<AnswerRequestDto> answerRequestDtos;
 }
