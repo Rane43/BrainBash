@@ -119,13 +119,9 @@ $(document).ready(function () {
 			
 	        const answerGroup = $("#answer-group").empty();
 			const inputGroup = $("#answer-edit-btn-group").empty();
-			const correctAnswerDropdown = document.getElementById("correct-answer-dropdown");
-			correctAnswerDropdown.innerHTML = "";
 	        this.currentQuestion.answerDtos.forEach((answer) => {
 	            let btn = QuizTemplates.answerButton(answer);
 				let inputAns = QuizCreationTemplates.answerInput(answer.text);
-				
-				addOption(correctAnswerDropdown, answer.id ,answer.text)
 	            
 				btn.attr("id", answer.id);
 				inputAns.attr("id", answer.id);
@@ -133,7 +129,20 @@ $(document).ready(function () {
 	            answerGroup.append(btn);
 				inputGroup.append(inputAns);
 	        });
+			
+			this.populateCorrectAnswerDropdown();
 	    },
+		
+		populateCorrectAnswerDropdown: function () {
+			const correctAnswerDropdown = document.getElementById("correct-answer-dropdown");
+			correctAnswerDropdown.innerHTML = "";
+			const inputs = $("#answer-edit-btn-group .question-btn");
+			inputs.each(function() {
+				const id = $(this).attr("id");
+				const text = $(this).val(); 
+				addOption(correctAnswerDropdown, id, text);
+			});
+		},
 		
 		prevQuestion: function () {
 			if (this.currentQuestionIndex < 1) return;
@@ -318,6 +327,10 @@ $(document).ready(function () {
 				$("#edit-quiz-main-menu").hide();
 				$("#edit-question-card").show();
 			});
+			// Event listeners for inputs with answers
+			$("#answer-edit-btn-group").off("keyup", ".question-btn").on("keyup", () => {
+				QuizEditor.populateCorrectAnswerDropdown();
+			})
 			
 		},
 		error: (response) => {
