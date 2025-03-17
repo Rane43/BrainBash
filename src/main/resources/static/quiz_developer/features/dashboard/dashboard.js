@@ -239,6 +239,8 @@ function displayQuizzes(quizSummaryDtos) {
 
 /* ---------------- QUIZ CREATION ---------------- */
 function createQuiz() {
+	clearErrorMessage();
+	
 	const image = $('#quiz-creation-carousel .carousel-item.active img').attr('image-name');
     const title = $("#quiz-creation-title").val().trim();
     const description = $("#quiz-description").val().trim();
@@ -259,7 +261,8 @@ function createQuiz() {
     try {
         validateQuizCreationRequest(quizCreationDto);
 	} catch (error) {
-		alert(error.message);
+		
+		errorMessage(error.message);
 		return;
 	}
 	
@@ -278,9 +281,19 @@ function createQuiz() {
 			$("#quiz-modal").modal('hide');
         },
         error: (xhr, status, error) => {
-            alert("An error occurred while creating the quiz. Please try again.");
+            errorMessage("An error occurred while creating the quiz. Please try again.");
         }
     });
+}
+
+function errorMessage(message) {
+	$("#create-quiz-error").text(message);
+	$("#create-quiz-error-container").show();
+}
+
+function clearErrorMessage() {
+	$("#create-quiz-error-container").hide();
+	$("#create-quiz-error").text("");
 }
 
 function validateQuizCreationRequest(quizCreationObj) {

@@ -1,6 +1,7 @@
 package com.prometheus.brainbash.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -59,6 +60,10 @@ public class Quiz {
     
     @Enumerated(EnumType.STRING)
     private Category category;
+    
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
+    private List<UserQuizScore> scores;
+
     
     
     // Extra Methods
