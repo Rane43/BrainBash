@@ -3,7 +3,7 @@ package com.prometheus.brainbash.mapper;
 import java.util.stream.Collectors;
 
 import com.prometheus.brainbash.dto.AnswerDto;
-import com.prometheus.brainbash.dto.QuestionCreationDto;
+import com.prometheus.brainbash.dto.QuestionRequestDto;
 import com.prometheus.brainbash.dto.QuestionDto;
 import com.prometheus.brainbash.model.Answer;
 import com.prometheus.brainbash.model.Question;
@@ -15,7 +15,6 @@ public class QuestionMapper {
 		questionDto.setId(question.getId());
 		questionDto.setQuizId(question.getQuiz().getId());
 		questionDto.setText(question.getText());
-		
 		questionDto.setAnswerDtos(
 			question.getAnswers().stream()
 			.map(answer -> {
@@ -27,20 +26,19 @@ public class QuestionMapper {
 		);	
 	}
 	
-	public static void toQuestion(QuestionCreationDto questionCreationDto, Quiz quiz, Question question) {
-		question.setText(questionCreationDto.getText());
+	public static void toQuestion(QuestionRequestDto questionRequestDto, Quiz quiz, Question question) {
+		question.setText(questionRequestDto.getText());
 		question.setQuiz(quiz);
-		question.setAnswers(
-				questionCreationDto.getAnswerDtos().stream()
-				.map(answerDto -> {
-					Answer answer = new Answer();
-					AnswerMapper.toAnswer(answerDto, question, answer);
-					return answer;
-				})
-				.collect(Collectors.toSet()));
+		question.getAnswers().clear();
+		questionRequestDto.getAnswerRequestDtos().stream()
+		.map(answerReqDto -> {
+			Answer answer = new Answer();
+			AnswerMapper.toAnswer(answerReqDto, question, answer);
+			return answer;
+		}).forEach((answer) -> {
+			question.getAnswers().add(answer);
+		});;
 	}
-	
-	
 	
 	// Private constructor to hide public one
 	private QuestionMapper() {}

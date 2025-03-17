@@ -25,15 +25,16 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
 	        @Param("ageRating") AgeRating ageRating);
 	
 	@Query("SELECT q FROM Quiz q WHERE "
-		       + "q.creator = :user "
+		       + "(:user = q.creator OR :user MEMBER OF q.developers) "
 			   + "AND (:middleTitle IS NULL OR LOWER(q.title) LIKE LOWER(CONCAT('%', :middleTitle, '%')))"
-		       + "AND (:difficultyRating IS NULL OR q.difficultyRating = :difficultyRating)"
+		       + "AND (:difficultyRating IS NULL OR q.difficultyRating = :difficultyRating) "
 		       + "AND (:ageRating IS NULL OR q.ageRating = :ageRating)")
 	List<Quiz> findMineBySearch(
 			@Param("user") User user,
-	        @Param("middleTitle") String middleTitle,
-	        @Param("difficultyRating") DifficultyRating difficultyRating,
-	        @Param("ageRating") AgeRating ageRating);
+			@Param("middleTitle") String middleTitle,
+			@Param("difficultyRating") DifficultyRating difficultyRating,
+			@Param("ageRating") AgeRating ageRating);
+
 
 
 }

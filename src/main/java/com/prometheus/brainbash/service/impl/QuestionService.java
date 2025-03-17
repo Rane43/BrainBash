@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import com.prometheus.brainbash.dao.QuestionRepository;
 import com.prometheus.brainbash.dao.QuizRepository;
 import com.prometheus.brainbash.dao.UserRepository;
-import com.prometheus.brainbash.dto.QuestionCreationDto;
+import com.prometheus.brainbash.dto.QuestionRequestDto;
 import com.prometheus.brainbash.dto.QuestionDto;
 import com.prometheus.brainbash.exception.QuestionNotFoundException;
 import com.prometheus.brainbash.exception.QuizNotFoundException;
@@ -17,6 +17,8 @@ import com.prometheus.brainbash.model.Quiz;
 import com.prometheus.brainbash.model.User;
 import com.prometheus.brainbash.service.IJwtService;
 import com.prometheus.brainbash.service.IQuestionService;
+
+import jakarta.transaction.Transactional;
 
 
 @Service
@@ -47,10 +49,11 @@ public class QuestionService implements IQuestionService {
 	}
 	
 	@Override
+	@Transactional
 	public long createQuestion(
 			String bearerToken, 
 			long quizId, 
-			QuestionCreationDto questionCreationDto
+			QuestionRequestDto questionCreationDto
 	) throws UserNotFoundException, QuizNotFoundException, UnauthorizedAccessToQuizException {
 		
 		String username = jwtService.extractUsername(bearerToken.substring(7));
@@ -72,4 +75,45 @@ public class QuestionService implements IQuestionService {
 		return question.getId();
 	}
 
+
+	@Override
+	@Transactional
+	public void updateQuestion(
+			String bearerToken, 
+			long questionId, 
+			QuestionRequestDto questionDto
+	) throws UserNotFoundException, QuestionNotFoundException, UnauthorizedAccessToQuizException {
+		
+		String username = jwtService.extractUsername(bearerToken.substring(7));
+		User user = userRepo.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+		
+		// Find question
+		Question question = questionRepo.findById(questionId).orElseThrow(() -> new QuestionNotFoundException(questionId));
+		
+		// Check has access
+		Quiz quiz = question.getQuiz();
+		if (!quiz.getDevelopers().contains(user)) throw new UnauthorizedAccessToQuizException(quiz.getId());
+
+		// Update question details
+		QuestionMapper.toQuestion(questionDto, quiz, question);
+		
+		// Save question with updated details
+		questionRepo.save(question);
+	}
+
+
+	@Override
+	@Transactional
+	public void delete(String bearerToken, long questionId)
+			throws UserNotFoundException, QuestionNotFoundException, UnauthorizedAccessToQuizException {
+		String username = jwtService.extractUsername(bearerToken.substring(7));
+		User user = userRepo.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+		
+		Question question = questionRepo.findById(questionId).orElseThrow(() -> new QuestionNotFoundException(questionId));
+		Quiz quiz = question.getQuiz();
+		
+		if (!quiz.getDevelopers().contains(user)) throw new UnauthorizedAccessToQuizException(quiz.getId());
+		
+		questionRepo.delete(question);
+	}
 }

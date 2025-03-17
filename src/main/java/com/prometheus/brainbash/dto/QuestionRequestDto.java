@@ -10,10 +10,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class QuestionCreationDto {
+public class QuestionRequestDto {
 	@NotEmpty(message = "Question text cannot be empty.")
     private String text;
     
 	@NotNull(message = "Answer Dtos cannot be null.")
-    private Set<AnswerDto> answerDtos;
+    private Set<AnswerRequestDto> answerRequestDtos;
 }

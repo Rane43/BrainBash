@@ -42,17 +42,6 @@ public class QuizService implements IQuizService {
 			return quizSummaryDto;
 		}).toList();
 	}
-
-	@Override
-	public List<QuizSummaryDto> findMine(String bearerToken) {
-		String username = jwtService.extractUsername(bearerToken.substring(7));
-		
-		return quizRepo.findByCreator_Username(username).stream().map((quiz) -> {
-			QuizSummaryDto quizSummaryDto = new QuizSummaryDto();
-			QuizMapper.toQuizSummaryDto(quiz, quizSummaryDto);
-			return quizSummaryDto;
-		}).toList();
-	}
 	
 	@Override
 	public List<QuizSummaryDto> findBySearch(
@@ -102,6 +91,7 @@ public class QuizService implements IQuizService {
 			String middleTitle,
 			DifficultyRating difficultyRating, 
 			AgeRating ageRating) throws UnauthorizedAccessToQuizException, UserNotFoundException {
+		
 		String username = jwtService.extractUsername(bearerToken.substring(7));
 		User user = userRepo.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 		
@@ -113,6 +103,20 @@ public class QuizService implements IQuizService {
 		                return quizSummaryDto;
 		            })
 		            .toList();
+	}
+
+	@Override
+	public void delete(String bearerToken, long quizId)
+			throws UnauthorizedAccessToQuizException, UserNotFoundException, QuizNotFoundException {
+		
+		String username = jwtService.extractUsername(bearerToken.substring(7));
+		User user = userRepo.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+		
+		Quiz quiz = quizRepo.findById(quizId).orElseThrow(() -> new QuizNotFoundException(quizId));
+		
+		if (!quiz.getDevelopers().contains(user)) throw new UnauthorizedAccessToQuizException(quizId);
+		
+		quizRepo.delete(quiz);
 	}
 
 }

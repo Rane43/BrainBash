@@ -1,6 +1,7 @@
 package com.prometheus.brainbash.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,7 @@ public class PointsController {
 	
 	
 	@GetMapping
+	@PreAuthorize("hasRole('QUIZZER')")
 	public ResponseEntity<?> getPoints(@RequestHeader("Authorization") String bearerToken, @RequestParam("quiz_id") long quizId) {
 		String username = jwtService.extractUsername(bearerToken.substring(7));
 		
@@ -42,6 +44,7 @@ public class PointsController {
 	}
 
 	@PutMapping
+	@PreAuthorize("hasRole('QUIZZER')")
 	public ResponseEntity<?> updatePoints(@RequestHeader("Authorization") String bearerToken, @RequestBody PointsUpdateDto pointsUpdateDto ) {
 		String username = jwtService.extractUsername(bearerToken.substring(7));
 		try {

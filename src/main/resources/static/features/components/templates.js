@@ -1,10 +1,9 @@
 // ----------------- QUIZ CARD TEMPLATES -------------------
 const CardTemplates = {
-	createQuizCard: function (quiz) {
+	createQuizCard: function (quiz, editor) {
 		let card = $("<div>")
 					.addClass("card")
 					.attr("id", quiz.id)
-					.attr("quiz-card", "");
 
 		let img = $("<img>")
 			.addClass("card-img-top")
@@ -66,6 +65,12 @@ const QuizCreationTemplates = {
 		return $('<li>')
 			.attr('data-target', '#carouselExampleIndicators')
 			.attr('data-slide-to',`${num}`);
+	},
+	
+	answerInput: function (answerText) {
+		return $('<input>')
+			.addClass("question-btn question-answer-btn")
+			.attr("value", answerText);
 	}
 };
 

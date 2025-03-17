@@ -46,15 +46,8 @@ public class SecurityConfig {
             			"/styles.css",
             			"/router.js",
             			"/quiz_developer/**",
-            			"/api/quizzes/**", // Public while developing
-            			"/api/categories", // Public while developing
-            			"/api/age-ratings", // Public while developing
-            			"/api/difficulty-ratings", // Public while developing
-            			"/favicon.ico", // Public while developing
-            			"/api/questions/**", // Public while developing
-            			"/api/points/**", // Public while developing
-            			"/quizzer/**", // Public while developing
-            			"/api/images/**" // Public while developing
+            			"/favicon.ico",
+            			"/quizzer/**"
             			).permitAll() // All static content access
                 .anyRequest().authenticated()
             )

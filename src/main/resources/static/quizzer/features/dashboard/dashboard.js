@@ -49,6 +49,9 @@ function fetchAgeRatings() {
 		$.ajax({
 			url: "/api/age-ratings",
 			method: "GET",
+			headers: {
+				"Authorization": `Bearer ${TokenStorage.getToken()}`	
+			},
 			dataType: "json",
 			success: (ageRatings) => {
 				// Populate Age Ratings
@@ -77,6 +80,9 @@ function fetchDifficultyRatings() {
 		$.ajax({
 			url: "/api/difficulty-ratings",
 			method: "GET",
+			headers: {
+				"Authorization": `Bearer ${TokenStorage.getToken()}`	
+			},
 			dataType: "json",
 			success: (difficultyRatings) => {						
 				// Populate Difficulty Ratings
@@ -106,6 +112,8 @@ function displayQuizzes(quizSummaryDtos) {
 	// Empty previous content
 	$("#quiz-display").empty();
 	
+	console.log("quiz developer display quizzes...");
+	
 	// Display new content
 	const groupedQuizzes = quizSummaryDtos.reduce((acc, quiz) => {
         const category = quiz.category; // assuming quiz has a 'category' field
@@ -120,6 +128,9 @@ function displayQuizzes(quizSummaryDtos) {
         const quizzes = groupedQuizzes[category];
 		// Collect quiz cards created from quizzes
 		const quizCards = quizzes.map(CardTemplates.createQuizCard);
+		quizCards.forEach(card => {
+			card.attr("quiz-card", "");
+		});
 		
         $("#quiz-display").append(CardTemplates.createCategorySlider(category, quizCards));
     }

@@ -27,66 +27,50 @@ public class BrainBashApplication {
 		SpringApplication.run(BrainBashApplication.class, args);
 	}
 	
-	
-	// Temp user created
-	/*
-	@Bean
-    CommandLineRunner init(UserRepository userRepo, PasswordEncoder passwordEncoder) {
-        return args -> {
-            // Create a test admin user on program startup (if not exists)
-        	User user = new User();
-        	user.setUsername("admin".toLowerCase());
-        	user.setPassword(passwordEncoder.encode("Password123!"));
-        	user.setAuthorities(Set.of(Role.ROLE_ADMIN));
-        	userRepo.save(user);
-            System.out.println("User saved successfully!");
-        };
-    }
-    */
-	
-	// Temp Quiz created
+	// Temp Quiz created - hard coded for development
 	@Bean
     CommandLineRunner init(IUserService userService, PasswordEncoder passwordEncoder, QuizRepository quizRepo) {
         return args -> {
         	// User to create quiz
         	User user = userService.createUser("Rane43", "Password123!", Role.ROLE_QUIZ_DESIGNER);
+        	User developer = userService.createUser("NewUser", "Password123!", Role.ROLE_QUIZ_DESIGNER);
         	
         	final String DEFAULT_IMAGE = "landscape1.webp";
         	final String OTHER_IMAGE = "background-image.webp";
         	
         	
         	// AgeRating = TEEN, DfficultyRating = EASY
-        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 1", "Easy Teen Geography Quiz 1", AgeRating.TEEN, DifficultyRating.EASY, DEFAULT_IMAGE, quizRepo, user);
-        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 2", "Easy Teen Geography Quiz 2", AgeRating.TEEN, DifficultyRating.EASY, OTHER_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 1", "Easy Teen Geography Quiz 1", AgeRating.TEEN, DifficultyRating.EASY, DEFAULT_IMAGE, quizRepo, user, developer);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 2", "Easy Teen Geography Quiz 2", AgeRating.TEEN, DifficultyRating.EASY, OTHER_IMAGE, quizRepo, user, developer);
         	
         	// AgeRating = CHILDREN, DfficultyRating = EASY
-        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 3", "Easy Children's Geography Quiz 3", AgeRating.CHILDREN, DifficultyRating.EASY, DEFAULT_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 3", "Easy Children's Geography Quiz 3", AgeRating.CHILDREN, DifficultyRating.EASY, DEFAULT_IMAGE, quizRepo, user, developer);
         	
         	// AgeRating = ADULT, DifficultyRating = EASY
-        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 4", "Easy adult quiz", AgeRating.ADULT, DifficultyRating.EASY, OTHER_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 4", "Easy adult quiz", AgeRating.ADULT, DifficultyRating.EASY, OTHER_IMAGE, quizRepo, user, developer);
         	
         	// AgeRating = ADULT, DifficultyRating = EASY
-        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 5", "Medium difficulty adult quiz", AgeRating.ADULT, DifficultyRating.MEDIUM, DEFAULT_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 5", "Medium difficulty adult quiz", AgeRating.ADULT, DifficultyRating.MEDIUM, DEFAULT_IMAGE, quizRepo, user, developer);
         	
-        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 6", "Hard adult quiz", AgeRating.ADULT, DifficultyRating.HARD, OTHER_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 6", "Hard adult quiz", AgeRating.ADULT, DifficultyRating.HARD, OTHER_IMAGE, quizRepo, user, developer);
         	
-        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 7", "Extremely difficult adult quiz", AgeRating.ADULT, DifficultyRating.EXTREME, DEFAULT_IMAGE, quizRepo, user);
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 7", "Extremely difficult adult quiz", AgeRating.ADULT, DifficultyRating.EXTREME, DEFAULT_IMAGE, quizRepo, user, developer);
         	
         	
-        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 8", "Geography Description 8", AgeRating.ADULT, DifficultyRating.MEDIUM, OTHER_IMAGE, quizRepo, user); 
+        	createTempQuiz(Category.GEOGRAPHY, "Geography Quiz 8", "Geography Description 8", AgeRating.ADULT, DifficultyRating.MEDIUM, OTHER_IMAGE, quizRepo, user, developer); 
         	
         	
         	// ADULT MEDIUM
-        	createTempQuiz(Category.ANATOMY, "Anatomy Quiz 1", "Anatomy Description 1", AgeRating.ADULT, DifficultyRating.MEDIUM, OTHER_IMAGE, quizRepo, user);  
-        	createTempQuiz(Category.HISTORY, "History Quiz 1", "History Description 1", AgeRating.ADULT, DifficultyRating.MEDIUM, DEFAULT_IMAGE, quizRepo, user);  
-        	createTempQuiz(Category.HISTORY, "History Quiz 2", "History Description 2", AgeRating.ADULT, DifficultyRating.MEDIUM, OTHER_IMAGE, quizRepo, user);  
-        	createTempQuiz(Category.HISTORY, "History Quiz 3", "History Description 3", AgeRating.ADULT, DifficultyRating.MEDIUM, DEFAULT_IMAGE, quizRepo, user);  
-        	createTempQuiz(Category.HISTORY, "History Quiz 4", "History Description 4", AgeRating.ADULT, DifficultyRating.MEDIUM, OTHER_IMAGE, quizRepo, user);  
-        	createTempQuiz(Category.HISTORY, "History Quiz 5", "History Description 5", AgeRating.ADULT, DifficultyRating.MEDIUM, DEFAULT_IMAGE, quizRepo, user);  
+        	createTempQuiz(Category.ANATOMY, "Anatomy Quiz 1", "Anatomy Description 1", AgeRating.ADULT, DifficultyRating.MEDIUM, OTHER_IMAGE, quizRepo, user, developer);  
+        	createTempQuiz(Category.HISTORY, "History Quiz 1", "History Description 1", AgeRating.ADULT, DifficultyRating.MEDIUM, DEFAULT_IMAGE, quizRepo, user, developer);  
+        	createTempQuiz(Category.HISTORY, "History Quiz 2", "History Description 2", AgeRating.ADULT, DifficultyRating.MEDIUM, OTHER_IMAGE, quizRepo, user, developer);  
+        	createTempQuiz(Category.HISTORY, "History Quiz 3", "History Description 3", AgeRating.ADULT, DifficultyRating.MEDIUM, DEFAULT_IMAGE, quizRepo, user, developer);  
+        	createTempQuiz(Category.HISTORY, "History Quiz 4", "History Description 4", AgeRating.ADULT, DifficultyRating.MEDIUM, OTHER_IMAGE, quizRepo, user, developer);  
+        	createTempQuiz(Category.HISTORY, "History Quiz 5", "History Description 5", AgeRating.ADULT, DifficultyRating.MEDIUM, DEFAULT_IMAGE, quizRepo, user, developer);  
         };
     }
 	
-	private void createTempQuiz(Category category, String title, String description, AgeRating ageRating, DifficultyRating difficultyRating, String image, QuizRepository quizRepo, User user) {
+	private void createTempQuiz(Category category, String title, String description, AgeRating ageRating, DifficultyRating difficultyRating, String image, QuizRepository quizRepo, User user, User developer) {
     	// Quiz itself
     	Quiz quiz = new Quiz();
     	quiz.setTitle(title);
@@ -96,7 +80,7 @@ public class BrainBashApplication {
     	quiz.setDifficultyRating(difficultyRating);
     	// Add user as creator and as one of the developers
     	quiz.setCreator(user);
-    	quiz.setDevelopers(Set.of(user));
+    	quiz.setDevelopers(Set.of(user, developer));
     	quiz.setImage(image);
     	
     	// ------------------ Question 1 --------------------

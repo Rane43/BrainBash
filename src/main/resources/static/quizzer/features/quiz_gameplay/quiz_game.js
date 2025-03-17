@@ -32,6 +32,9 @@ $(document).ready(function () {
 	        $.ajax({
 	            url: `/api/quizzes/questions/${questionId}`,
 	            method: "GET",
+				headers: {
+					"Authorization": `Bearer ${TokenStorage.getToken()}`	
+				},
 	            dataType: "json",
 	            success: (questionDto) => {
 	                this.currentQuestion = questionDto;
@@ -155,12 +158,14 @@ $(document).ready(function () {
 	const hash = window.location.hash;
 	const urlParams = new URLSearchParams(hash.split('?')[1]);
 	const quizId = urlParams.get('quiz');
-	console.log(quizId);
 	
 	// Make request to 
     $.ajax({
         url: `/api/quizzes/${quizId}`,
         method: "GET",
+		headers: {
+			"Authorization": `Bearer ${TokenStorage.getToken()}`	
+		},
         dataType: "json",
         success: (quizDto) => {
 			// Update display
@@ -175,7 +180,7 @@ $(document).ready(function () {
 			$("#play-btn").off("click").on("click", () => {
 				$("#game-main-menu").hide();
 				$("#gameplay-menu").show();
-			       QuizGame.loadQuestion();
+			    QuizGame.loadQuestion();
 			});
 			   
 		    $("#next-btn").off("click").on("click", () => QuizGame.goToNextQuestion());
@@ -186,7 +191,7 @@ $(document).ready(function () {
 		},
         error: (response) => {
 			// If quiz can't be found, redirect to dashboard
-			Router.navigate("dashboard");
+			Router.navigate("quizzer-dashboard");
         }
     });
 });

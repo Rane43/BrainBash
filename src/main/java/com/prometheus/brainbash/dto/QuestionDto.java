@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class QuestionDto {
-	private Long id;
+	private long id;
 	
     private String text;
     
