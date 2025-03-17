@@ -22,6 +22,9 @@ $(document).ready(function () {
 			this.difficultyRating = quizGameDto.difficultyRating;
 			this.category = quizGameDto.category;
 			
+			$("#quiz-image").attr("src", `/assets/images/quiz_images/${this.quizImage}`);
+			$("#quiz-title").text(this.quizTitle);
+			
 			if (this.questionIds.length > 0) {
 				this.currentQuestionIndex = 0;
 				this.loadCurrentQuestion();	
@@ -68,9 +71,6 @@ $(document).ready(function () {
 			    text: $("#edit-question-text").val(),
 			    answerRequestDtos: answerDtos
 			};
-			
-
-			console.log(dto);
 			
 			$.ajax({
 				url: `/api/quizzes/questions/${this.currentQuestion.id}`,
