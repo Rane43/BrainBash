@@ -16,6 +16,8 @@ import com.prometheus.brainbash.exception.UserNotFoundException;
 import com.prometheus.brainbash.service.IJwtService;
 import com.prometheus.brainbash.service.IPointsService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/points")
 public class PointsController {
@@ -45,7 +47,7 @@ public class PointsController {
 
 	@PutMapping
 	@PreAuthorize("hasRole('QUIZZER')")
-	public ResponseEntity<?> updatePoints(@RequestHeader("Authorization") String bearerToken, @RequestBody PointsUpdateDto pointsUpdateDto ) {
+	public ResponseEntity<?> updatePoints(@RequestHeader("Authorization") String bearerToken, @Valid @RequestBody PointsUpdateDto pointsUpdateDto ) {
 		String username = jwtService.extractUsername(bearerToken.substring(7));
 		try {
 			pointsService.updatePoints(
