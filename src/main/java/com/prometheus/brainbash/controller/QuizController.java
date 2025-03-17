@@ -53,7 +53,7 @@ public class QuizController {
 	
 	/* ------------------- CRUD QUIZZES -------------------------- */
 	@GetMapping("/{id}") // -- GET /api/quizzes/{id}
-	@PreAuthorize("hasRole('QUIZZER')")
+	@PreAuthorize("hasRole('QUIZZER') or hasRole('QUIZ_DESIGNER')")
 	public ResponseEntity<QuizGameDto> getQuizById(@PathVariable long id) throws QuizNotFoundException {
 		return ResponseEntity.status(HttpStatus.OK).body(quizService.findById(id));
 	}

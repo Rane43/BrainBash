@@ -15,8 +15,6 @@ public interface IQuizService {
 	/* ------------------- CRUD QUIZZES -------------------------- */
 	public List<QuizSummaryDto> findAll();
 	
-	public List<QuizSummaryDto> findMine(String bearerToken);
-	
 	public QuizGameDto findById(long id) throws QuizNotFoundException;
 	
 	public long save(String bearerToken, QuizCreationDto quizCreationDto) throws UserNotFoundException;

@@ -42,17 +42,6 @@ public class QuizService implements IQuizService {
 			return quizSummaryDto;
 		}).toList();
 	}
-
-	@Override
-	public List<QuizSummaryDto> findMine(String bearerToken) {
-		String username = jwtService.extractUsername(bearerToken.substring(7));
-		
-		return quizRepo.findByCreator_Username(username).stream().map((quiz) -> {
-			QuizSummaryDto quizSummaryDto = new QuizSummaryDto();
-			QuizMapper.toQuizSummaryDto(quiz, quizSummaryDto);
-			return quizSummaryDto;
-		}).toList();
-	}
 	
 	@Override
 	public List<QuizSummaryDto> findBySearch(
