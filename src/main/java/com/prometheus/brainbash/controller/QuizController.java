@@ -51,9 +51,9 @@ public class QuizController {
 		this.questionService = questionService;
 	}
 	
-	
 	/* ------------------- CRUD QUIZZES -------------------------- */
 	@GetMapping("/{id}") // -- GET /api/quizzes/{id}
+	@PreAuthorize("hasRole('QUIZZER')")
 	public ResponseEntity<QuizGameDto> getQuizById(@PathVariable long id) throws QuizNotFoundException {
 		return ResponseEntity.status(HttpStatus.OK).body(quizService.findById(id));
 	}
@@ -141,9 +141,9 @@ public class QuizController {
 	public ResponseEntity<Long> createQuestion(
 			@RequestHeader("Authorization") String bearerToken, 
 			@PathVariable long quizId,
-			@Valid @RequestBody QuestionRequestDto questionCreationDto
+			@Valid @RequestBody QuestionRequestDto questionRequestDto
 	) throws UserNotFoundException, QuizNotFoundException, UnauthorizedAccessToQuizException {
-		return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(bearerToken, quizId, questionCreationDto));
+		return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(bearerToken, quizId, questionRequestDto));
 	}
 	
 	

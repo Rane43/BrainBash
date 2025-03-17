@@ -1,11 +1,13 @@
 package com.prometheus.brainbash.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class PointsUpdateDto {
+	@NotNull(message = "quizId must be supplied")
     private Long quizId;
     private int points;
 

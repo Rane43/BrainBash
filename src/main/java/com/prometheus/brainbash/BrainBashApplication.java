@@ -27,23 +27,7 @@ public class BrainBashApplication {
 		SpringApplication.run(BrainBashApplication.class, args);
 	}
 	
-	// Temp user created
-	/*
-	@Bean
-    CommandLineRunner init(UserRepository userRepo, PasswordEncoder passwordEncoder) {
-        return args -> {
-            // Create a test admin user on program startup (if not exists)
-        	User user = new User();
-        	user.setUsername("admin".toLowerCase());
-        	user.setPassword(passwordEncoder.encode("Password123!"));
-        	user.setAuthorities(Set.of(Role.ROLE_ADMIN));
-        	userRepo.save(user);
-            System.out.println("User saved successfully!");
-        };
-    }
-    */
-	
-	// Temp Quiz created
+	// Temp Quiz created - hard coded for development
 	@Bean
     CommandLineRunner init(IUserService userService, PasswordEncoder passwordEncoder, QuizRepository quizRepo) {
         return args -> {
