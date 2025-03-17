@@ -1,0 +1,77 @@
+{
+	"info": {
+		"_postman_id": "5ead2a47-ea2a-46b1-aa32-d2fcc27c2ded",
+		"name": "Points Controller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40888539"
+	},
+	"item": [
+		{
+			"name": "Update highest score",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1FVSVpaRVIiXSwic3ViIjoicXVpenplciIsImlhdCI6MTc0MjIwODEwOSwiZXhwIjoxNzQyMjk0NTA5fQ.gp_ZNq0sLpuAPt1TuJ9BYkZQukGG_Pe3bxtgU80TW5Y",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"quizId\": 1,\n    \"points\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/points",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"points"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get highest score",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1FVSVpaRVIiXSwic3ViIjoicXVpenplciIsImlhdCI6MTc0MjIwODEwOSwiZXhwIjoxNzQyMjk0NTA5fQ.gp_ZNq0sLpuAPt1TuJ9BYkZQukGG_Pe3bxtgU80TW5Y",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/points?quiz_id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"points"
+					],
+					"query": [
+						{
+							"key": "quiz_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

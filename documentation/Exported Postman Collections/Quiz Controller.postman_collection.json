@@ -1,0 +1,182 @@
+{
+	"info": {
+		"_postman_id": "ca213d3f-ae0e-402e-9257-a5a31a390ac5",
+		"name": "Quiz Controller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40888539"
+	},
+	"item": [
+		{
+			"name": "Get Quiz Game Dto",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1FVSVpaRVIiXSwic3ViIjoicXVpenplciIsImlhdCI6MTc0MjIwODEwOSwiZXhwIjoxNzQyMjk0NTA5fQ.gp_ZNq0sLpuAPt1TuJ9BYkZQukGG_Pe3bxtgU80TW5Y",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/quizzes/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"quizzes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search my own quizzes",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1FVSVpfREVTSUdORVIiXSwic3ViIjoicmFuZTQzIiwiaWF0IjoxNzQyMjA4NjIwLCJleHAiOjE3NDIyOTUwMjB9.5woIdUURbQVYxHpw8_OhzudK3sXVWGXDmk0KZ2Y35t4",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/quizzes/mine/search?middleTitle=Geo&difficultyRating=EASY&ageRating=TEEN",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"quizzes",
+						"mine",
+						"search"
+					],
+					"query": [
+						{
+							"key": "middleTitle",
+							"value": "Geo"
+						},
+						{
+							"key": "difficultyRating",
+							"value": "EASY"
+						},
+						{
+							"key": "ageRating",
+							"value": "TEEN"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search All Quizzes",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1FVSVpaRVIiXSwic3ViIjoicXVpenplciIsImlhdCI6MTc0MjIwODc1OSwiZXhwIjoxNzQyMjk1MTU5fQ.yqgAmV3YrknUxRGMHI_76tplf7V2L9wvW6j1aQ_5YbA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/quizzes/search?middleTitle=Geo&difficultyRating=EASY&ageRating=TEEN",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"quizzes",
+						"search"
+					],
+					"query": [
+						{
+							"key": "middleTitle",
+							"value": "Geo"
+						},
+						{
+							"key": "difficultyRating",
+							"value": "EASY"
+						},
+						{
+							"key": "ageRating",
+							"value": "TEEN"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create quiz",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1FVSVpfREVTSUdORVIiXSwic3ViIjoicmFuZTQzIiwiaWF0IjoxNzQyMjA4NjIwLCJleHAiOjE3NDIyOTUwMjB9.5woIdUURbQVYxHpw8_OhzudK3sXVWGXDmk0KZ2Y35t4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"image\": \"landscape1.jpeg\",\n    \"difficultyRating\": \"EASY\",\n    \"description\": \"simple test description\",\n    \"ageRating\": \"TEEN\",\n    \"title\": \"Testing Quiz Creation\",\n    \"category\": \"SCIENCE\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/quizzes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"quizzes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete quiz",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1FVSVpfREVTSUdORVIiXSwic3ViIjoicmFuZTQzIiwiaWF0IjoxNzQyMjA4NjIwLCJleHAiOjE3NDIyOTUwMjB9.5woIdUURbQVYxHpw8_OhzudK3sXVWGXDmk0KZ2Y35t4",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/quizzes/15",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"quizzes",
+						"15"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

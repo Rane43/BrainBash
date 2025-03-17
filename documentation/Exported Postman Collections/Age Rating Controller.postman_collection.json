@@ -1,0 +1,36 @@
+{
+	"info": {
+		"_postman_id": "95318020-ed73-4db1-9b33-d32586eea20e",
+		"name": "Age Rating Controller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40888539"
+	},
+	"item": [
+		{
+			"name": "Get Age Ratings",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1FVSVpfREVTSUdORVIiXSwic3ViIjoicmFuZTQzIiwiaWF0IjoxNzQyMjA3NjExLCJleHAiOjE3NDIyOTQwMTF9.Df8aa3XP1E2wyaNx7WtWs0Bp4NQsWP3cGb53xEbEGD8",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/age-ratings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"age-ratings"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

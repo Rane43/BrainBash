@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "7e91bb39-2c82-4bd5-a08a-c83bbf73a999",
+		"name": "Quiz Controller - questions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40888539"
+	},
+	"item": [
+		{
+			"name": "Get question",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1FVSVpaRVIiXSwic3ViIjoicXVpenplciIsImlhdCI6MTc0MjIwODEwOSwiZXhwIjoxNzQyMjk0NTA5fQ.gp_ZNq0sLpuAPt1TuJ9BYkZQukGG_Pe3bxtgU80TW5Y",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/quizzes/questions/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"quizzes",
+						"questions",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create question",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1FVSVpfREVTSUdORVIiXSwic3ViIjoicmFuZTQzIiwiaWF0IjoxNzQyMjEyMzY5LCJleHAiOjE3NDIyOTg3Njl9.GNcahNYykA7kxyzDGLdOzc_94PQzJsU6OpDTSyid9o0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"text\": \"New Question\",\n    \"answerRequestDtos\": [\n        {\n            \"text\": \"Answer 1\",\n            \"correct\": true\n        },\n        {\n            \"text\": \"Answer 2\",\n            \"correct\": false\n        },\n        {\n            \"text\": \"Answer 3\",\n            \"correct\": false\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/quizzes/1/questions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"quizzes",
+						"1",
+						"questions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Question",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1FVSVpfREVTSUdORVIiXSwic3ViIjoicmFuZTQzIiwiaWF0IjoxNzQyMjEyMzY5LCJleHAiOjE3NDIyOTg3Njl9.GNcahNYykA7kxyzDGLdOzc_94PQzJsU6OpDTSyid9o0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"text\": \"Update to question\",\n    \"answerRequestDtos\": [\n        {\n            \"text\": \"New Answer 1\",\n            \"correct\": true\n        },\n        {\n            \"text\": \"New Answer 2\",\n            \"correct\": false\n        },\n        {\n            \"text\": \"New Answer 3\",\n            \"correct\": false\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/quizzes/questions/29",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"quizzes",
+						"questions",
+						"29"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete question",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
