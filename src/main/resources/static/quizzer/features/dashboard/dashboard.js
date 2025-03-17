@@ -49,6 +49,9 @@ function fetchAgeRatings() {
 		$.ajax({
 			url: "/api/age-ratings",
 			method: "GET",
+			headers: {
+				"Authorization": `Bearer ${TokenStorage.getToken()}`	
+			},
 			dataType: "json",
 			success: (ageRatings) => {
 				// Populate Age Ratings
@@ -77,6 +80,9 @@ function fetchDifficultyRatings() {
 		$.ajax({
 			url: "/api/difficulty-ratings",
 			method: "GET",
+			headers: {
+				"Authorization": `Bearer ${TokenStorage.getToken()}`	
+			},
 			dataType: "json",
 			success: (difficultyRatings) => {						
 				// Populate Difficulty Ratings

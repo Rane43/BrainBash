@@ -27,7 +27,6 @@ public class BrainBashApplication {
 		SpringApplication.run(BrainBashApplication.class, args);
 	}
 	
-	
 	// Temp user created
 	/*
 	@Bean

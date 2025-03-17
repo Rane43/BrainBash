@@ -102,6 +102,7 @@ public class QuizService implements IQuizService {
 			String middleTitle,
 			DifficultyRating difficultyRating, 
 			AgeRating ageRating) throws UnauthorizedAccessToQuizException, UserNotFoundException {
+		
 		String username = jwtService.extractUsername(bearerToken.substring(7));
 		User user = userRepo.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 		

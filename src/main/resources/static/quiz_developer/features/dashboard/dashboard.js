@@ -1,6 +1,7 @@
 $(document).ready(function () {
-	/* Search Functionality */
-	Promise.all([populateAgeRatingFilter(), populateDifficultyRatingFilter()]).then(displayQuizzesBySearch);
+	
+	setupQuizDeveloperDashboard();
+	
 	
 	$("#search-bar").on("keyup", function () {
 	    displayQuizzesBySearch();
@@ -21,6 +22,41 @@ $(document).ready(function () {
 	$("#submit-quiz-creation").off("click").on("click", createQuiz);
 });
 
+function setupQuizDeveloperDashboard() {
+	$.ajax({
+		url: `/api/quizzes/mine/search`, // Search for all quizzes
+		method: "GET",
+		headers: {
+			"Authorization": `Bearer ${TokenStorage.getToken()}`,
+			"Accept": "application/hal+json"
+		},
+		dataType: "json",
+		success: (response) => {
+			// Embed URLs
+			$("#submit-quiz-creation").attr("href", response._links.createQuiz.href);
+			 
+			// URLs for modal
+			$("#modal-category-dropdown").attr("href", response._links.categories.href);
+			$("#modal-age-rating-dropdown").attr("href", response._links.ageRatings.href);
+			$("#modal-difficulty-rating-dropdown").attr("href", response._links.difficultyRatings.href);
+			 
+			// URLs for Filters
+			$("#age-rating-dropdown").attr("href", response._links.ageRatings.href);
+			$("#difficulty-rating-dropdown").attr("href", response._links.difficultyRatings.href);
+			$("#quiz-creation-carousel").attr("href", response._links.quizImages.href);
+			
+			/* Search Functionality */
+			Promise.all([populateAgeRatingFilter(), populateDifficultyRatingFilter()]).then(() => {
+				// Display quizzes
+				if (!response._embedded) return;
+				displayQuizzes(response._embedded.quizSummaryDtoList);
+			});
+		},
+		error: () => {
+			console.log("Error retrieving quizzes...");
+		}
+	});
+}
 
 
 /* ------------------- SEARCH FUNCTIONALITY ------------------ */
@@ -36,8 +72,8 @@ function displayQuizzesBySearch() {
 			"Authorization": `Bearer ${TokenStorage.getToken()}`
 		},
 		dataType: "json",
-		success: (quizSummaryDtos) => {
-			displayQuizzes(quizSummaryDtos);
+		success: (response) => {
+			displayQuizzes(response._embedded.quizSummaryDtoList);
 		},
 		error: () => {
 			console.log("Error retrieving quizzes...");
@@ -55,9 +91,13 @@ function addOption(dropdown, value, text) {
 
 /* AGE RATINGS */
 function fetchAgeRatings(successFunc, errorFunc) {
+	const url = $("#modal-age-rating-dropdown").attr("href");
 	$.ajax({
-		url: "/api/age-ratings",
+		url: url,
 		method: "GET",
+		headers: {
+			"Authorization": `Bearer ${TokenStorage.getToken()}`	
+		},
 		dataType: "json",
 		success: (ageRatings) => {
 			successFunc(ageRatings);
@@ -70,9 +110,13 @@ function fetchAgeRatings(successFunc, errorFunc) {
 
 /* DIFFICULTY RATINGS */
 function fetchDifficultyRatings(successFunc, errorFunc) {
+	const url = $("#modal-difficulty-rating-dropdown").attr("href");
 	$.ajax({
-		url: "/api/difficulty-ratings",
+		url: url,
 		method: "GET",
+		headers: {
+			"Authorization": `Bearer ${TokenStorage.getToken()}`	
+		},
 		dataType: "json",
 		success: (difficultyRatings) => {						
 			successFunc(difficultyRatings);
@@ -85,9 +129,13 @@ function fetchDifficultyRatings(successFunc, errorFunc) {
 
 /* CATEGORIES */
 function fetchCategories(successFunc, errorFunc) {
+	const url = $("#modal-category-dropdown").attr("href");
 	$.ajax({
-		url: "/api/categories",
+		url: url,
 		method: "GET",
+		headers: {
+			"Authorization": `Bearer ${TokenStorage.getToken()}`	
+		},
 		dataType: "json",
 		success: (categories) => {
 			successFunc(categories);
@@ -100,9 +148,13 @@ function fetchCategories(successFunc, errorFunc) {
 
 /* IMAGES */
 function fetchImages(successFunc, errorFunc) {
+	const url = $("#quiz-creation-carousel").attr("href");
 	$.ajax({
-		url: "/api/images",
+		url: url,
 		method: "GET",
+		headers: {
+			"Authorization": `Bearer ${TokenStorage.getToken()}`	
+		},
 		success: (imageNames) => {
 			successFunc(imageNames);
 		},
@@ -210,13 +262,16 @@ function createQuiz() {
 		alert(error.message);
 		return;
 	}
-		
+	
+	const url = $("#submit-quiz-creation").attr("href");
     $.ajax({
-        url: `/api/quizzes`,
+        url: url,
         method: "POST",
         contentType: "application/json",
         data: JSON.stringify(quizCreationDto),
-		headers: {"Authorization": `Bearer ${TokenStorage.getToken()}`},
+		headers: {
+			"Authorization": `Bearer ${TokenStorage.getToken()}`
+		},
         dataType: "json",
         success: (response) => {
 			displayQuizzesBySearch();

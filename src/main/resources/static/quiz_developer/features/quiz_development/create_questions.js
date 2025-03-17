@@ -36,6 +36,9 @@ $(document).ready(function () {
 			$.ajax({
 				url: `/api/quizzes/questions/${questionId}`,
 				method: "GET",
+				headers: {
+					"Authorization": `Bearer ${TokenStorage.getToken()}`	
+				},
 				dataType: "json",
 				success: (questionDto) => {
 					this.currentQuestion = questionDto;
@@ -169,7 +172,9 @@ $(document).ready(function () {
 			$.ajax({
 				url: `/api/quizzes/${this.quizId}/questions`,
 				method: "POST",
-				headers: {"Authorization": `Bearer ${TokenStorage.getToken()}`},
+				headers: {
+					"Authorization": `Bearer ${TokenStorage.getToken()}`
+				},
 				contentType: "application/json",
 				data: JSON.stringify(defaultDto),
 				success: (questionId) => {
@@ -247,7 +252,9 @@ $(document).ready(function () {
 	$.ajax({
 		url: `/api/quizzes/${quizId}`,
 		method: "GET",
-		headers: {"Authorization": `Bearer ${TokenStorage.getToken()}`},
+		headers: {
+			"Authorization": `Bearer ${TokenStorage.getToken()}`
+		},
 		dataType: "json",
 		success: (quizGameDto) => {
 			// Initialise QuizEditor

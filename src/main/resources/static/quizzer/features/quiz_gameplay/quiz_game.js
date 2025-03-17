@@ -32,6 +32,9 @@ $(document).ready(function () {
 	        $.ajax({
 	            url: `/api/quizzes/questions/${questionId}`,
 	            method: "GET",
+				headers: {
+					"Authorization": `Bearer ${TokenStorage.getToken()}`	
+				},
 	            dataType: "json",
 	            success: (questionDto) => {
 	                this.currentQuestion = questionDto;
@@ -160,6 +163,9 @@ $(document).ready(function () {
     $.ajax({
         url: `/api/quizzes/${quizId}`,
         method: "GET",
+		headers: {
+			"Authorization": `Bearer ${TokenStorage.getToken()}`	
+		},
         dataType: "json",
         success: (quizDto) => {
 			// Update display
