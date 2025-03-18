@@ -80,7 +80,7 @@ public class QuizService implements IQuizService {
 		
 		Quiz quiz = new Quiz();
 		QuizMapper.quizCreationDtoToQuiz(quizCreationDto, user, quiz);
-		quizRepo.save(quiz);
+		quiz = quizRepo.save(quiz);
 		
 		return quiz.getId();
 	}

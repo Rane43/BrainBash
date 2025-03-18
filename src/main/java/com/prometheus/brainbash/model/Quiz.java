@@ -1,5 +1,6 @@
 package com.prometheus.brainbash.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +51,7 @@ public class Quiz {
         joinColumns = @JoinColumn(name = "quiz_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<User> developers;
+    private Set<User> developers = new HashSet<>();
     
     @Enumerated(EnumType.STRING)
     private AgeRating ageRating;
@@ -62,7 +63,7 @@ public class Quiz {
     private Category category;
     
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
-    private List<UserQuizScore> scores;
+    private List<UserQuizScore> scores = new ArrayList<>();
 
     
     
