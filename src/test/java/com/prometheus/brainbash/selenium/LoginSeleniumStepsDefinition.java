@@ -28,7 +28,7 @@ public class LoginSeleniumStepsDefinition extends CucumberSeleniumConfiguration 
 	
 	// URLs
 	private static final String LOGIN_PAGE_URL = "http://localhost:8082/";
-	private static final String HOMEPAGE_URL = "http://localhost:8082/#dashboard";
+	private static final String HOMEPAGE_URL = "http://localhost:8082/#quizzer-dashboard";
 	
 	// ELEMENT IDs
 	private static final String USERNAME_FIELD_ID = "username";
@@ -85,7 +85,7 @@ public class LoginSeleniumStepsDefinition extends CucumberSeleniumConfiguration 
 	@Then("I am redirected to the homepage")
 	public void i_am_redirected_to_the_homepage() {
 		wait.until((Function<WebDriver, Boolean>) driver -> driver.getCurrentUrl().equals(HOMEPAGE_URL));
-		assertEquals(HOMEPAGE_URL, driver.getCurrentUrl(), "Test admin should have been redirected to the homepage");
+		assertEquals(HOMEPAGE_URL, driver.getCurrentUrl(), "Test quizzer should have been redirected to the homepage");
 	}
 	
 	@And("my avatar appears in the top right to indicate I’m logged in")

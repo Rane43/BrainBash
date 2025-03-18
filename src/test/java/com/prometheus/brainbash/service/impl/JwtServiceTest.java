@@ -66,7 +66,7 @@ class JwtServiceTest {
         
         // Roles are in jwt
         assertTrue(claims.containsKey("roles"));
-        assertEquals("[ROLE_ADMIN]", claims.get("roles").toString());
+        assertEquals("[ROLE_QUIZZER]", claims.get("roles").toString());
 	}
 	
 	@Test

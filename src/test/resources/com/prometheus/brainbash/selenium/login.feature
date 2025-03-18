@@ -13,7 +13,7 @@ Feature: User Login
 		
 		Examples: 
       | username   | password         |
-      | testadmin | TestPassword123! |
+      | testquizzer | TestPassword123! |
   
   @tag2
   Scenario: Failure - Invalid credentials

@@ -13,6 +13,6 @@ public class AuthControllerKarateTest {
 	
 	@Karate.Test
 	Karate runLoginTests() {
-		return Karate.run(FOLDER + "/login-admin.feature").relativeTo(getClass());
+		return Karate.run(FOLDER + "/login.feature").relativeTo(getClass());
 	}
 }
