@@ -23,10 +23,6 @@
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
 		<sonar.language>java</sonar.language>
-	
-	    <sonar.projectKey>Group_project</sonar.projectKey>
-	    <sonar.projectName>Group_project</sonar.projectName>
-	    <sonar.host.url>http://localhost:9000</sonar.host.url> <!-- Adjust if using a remote SonarQube server -->
 	</properties>
 
     <dependencies>
@@ -196,6 +192,13 @@
             <artifactId>webdrivermanager</artifactId>
             <version>5.6.2</version>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.sonarsource.scanner.cli/sonar-scanner-cli -->
+		<dependency>
+		    <groupId>org.sonarsource.scanner.cli</groupId>
+		    <artifactId>sonar-scanner-cli</artifactId>
+		    <version>7.1.0.4889</version>
+		</dependency>
     </dependencies>
 
 	<build>
@@ -284,7 +287,7 @@
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
-				<version>3.9.0.1503</version>  <!-- Use the latest version -->
+				<version>3.9.0.1503</version> 
 			</plugin>
 			<!-- Run Selenium E2E Tests After Spring Boot Starts -->
 			<plugin>
