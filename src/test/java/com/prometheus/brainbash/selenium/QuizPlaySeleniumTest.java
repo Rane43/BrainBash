@@ -82,6 +82,8 @@ class QuizPlaySeleniumTest {
 		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(NEXT_BTN_ID))).click();
 		
+		Thread.sleep(2000); // 2-second wait for next page to load
+		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(
 		    By.xpath("//button[contains(text(), 'Berlin') or contains(text(), '7')]")
 		)).click();
