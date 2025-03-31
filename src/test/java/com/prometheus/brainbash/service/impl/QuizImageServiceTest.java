@@ -30,7 +30,7 @@ class QuizImageServiceTest {
     }
 
     @Test
-    void testFindAll_ShouldReturnImageFiles() throws IOException {
+    void testFindAll_ShouldReturnImageFiles() {
         try (MockedStatic<Files> mockedFiles = mockStatic(Files.class)) {
             Stream<Path> mockPaths = Stream.of(
                 Path.of("image1.jpg"),
@@ -49,7 +49,7 @@ class QuizImageServiceTest {
     }
 
     @Test
-    void testFindAll_ShouldReturnEmptyListOnIOException() throws IOException {
+    void testFindAll_ShouldReturnEmptyListOnIOException() {
         try (MockedStatic<Files> mockedFiles = mockStatic(Files.class)) {
             mockedFiles.when(() -> Files.walk(Path.of(TEST_FOLDER))).thenThrow(new IOException("Test Exception"));
 
