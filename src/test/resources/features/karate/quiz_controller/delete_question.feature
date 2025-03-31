@@ -10,6 +10,13 @@ Feature: Delete Question
     When method delete
     Then status 401
     
+  Scenario: Cannot delete question that doesnt exist # Cover Exception Handler
+  	Given url baseUrl
+  	* header Authorization = 'Bearer ' + token
+    And path '/api/quizzes/questions/100000'
+    When method delete
+    Then status 404
+    
   Scenario: Successfully delete question
   	Given url baseUrl
   	* header Authorization = 'Bearer ' + token
