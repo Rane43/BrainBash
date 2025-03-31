@@ -16,7 +16,6 @@ import com.prometheus.brainbash.model.Role;
 public class LoginHelper {
 	// URLs
 	private static final String LOGIN_PAGE_URL = "http://localhost:8082/#login";
-	private static final String HOMEPAGE_URL = "http://localhost:8082/#quizzer-dashboard";
 	
 	// ELEMENT IDs
 	private static final String USERNAME_FIELD_ID = "username";
@@ -65,8 +64,6 @@ public class LoginHelper {
         emailField.sendKeys(email);
         passwordField.sendKeys(password);
         loginButton.click();
-        
-        wait.until((Function<WebDriver, Boolean>) webDriver -> webDriver.getCurrentUrl().equals(HOMEPAGE_URL));
 	}
 	
 }
