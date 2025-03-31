@@ -9,11 +9,11 @@ import com.intuit.karate.junit5.Karate;
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class RoleBasedAccessKarateTest {
-	private static final String FOLDER = "classpath:features/karate/jwt-auth";
+	private static final String FOLDER = "classpath:features/karate/jwt_auth/";
 	
 	@Karate.Test
 	Karate testRoleBasedAccess() {
-		return Karate.run(FOLDER + "/authorization.feature").relativeTo(getClass());
+		return Karate.run(FOLDER + "authorization.feature").relativeTo(getClass());
 	}
 
 }

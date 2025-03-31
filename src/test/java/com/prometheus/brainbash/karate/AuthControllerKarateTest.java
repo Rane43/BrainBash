@@ -1,4 +1,4 @@
-package com.prometheus.brainbash.controller;
+package com.prometheus.brainbash.karate;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -9,10 +9,13 @@ import com.intuit.karate.junit5.Karate;
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class AuthControllerKarateTest {
-	private static final String FOLDER = "classpath:features/karate/login";
+	private static final String FOLDER = "classpath:features/karate/auth_controller/";
 	
 	@Karate.Test
 	Karate runLoginTests() {
-		return Karate.run(FOLDER + "/login.feature").relativeTo(getClass());
+		return Karate.run(
+				FOLDER + "login.feature",
+				FOLDER + "register.feature"
+		).relativeTo(getClass());
 	}
 }
