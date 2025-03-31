@@ -41,6 +41,19 @@ public class DatabaseManager {
     		SETUP_SCRIPTS_FOLDER + "quiz_developers.sql",
     		SETUP_SCRIPTS_FOLDER + "user_quiz_scores.sql"
     );
+    
+    @Transactional
+    public void executeUserSetupScripts() {
+    	// Wipe database first
+    	clearDatabase();
+    	
+    	// Execute user setup script
+        try (Connection connection = dataSource.getConnection()) {
+        	ScriptUtils.executeSqlScript(connection, new ClassPathResource(SETUP_SCRIPTS_FOLDER + "users.sql"));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error executing setup scripts", e);
+        }
+    }
    
     @Transactional
     public void executeSetupScripts() {
