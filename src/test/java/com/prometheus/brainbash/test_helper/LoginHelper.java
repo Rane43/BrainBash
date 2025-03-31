@@ -56,6 +56,7 @@ public class LoginHelper {
 		final String password = loginDto.getPassword();
 		
 		driver.get(BASE_URL);
+		wait.until((Function<WebDriver, Boolean>) webDriver -> webDriver.getCurrentUrl().equals(LOGIN_PAGE_URL));
 		
 		WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(USERNAME_FIELD_ID)));
 		WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(PASSWORD_FIELD_ID)));

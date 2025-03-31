@@ -86,7 +86,7 @@ class LoginSeleniumTest {
 		wait.until((Function<WebDriver, Boolean>) driver -> driver.getCurrentUrl().equals(HOMEPAGE_URL));
 		assertEquals(HOMEPAGE_URL, driver.getCurrentUrl(), "Test quizzer should have been redirected to the homepage");
 		
-		// And my avatar appears in the top right to indicate I’m logged in")
+		// And my avatar appears in the top right to indicate I’m logged in
 	    WebElement userIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(USER_ICON_ID)));
 	    assertTrue(userIcon.isDisplayed(), "User icon should be visible but is not.");
 	}
