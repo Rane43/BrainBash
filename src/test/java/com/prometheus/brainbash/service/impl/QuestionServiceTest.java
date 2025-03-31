@@ -6,9 +6,11 @@ import static org.mockito.Mockito.*;
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.verification.Times;
 
 import com.prometheus.brainbash.dao.QuestionRepository;
 import com.prometheus.brainbash.dao.QuizRepository;
@@ -33,6 +35,14 @@ class QuestionServiceTest {
     private String bearerToken = "Bearer mockToken";
     private long quizId = 1L;
     private long questionId = 2L;
+    
+    private  User otherUser;
+    private String otherUsername = "otherUser";
+    
+    private final String userNotFoundExceptionMessage = "User with username: " + username + ", cannot be found.";
+    private final String questionNotFoundExceptionMessage = "Question with id: '" + questionId + "' cannot be found.";
+	private final String quizNotFoundExceptionMessage = "Quiz with id: " + quizId + ", cannot be found.";
+	private final String unauthorizedAccessToQuizExceptionMessage = "You do not have access to quiz with id '" + quizId + "'";
 
     @BeforeEach
     public void setup() {
@@ -54,8 +64,21 @@ class QuestionServiceTest {
         question = new Question();
         question.setId(questionId);
         question.setQuiz(quiz);
+        
+        otherUser = new User();
+        otherUser.setUsername(otherUsername);
     }
 
+    // findById
+    @Test
+    void testFindByIdThrowsQuestionNotFoundException() {
+        when(questionRepo.findById(questionId)).thenReturn(Optional.empty());
+        Throwable e = assertThrows(QuestionNotFoundException.class, () -> {
+        	questionService.findById(questionId);
+        });
+        assertEquals(questionNotFoundExceptionMessage, e.getMessage());
+    }
+    
     @Test
     void testFindByIdSuccessfully() {
         when(questionRepo.findById(questionId)).thenReturn(Optional.of(question));
@@ -63,16 +86,55 @@ class QuestionServiceTest {
         assertNotNull(result);
     }
 
+    
+    // createQuestion
     @Test
-    void testFindByIdThrowsQuestionNotFoundException() {
-        when(questionRepo.findById(questionId)).thenReturn(Optional.empty());
-        Throwable e = assertThrows(QuestionNotFoundException.class, () -> {
-        	questionService.findById(questionId);
+    void testCreateQuestionThrowsUserNotFoundException() {
+        when(jwtService.extractUsername(any())).thenReturn(username);
+        when(userRepo.findByUsername(username)).thenReturn(Optional.empty());
+
+        QuestionRequestDto questionRequestDto = new QuestionRequestDto();
+        Throwable e = assertThrows(UserNotFoundException.class, () -> {
+        	questionService.createQuestion(bearerToken, quizId, questionRequestDto);
         });
-        assertEquals("Question with id: '" + questionId + "' cannot be found.", e.getMessage());
-        
+        assertEquals(userNotFoundExceptionMessage, e.getMessage());
+        verify(questionRepo, new Times(0)).save(any());
     }
 
+    @Test
+    void testCreateQuestionThrowsQuizNotFoundException() {
+        when(jwtService.extractUsername(any())).thenReturn(username);
+        when(userRepo.findByUsername(username)).thenReturn(Optional.of(user));
+        when(quizRepo.findById(quizId)).thenReturn(Optional.empty());
+
+        QuestionRequestDto questionRequestDto = new QuestionRequestDto();
+        Throwable e = assertThrows(QuizNotFoundException.class, () -> {
+        	questionService.createQuestion(bearerToken, quizId, questionRequestDto);
+        });
+        assertEquals(quizNotFoundExceptionMessage, e.getMessage());
+        verify(questionRepo, new Times(0)).save(any());
+    }
+    
+    @Test
+    void testFindByIdThrowsUnauthorizedAccessException() {    
+    	QuestionRequestDto questionRequestDto = new QuestionRequestDto();
+		questionRequestDto.setAnswerRequestDtos(new HashSet<>());
+		
+    	quiz.setDevelopers(Set.of(otherUser));
+    	
+		when(jwtService.extractUsername(any())).thenReturn(username);
+		when(userRepo.findByUsername(username)).thenReturn(Optional.of(user));
+		when(quizRepo.findById(quizId)).thenReturn(Optional.of(quiz));
+		when(questionRepo.save(any())).thenReturn(question);
+		
+		Throwable e = assertThrows(UnauthorizedAccessToQuizException.class, () -> {
+        	questionService.createQuestion(bearerToken, quizId, questionRequestDto);
+        });
+		
+        assertEquals(unauthorizedAccessToQuizExceptionMessage, e.getMessage());
+		verify(questionRepo, times(0)).save(any());
+    }
+    
     @Test
     void testCreateQuestionSuccessfully() {
         when(jwtService.extractUsername(any())).thenReturn(username);
@@ -87,26 +149,53 @@ class QuestionServiceTest {
         assertEquals(questionId, createdQuestionId);
         verify(questionRepo, times(1)).save(any());
     }
+    
 
+    
+    // updateQuestion
     @Test
-    void testCreateQuestionThrowsUserNotFoundException() {
+    void testUpdateQuestionThrowsUserNotFoundException() {
         when(jwtService.extractUsername(any())).thenReturn(username);
         when(userRepo.findByUsername(username)).thenReturn(Optional.empty());
 
         QuestionRequestDto questionRequestDto = new QuestionRequestDto();
-        assertThrows(UserNotFoundException.class, () -> questionService.createQuestion(bearerToken, quizId, questionRequestDto));
+        Throwable e = assertThrows(UserNotFoundException.class, () -> {
+        	questionService.updateQuestion(bearerToken, questionId, questionRequestDto);
+        });
+        
+        assertEquals(userNotFoundExceptionMessage, e.getMessage());
+        verify(questionRepo, new Times(0)).save(any());
     }
-
+    
     @Test
-    void testCreateQuestionThrowsQuizNotFoundException() {
+    void testUpdateQuestionThrowsQuestionNotFoundException() {
         when(jwtService.extractUsername(any())).thenReturn(username);
         when(userRepo.findByUsername(username)).thenReturn(Optional.of(user));
-        when(quizRepo.findById(quizId)).thenReturn(Optional.empty());
+        when(questionRepo.findById(questionId)).thenReturn(Optional.empty());
 
         QuestionRequestDto questionRequestDto = new QuestionRequestDto();
-        assertThrows(QuizNotFoundException.class, () -> questionService.createQuestion(bearerToken, quizId, questionRequestDto));
+        Throwable e = assertThrows(QuestionNotFoundException.class, () -> {
+        	questionService.updateQuestion(bearerToken, questionId, questionRequestDto);
+        });
+        
+        assertEquals(questionNotFoundExceptionMessage, e.getMessage());
+        verify(questionRepo, new Times(0)).save(any());
     }
+    
+    @Test
+    void testUpdateQuestionThrowsUnauthorizedAccessException() {
+        when(jwtService.extractUsername(any())).thenReturn(otherUsername);
+        when(userRepo.findByUsername(otherUsername)).thenReturn(Optional.of(otherUser));
+        when(questionRepo.findById(questionId)).thenReturn(Optional.of(question));
 
+        QuestionRequestDto questionRequestDto = new QuestionRequestDto();
+        Throwable e = assertThrows(UnauthorizedAccessToQuizException.class, () -> {
+        	questionService.updateQuestion(bearerToken, questionId, questionRequestDto);
+        });
+        assertEquals(unauthorizedAccessToQuizExceptionMessage, e.getMessage());
+        verify(questionRepo, new Times(0)).save(any());   
+    }
+    
     @Test
     void testUpdateQuestionSuccessfully() {
         when(jwtService.extractUsername(any())).thenReturn(username);
@@ -119,18 +208,49 @@ class QuestionServiceTest {
         verify(questionRepo, times(1)).save(any());
     }
 
+    
+    // delete
     @Test
-    void testUpdateQuestionThrowsUnauthorizedAccessException() {
-        User anotherUser = new User();
-        anotherUser.setId(2L);
-        when(jwtService.extractUsername(any())).thenReturn("anotherUser");
-        when(userRepo.findByUsername("anotherUser")).thenReturn(Optional.of(anotherUser));
+    void testDeleteQuestionThrowsUserNotFoundException() {
+    	when(jwtService.extractUsername(any())).thenReturn(username);
+        when(userRepo.findByUsername(username)).thenReturn(Optional.empty());
+
+        Throwable e = assertThrows(UserNotFoundException.class, () -> {
+        	questionService.delete(bearerToken, questionId);
+        });
+        
+        assertEquals(userNotFoundExceptionMessage, e.getMessage());
+        verify(questionRepo, times(0)).delete(any());
+    }
+    
+    @Test
+    void testDeleteQuestionThrowsQuestionNotFoundException() {
+    	when(jwtService.extractUsername(any())).thenReturn(username);
+        when(userRepo.findByUsername(username)).thenReturn(Optional.of(user));
+        when(questionRepo.findById(questionId)).thenReturn(Optional.empty());
+
+        Throwable e = assertThrows(QuestionNotFoundException.class, () -> {
+        	questionService.delete(bearerToken, questionId);
+        });
+        
+        assertEquals(questionNotFoundExceptionMessage, e.getMessage());
+        verify(questionRepo, times(0)).delete(any());
+    }
+    
+    @Test
+    void testDeleteQuestionThrowsUnauthorizedAccessException() {
+        when(jwtService.extractUsername(any())).thenReturn(otherUsername);
+        when(userRepo.findByUsername(otherUsername)).thenReturn(Optional.of(otherUser));
         when(questionRepo.findById(questionId)).thenReturn(Optional.of(question));
 
-        QuestionRequestDto questionRequestDto = new QuestionRequestDto();
-        assertThrows(UnauthorizedAccessToQuizException.class, () -> questionService.updateQuestion(bearerToken, questionId, questionRequestDto));
+        Throwable e = assertThrows(UnauthorizedAccessToQuizException.class, () -> {
+        	questionService.delete(bearerToken, questionId);
+        });
+        
+        assertEquals(unauthorizedAccessToQuizExceptionMessage, e.getMessage());
+        verify(questionRepo, times(0)).delete(any());
     }
-
+    
     @Test
     void testDeleteQuestionSuccessfully() {
         when(jwtService.extractUsername(any())).thenReturn(username);
@@ -140,16 +260,7 @@ class QuestionServiceTest {
         assertDoesNotThrow(() -> questionService.delete(bearerToken, questionId));
         verify(questionRepo, times(1)).delete(question);
     }
-
-    @Test
-    void testDeleteQuestionThrowsUnauthorizedAccessException() {
-        User anotherUser = new User();
-        anotherUser.setId(2L);
-        when(jwtService.extractUsername(any())).thenReturn("anotherUser");
-        when(userRepo.findByUsername("anotherUser")).thenReturn(Optional.of(anotherUser));
-        when(questionRepo.findById(questionId)).thenReturn(Optional.of(question));
-
-        assertThrows(UnauthorizedAccessToQuizException.class, () -> questionService.delete(bearerToken, questionId));
-    }
+    
+    
 }
 

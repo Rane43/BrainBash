@@ -2,16 +2,6 @@ Feature: Log in as Quizzer
   Background: 
   	* def baseUrl = karate.get('baseUrl')
   	
-  Scenario: Authenticate Quizzer User and Get Token
-    Given url baseUrl + '/api/auth/login'
-    * header Content-Type = 'application/json'
-    And request { username: "testQuizzer", password: "TestPassword123!" }
-    When method post
-    Then status 200
-		* def token = response.token
-		* match token != null
-		* match token != ''
-		
 	Scenario: Invalid Login as Quizzer
 		Given url baseUrl + '/api/auth/login'
     * header Content-Type = 'application/json'
@@ -28,3 +18,14 @@ Feature: Log in as Quizzer
     When method post
     Then status 400
 		* def message = response
+	
+  Scenario: Valid Quizzer login and Get Token
+    Given url baseUrl + '/api/auth/login'
+    * header Content-Type = 'application/json'
+    And request { username: "testQuizzer", password: "TestPassword123!" }
+    When method post
+    Then status 200
+		* def token = response.token
+		* match token != null
+		* match token != ''
+		

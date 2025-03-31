@@ -1,4 +1,4 @@
-package com.prometheus.brainbash.controller;
+package com.prometheus.brainbash.test_helper;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;

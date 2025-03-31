@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.verification.Times;
 
 import com.prometheus.brainbash.dao.QuizRepository;
 import com.prometheus.brainbash.dao.UserRepository;
@@ -35,7 +36,11 @@ class QuizServiceTest {
     private String username = "testUser";
     private String bearerToken = "Bearer mockToken";
     private long quizId = 1L;
-
+    
+    private final String userNotFoundExceptionMessage = "User with username: " + username + ", cannot be found.";
+    private final String quizNotFoundExceptionMessage = "Quiz with id: " + quizId + ", cannot be found.";
+    private final String unauthorizedAccessToQuizException = "You do not have access to quiz with id '" + quizId + "'";
+    
     @BeforeEach
     public void setup() {
         quizRepo = mock(QuizRepository.class);
@@ -51,7 +56,35 @@ class QuizServiceTest {
         quiz = new Quiz();
         quiz.setId(quizId);
     }
+    
+    // findAll
+    @Test
+    void testFindAllSuccessfully() {
+        when(quizRepo.findAll()).thenReturn(List.of(quiz));
+        List<QuizSummaryDto> result = quizService.findAll();
+        assertFalse(result.isEmpty());
+    }
+    
+    // findBySearch
+    @Test
+    void testFindBySearchSuccessfully() {
+        when(quizRepo.findBySearch(any(), any(), any())).thenReturn(List.of(quiz));
+        List<QuizSummaryDto> result = quizService.findBySearch("title", DifficultyRating.EASY, AgeRating.ADULT);
+        assertFalse(result.isEmpty());
+    }
 
+    // findById
+    @Test
+    void testFindByIdThrowsQuizNotFoundException() {
+        when(quizRepo.findById(quizId)).thenReturn(Optional.empty());
+        
+        Throwable e = assertThrows(QuizNotFoundException.class, () -> {
+        	quizService.findById(quizId);
+        });
+        
+        assertEquals(quizNotFoundExceptionMessage, e.getMessage());
+    }
+    
     @Test
     void testFindByIdSuccessfully() {
         when(quizRepo.findById(quizId)).thenReturn(Optional.of(quiz));
@@ -59,12 +92,22 @@ class QuizServiceTest {
         assertNotNull(result);
     }
 
+    // save
     @Test
-    void testFindByIdThrowsQuizNotFoundException() {
-        when(quizRepo.findById(quizId)).thenReturn(Optional.empty());
-        assertThrows(QuizNotFoundException.class, () -> quizService.findById(quizId));
+    void testSaveThrowsUserNotFoundException() {
+    	QuizCreationDto quizCreationDto = new QuizCreationDto();
+    	
+        when(jwtService.extractUsername(any())).thenReturn(username);
+        when(userRepo.findByUsername(username)).thenReturn(Optional.empty());
+        
+        Throwable e = assertThrows(UserNotFoundException.class, () -> {
+        	quizService.save(bearerToken, quizCreationDto);
+        });
+    
+        assertEquals(userNotFoundExceptionMessage, e.getMessage());
+        verify(quizRepo, new Times(0)).save(any());
     }
-
+    
     @Test
     void testSaveSuccessfully() {
         when(jwtService.extractUsername(any())).thenReturn(username);
@@ -75,55 +118,20 @@ class QuizServiceTest {
         long createdQuizId = quizService.save(bearerToken, quizCreationDto);
         
         assertEquals(quizId, createdQuizId);
-        verify(quizRepo, times(1)).save(any());
+        verify(quizRepo, times(1)).save(any(Quiz.class));
     }
-
+    
+    // findMineBySearch
     @Test
-    void testSaveThrowsUserNotFoundException() {
+    void testFindMineBySearchThrowsUserNotFoundException() {
         when(jwtService.extractUsername(any())).thenReturn(username);
         when(userRepo.findByUsername(username)).thenReturn(Optional.empty());
         
-        QuizCreationDto quizCreationDto = new QuizCreationDto();
-        assertThrows(UserNotFoundException.class, () -> quizService.save(bearerToken, quizCreationDto));
-    }
-
-    @Test
-    void testDeleteSuccessfully() {
-    	quiz.getDevelopers().add(user);
-    	
-        when(jwtService.extractUsername(any())).thenReturn(username);
-        when(userRepo.findByUsername(username)).thenReturn(Optional.of(user));
-        when(quizRepo.findById(quizId)).thenReturn(Optional.of(quiz));
+        Throwable e = assertThrows(UserNotFoundException.class, () -> {
+        	quizService.findMineBySearch(bearerToken, "title", DifficultyRating.EASY, AgeRating.ADULT);
+        });
         
-        assertDoesNotThrow(() -> quizService.delete(bearerToken, quizId));
-        verify(quizRepo, times(1)).delete(quiz);
-    }
-
-    @Test
-    void testDeleteThrowsUnauthorizedAccessException() {
-        User anotherUser = new User();
-        anotherUser.setId(2L);
-        anotherUser.setUsername(username);
-        
-        when(jwtService.extractUsername(any())).thenReturn("anotherUser");
-        when(userRepo.findByUsername("anotherUser")).thenReturn(Optional.of(anotherUser));
-        when(quizRepo.findById(quizId)).thenReturn(Optional.of(quiz));
-        
-        assertThrows(UnauthorizedAccessToQuizException.class, () -> quizService.delete(bearerToken, quizId));
-    }
-    
-    @Test
-    void testFindAll() {
-        when(quizRepo.findAll()).thenReturn(List.of(quiz));
-        List<QuizSummaryDto> result = quizService.findAll();
-        assertFalse(result.isEmpty());
-    }
-    
-    @Test
-    void testFindBySearch() {
-        when(quizRepo.findBySearch(any(), any(), any())).thenReturn(List.of(quiz));
-        List<QuizSummaryDto> result = quizService.findBySearch("title", DifficultyRating.EASY, AgeRating.ADULT);
-        assertFalse(result.isEmpty());
+        assertEquals(userNotFoundExceptionMessage, e.getMessage());
     }
     
     @Test
@@ -135,12 +143,63 @@ class QuizServiceTest {
         List<QuizSummaryDto> result = quizService.findMineBySearch(bearerToken, "title", DifficultyRating.EASY, AgeRating.ADULT);
         assertFalse(result.isEmpty());
     }
+
     
+    // delete
     @Test
-    void testFindMineBySearchThrowsUserNotFoundException() {
-        when(jwtService.extractUsername(any())).thenReturn(username);
+    void testDeleteThrowsUserNotFoundException() {
+    	when(jwtService.extractUsername(any())).thenReturn(username);
         when(userRepo.findByUsername(username)).thenReturn(Optional.empty());
         
-        assertThrows(UserNotFoundException.class, () -> quizService.findMineBySearch(bearerToken, "title", DifficultyRating.EASY, AgeRating.ADULT));
+        Throwable e = assertThrows(UserNotFoundException.class, () -> {
+        	quizService.delete(bearerToken, quizId);
+        });
+        
+        assertEquals(userNotFoundExceptionMessage, e.getMessage());
+        verify(quizRepo, new Times(0)).delete(any());
+    }
+    
+    @Test
+    void testDeleteThrowsQuizNotFoundException() {
+    	when(jwtService.extractUsername(any())).thenReturn(username);
+        when(userRepo.findByUsername(username)).thenReturn(Optional.of(user));
+        when(quizRepo.findById(quizId)).thenReturn(Optional.empty());
+        
+        Throwable e = assertThrows(QuizNotFoundException.class, () -> {
+        	quizService.delete(bearerToken, quizId);
+        });
+        
+        assertEquals(quizNotFoundExceptionMessage, e.getMessage());
+        verify(quizRepo, new Times(0)).delete(any());
+    }
+    
+    @Test
+    void testDeleteThrowsUnauthorizedAccessException() {
+        User anotherUser = new User();
+        anotherUser.setId(2L);
+        anotherUser.setUsername(username);
+        
+        when(jwtService.extractUsername(any())).thenReturn("anotherUser");
+        when(userRepo.findByUsername("anotherUser")).thenReturn(Optional.of(anotherUser));
+        when(quizRepo.findById(quizId)).thenReturn(Optional.of(quiz));
+        
+        Throwable e = assertThrows(UnauthorizedAccessToQuizException.class, () -> {
+        	quizService.delete(bearerToken, quizId);
+        });
+        
+        assertEquals(unauthorizedAccessToQuizException, e.getMessage());
+        verify(quizRepo, new Times(0)).delete(any());
+    }
+    
+    @Test
+    void testDeleteSuccessfully() {
+    	quiz.getDevelopers().add(user);
+    	
+        when(jwtService.extractUsername(any())).thenReturn(username);
+        when(userRepo.findByUsername(username)).thenReturn(Optional.of(user));
+        when(quizRepo.findById(quizId)).thenReturn(Optional.of(quiz));
+        
+        assertDoesNotThrow(() -> quizService.delete(bearerToken, quizId));
+        verify(quizRepo, new Times(1)).delete(quiz);
     }
 }

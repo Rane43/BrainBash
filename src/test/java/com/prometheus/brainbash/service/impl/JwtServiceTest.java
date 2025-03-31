@@ -9,7 +9,6 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,6 @@ class JwtServiceTest {
 	
 	private static final String USERNAME = "USER-NAME_123";
 	private static final String PASSWORD = "TestPassword123!";
-	private static final Set<Role> ROLES = Set.of(Role.ROLE_QUIZZER);
 	
 	@BeforeEach
 	void setup() {

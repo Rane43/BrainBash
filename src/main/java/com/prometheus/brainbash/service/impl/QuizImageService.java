@@ -30,7 +30,6 @@ public class QuizImageService implements IQuizImageService {
 						.filter(name -> name.matches(".*\\.(jpg|jpeg|png|gif|bmp|webp)$"))
 						.toList();
 		} catch (IOException e) {
-			e.printStackTrace();
 			return new ArrayList<>();
 		}
 	}
