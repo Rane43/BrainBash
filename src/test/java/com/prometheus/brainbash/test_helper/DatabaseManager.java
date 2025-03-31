@@ -43,7 +43,7 @@ public class DatabaseManager {
     );
     
     @Transactional
-    public void executeUserSetupScripts() {
+    public void executeUserSetupScript() {
     	// Wipe database first
     	clearDatabase();
     	
