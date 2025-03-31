@@ -69,13 +69,13 @@ public class LoginSeleniumStepsDefinition extends CucumberSeleniumConfiguration 
 	
 	@And("I enter a valid username {string}")
 	public void i_enter_a_valid_email(String username) {
-	    WebElement usernameElement = driver.findElement(By.id(USERNAME_FIELD_ID));
+	    WebElement usernameElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(USERNAME_FIELD_ID)));
 	    usernameElement.sendKeys(username);
 	}
 
 	@And("I enter a valid password {string}")
 	public void i_enter_a_valid_password(String password) {
-	    WebElement passwordElement = driver.findElement(By.id(PASSWORD_FIELD_ID));
+	    WebElement passwordElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(PASSWORD_FIELD_ID)));
 	    passwordElement.sendKeys(password);
 	    System.out.println(password);
 	}
@@ -83,7 +83,7 @@ public class LoginSeleniumStepsDefinition extends CucumberSeleniumConfiguration 
 	
 	@When("I click the login button")
 	public void i_click_the_login_button() {
-		WebElement loginButton = driver.findElement(By.id(LOGIN_BTN_ID));
+		WebElement loginButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(LOGIN_BTN_ID)));
 		loginButton.click();
 	}
 	
