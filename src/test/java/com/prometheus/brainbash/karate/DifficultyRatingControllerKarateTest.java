@@ -9,7 +9,7 @@ class DifficultyRatingControllerKarateTest {
 	private static final String FOLDER = "classpath:features/karate/difficulty_rating_controller/";
 	
 	@Karate.Test
-	Karate runAllAgeRatingControllerTests() {
+	Karate funAllDifficultyRatingKarateTests() {
 		return Karate.run(FOLDER + "get_all_difficulty_ratings.feature");
 	}
 }
