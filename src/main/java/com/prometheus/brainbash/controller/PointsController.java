@@ -1,6 +1,5 @@
 package com.prometheus.brainbash.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,8 +20,6 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/points")
 public class PointsController {
-	private static final String USER_OR_QUIZ_NOT_FOUND_MESSAGE = "Failed to update points. User or Quiz not found.";
-	
 	private IJwtService jwtService;
 	private IPointsService pointsService;
 	
@@ -34,30 +31,26 @@ public class PointsController {
 	
 	@GetMapping
 	@PreAuthorize("hasRole('QUIZZER')")
-	public ResponseEntity<?> getPoints(@RequestHeader("Authorization") String bearerToken, @RequestParam("quiz_id") long quizId) {
+	public long getPoints(
+			@RequestHeader("Authorization") String bearerToken, 
+			@RequestParam("quiz_id") long quizId
+	) throws UserNotFoundException, QuizNotFoundException {
 		String username = jwtService.extractUsername(bearerToken.substring(7));
-		
-		try {
-			int points = pointsService.getPointsForUserForQuiz(username, quizId);
-			return ResponseEntity.ok().body(points);
-		} catch (UserNotFoundException | QuizNotFoundException e) {
-			return ResponseEntity.status(400).body(USER_OR_QUIZ_NOT_FOUND_MESSAGE);
-		}
+		return pointsService.getPointsForUserForQuiz(username, quizId);
 	}
 
 	@PutMapping
 	@PreAuthorize("hasRole('QUIZZER')")
-	public ResponseEntity<?> updatePoints(@RequestHeader("Authorization") String bearerToken, @Valid @RequestBody PointsUpdateDto pointsUpdateDto ) {
+	public long updatePoints(
+			@RequestHeader("Authorization") String bearerToken, 
+			@Valid @RequestBody PointsUpdateDto pointsUpdateDto
+	) throws UserNotFoundException, QuizNotFoundException {
 		String username = jwtService.extractUsername(bearerToken.substring(7));
-		try {
-			pointsService.updatePoints(
-				username, 
-				pointsUpdateDto.getQuizId(), 
-				pointsUpdateDto.getPoints()
-			);
-            return ResponseEntity.ok(pointsService.getPointsForUserForQuiz(username, pointsUpdateDto.getQuizId()));
-        } catch (UserNotFoundException | QuizNotFoundException e) {
-            return ResponseEntity.status(400).body(USER_OR_QUIZ_NOT_FOUND_MESSAGE);
-        }
+		pointsService.updatePoints(
+			username, 
+			pointsUpdateDto.getQuizId(), 
+			pointsUpdateDto.getPoints()
+		);
+		return pointsService.getPointsForUserForQuiz(username, pointsUpdateDto.getQuizId());
 	}
 }
