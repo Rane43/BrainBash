@@ -1,14 +1,16 @@
-Feature: Create Quiz
-	Background: Login as Quiz Designer (testQuizDesigner)
-		* def quizDesignerResponse = call read("classpath:features/karate/helpers/login_as_quiz_designer.feature") 
-		* def token = quizDesignerResponse.response.token
-	
-	Scenario: Successfully get all quizzes by title only
-		Given url baseUrl
-  	* header Authorization = 'Bearer ' + token
-  	* header Accept = 'application/json'
-    And path '/api/quizzes'
-    And request { title: "newQuiz", description: "New Quiz for testing", image: "test-image.jpeg", ageRating: 'TEEN', difficultyRating: 'EASY', category: 'ANATOMY'}
-    When method post
-    Then status 201
+Feature: Fetch Question By Id
+	Background: Login as Quizzer (testQuizzer)
+		* def quizzerResponse = call read("classpath:features/karate/helpers/login_as_quizzer.feature") 
+		* def token = quizzerResponse.response.token
 		
+  Scenario: Successfully get question by Id
+  	Given url baseUrl
+  	* header Authorization = 'Bearer ' + token
+    And path '/api/quizzes/questions/1'
+    When method get
+    Then status 200
+    And match response.id == 1
+    And match response.text == '#present'
+    And match response.quizId == '#present'
+    And match response.answerDtos == '#[]'
+    
