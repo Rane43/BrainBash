@@ -35,7 +35,7 @@ public class AuthController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginDto loginDto) throws InvalidCredentialsException {
+	public LoginResponseDto login(@Valid @RequestBody LoginDto loginDto) throws InvalidCredentialsException {
 		// Usernames are case insensitive
 		String username = loginDto.getUsername().toLowerCase().trim();
 		String password = loginDto.getPassword().trim();
@@ -43,13 +43,12 @@ public class AuthController {
 		UserDetails userDetails = authService.authenticate(username,password);
 		String token = jwtService.generateToken(userDetails);
 		
-		LoginResponseDto loginResponse = new LoginResponseDto(token);
-		return ResponseEntity.status(HttpStatus.OK).body(loginResponse);	
+		return new LoginResponseDto(token);
 	}
 	
 	
 	@PostMapping("/register")
-	public ResponseEntity<LoginResponseDto> register(@Valid @RequestBody RegDto regDto) throws UserAlreadyExistsException {
+	public LoginResponseDto register(@Valid @RequestBody RegDto regDto) throws UserAlreadyExistsException {
 		// Usernames are case insensitive
 		String username = regDto.getUsername().toLowerCase().trim();
 		String password = regDto.getPassword().trim();
@@ -57,10 +56,8 @@ public class AuthController {
 		User user = userService.createUser(username, password, regDto.getRole());
 		String token = jwtService.generateToken(user);
 		
-		LoginResponseDto loginResponse = new LoginResponseDto(token);
-		return ResponseEntity.status(HttpStatus.OK).body(loginResponse);	
+		return new LoginResponseDto(token);
 	}
-	
 	
 	
 	// --------------- EXCEPTION HANDLERS ----------------
