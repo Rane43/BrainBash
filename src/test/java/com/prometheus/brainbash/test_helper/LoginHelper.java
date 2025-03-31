@@ -15,7 +15,7 @@ import com.prometheus.brainbash.model.Role;
 
 public class LoginHelper {
 	// URLs
-	private static final String LOGIN_PAGE_URL = "http://localhost:8082/";
+	private static final String LOGIN_PAGE_URL = "http://localhost:8082/#login";
 	private static final String HOMEPAGE_URL = "http://localhost:8082/#quizzer-dashboard";
 	
 	// ELEMENT IDs
@@ -57,10 +57,9 @@ public class LoginHelper {
 		
 		driver.get(BASE_URL);
 		
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(LOGIN_PAGE_URL)));
-		WebElement emailField = driver.findElement(By.id(USERNAME_FIELD_ID));
-        WebElement passwordField = driver.findElement(By.id(PASSWORD_FIELD_ID));
-        WebElement loginButton = driver.findElement(By.id(LOGIN_BTN_ID));
+		WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(USERNAME_FIELD_ID)));
+		WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(PASSWORD_FIELD_ID)));
+		WebElement loginButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(LOGIN_BTN_ID)));
 
         emailField.sendKeys(email);
         passwordField.sendKeys(password);

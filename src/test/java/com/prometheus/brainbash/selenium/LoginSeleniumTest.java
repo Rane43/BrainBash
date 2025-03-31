@@ -6,23 +6,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.Duration;
 import java.util.function.Function;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.en.And;
+import com.prometheus.brainbash.test_helper.DatabaseManager;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@TestInstance(Lifecycle.PER_CLASS)
 class LoginSeleniumTest {
-	
 	// URLs
 	private static final String LOGIN_PAGE_URL = "http://localhost:8082/";
 	private static final String HOMEPAGE_URL = "http://localhost:8082/#quizzer-dashboard";
@@ -38,86 +42,79 @@ class LoginSeleniumTest {
 	private static WebDriver driver;
     private static WebDriverWait wait;
     
-    @Before
-	public void setup() {
-		databaseManager.executeSetupScripts();
-	}
-	
-	@After
-	public void teardown() {
-		databaseManager.clearDatabase();
-	}
-	
-	@Before
+    @Autowired
+    private DatabaseManager databaseManager;
+    
+    @BeforeAll
 	public void setupAll() {
+		databaseManager.executeSetupScripts();
+		
 		WebDriverManager.chromedriver().setup();
 	    driver = new ChromeDriver();
 	    wait = new WebDriverWait(driver, Duration.ofSeconds(20)); // 20 second timeout
 	}
 	
-	@After
+	@AfterAll
 	public void teardownAll() {
 		if (driver != null) {
 			driver.quit();
 		}
+		databaseManager.clearDatabase();
 	}
 	
 	// ------------- SUCCESSFUL LOGIN ----------------
-	@Given("I am on the login page")
-	public void i_am_on_the_login_page() {
+	@Test
+	void successfulLogin() {
+		// Given I am on the login page
 		driver.get(LOGIN_PAGE_URL);
-	}
-	
-	@And("I enter a valid username {string}")
-	public void i_enter_a_valid_email(String username) {
-	    WebElement usernameElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(USERNAME_FIELD_ID)));
+		
+		// And I enter a valid username
+		final String username = "testQuizzer";
+		WebElement usernameElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(USERNAME_FIELD_ID)));
 	    usernameElement.sendKeys(username);
-	}
-
-	@And("I enter a valid password {string}")
-	public void i_enter_a_valid_password(String password) {
+	    
+	    // And I enter a valid password
+	    final String password = "TestPassword123!";
 	    WebElement passwordElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(PASSWORD_FIELD_ID)));
 	    passwordElement.sendKeys(password);
-	    System.out.println(password);
-	}
-
-	
-	@When("I click the login button")
-	public void i_click_the_login_button() {
-		WebElement loginButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(LOGIN_BTN_ID)));
+	    
+	    // And I click the login button
+	    WebElement loginButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(LOGIN_BTN_ID)));
 		loginButton.click();
-	}
-	
-	
-	@Then("I am redirected to the homepage")
-	public void i_am_redirected_to_the_homepage() {
+		
+		// Then I am redirected to the homepage
 		wait.until((Function<WebDriver, Boolean>) driver -> driver.getCurrentUrl().equals(HOMEPAGE_URL));
 		assertEquals(HOMEPAGE_URL, driver.getCurrentUrl(), "Test quizzer should have been redirected to the homepage");
-	}
-	
-	@And("my avatar appears in the top right to indicate I’m logged in")
-	public void my_avatar_appears() {
+		
+		// And my avatar appears in the top right to indicate I’m logged in")
 	    WebElement userIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(USER_ICON_ID)));
 	    assertTrue(userIcon.isDisplayed(), "User icon should be visible but is not.");
 	}
 
 	
 	// ------------- UNSUCCESSFUL LOGIN ----------------
-	@When("I enter an invalid username {string} or password {string}")
-	public void i_enter_an_invalid_email_or_password(String username, String password) {
-	    WebElement usernameField = driver.findElement(By.id(USERNAME_FIELD_ID));
-	    WebElement passwordField = driver.findElement(By.id(PASSWORD_FIELD_ID));
+	@Test
+	void unSuccessfulLogin() {
+		// Given I am on the login page
+		driver.get(LOGIN_PAGE_URL);
+		
+		// And I enter a invalid username
+		final String username = "invalidUsername";
+		WebElement usernameElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(USERNAME_FIELD_ID)));
+	    usernameElement.sendKeys(username);
 	    
-	    usernameField.sendKeys(username);
-	    passwordField.sendKeys(password);
-	}
-	@Then("an error message {string} appears.")
-	public void an_error_message_appears(String errorMessage) {
+	    // And I enter a invalid password
+	    final String password = "invalidPassword123!";
+	    WebElement passwordElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(PASSWORD_FIELD_ID)));
+	    passwordElement.sendKeys(password);
+	    
+	    // And I click the login button
+	    WebElement loginButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(LOGIN_BTN_ID)));
+		loginButton.click();
+		
+		// Then an error message appears.
+		final String errorMessage = "Invalid Username or Password";
 		WebElement errorMessageElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(ERROR_MESSAGE_ID)));
 		assertEquals(errorMessage, errorMessageElement.getText());
 	}
-
-
-	
-	
 }
