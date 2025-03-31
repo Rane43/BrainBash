@@ -21,10 +21,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-/*
- * Steps Definition of Selenium Tests for acceptance criteria for US1 - Login
- */
-public class LoginSeleniumStepsDefinition extends CucumberSeleniumConfiguration {
+class LoginSeleniumTest {
 	
 	// URLs
 	private static final String LOGIN_PAGE_URL = "http://localhost:8082/";
@@ -40,10 +37,19 @@ public class LoginSeleniumStepsDefinition extends CucumberSeleniumConfiguration 
 	// DRIVER
 	private static WebDriver driver;
     private static WebDriverWait wait;
+    
+    @Before
+	public void setup() {
+		databaseManager.executeSetupScripts();
+	}
+	
+	@After
+	public void teardown() {
+		databaseManager.clearDatabase();
+	}
 	
 	@Before
 	public void setupAll() {
-		databaseManager.executeSetupScripts();
 		WebDriverManager.chromedriver().setup();
 	    driver = new ChromeDriver();
 	    wait = new WebDriverWait(driver, Duration.ofSeconds(20)); // 20 second timeout
@@ -54,7 +60,6 @@ public class LoginSeleniumStepsDefinition extends CucumberSeleniumConfiguration 
 		if (driver != null) {
 			driver.quit();
 		}
-		databaseManager.clearDatabase();
 	}
 	
 	// ------------- SUCCESSFUL LOGIN ----------------

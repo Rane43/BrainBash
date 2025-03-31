@@ -1,7 +1,5 @@
 @tag
 Feature: User Login
-  I want to use this template for my feature file
-
   @tag1
   Scenario: Success - Valid credentials
 		Given I am on the login page
@@ -12,8 +10,9 @@ Feature: User Login
 		And my avatar appears in the top right to indicate I’m logged in
 		
 		Examples: 
-      | username   | password         |
-      | testquizzer | TestPassword123! |
+      | username     | password         |
+      | testQuizzer  | TestPassword123! |
+      
   
   @tag2
   Scenario: Failure - Invalid credentials
