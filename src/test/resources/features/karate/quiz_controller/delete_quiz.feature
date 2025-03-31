@@ -3,7 +3,7 @@ Feature: Delete Quiz
 		* def quizDesignerResponse = call read("classpath:features/karate/helpers/login_as_quiz_designer.feature") 
 		* def token = quizDesignerResponse.response.token
 	
-	Scenario: Successfully get all quizzes by title only
+	Scenario: Successfully delete quiz
 		Given url baseUrl
   	* header Authorization = 'Bearer ' + token
   	* header Accept = 'application/json'

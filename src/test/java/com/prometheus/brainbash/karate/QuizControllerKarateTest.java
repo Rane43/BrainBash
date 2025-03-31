@@ -26,7 +26,7 @@ class QuizControllerKarateTest {
 	@Karate.Test
 	Karate runAllPointsControllerKarateTests() {
 		return Karate.run(
-				FOLDER + "get_points_for_quiz.feature",
+				FOLDER + "get_quiz_by_id.feature",
 				FOLDER + "get_my_quizzes_by_filters.feature",
 				FOLDER + "get_all_quizzes_by_filters.feature",
 				FOLDER + "create_quiz.feature",
