@@ -1,4 +1,4 @@
-package com.prometheus.brainbash.filter;
+package com.prometheus.brainbash.karate;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

@@ -51,8 +51,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Optional<User> userOptional = userRepo.findByUsername(username);
                 
                 if (!userOptional.isPresent()) {
-                	filterChain.doFilter(request, response);
-                	return;
+                	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
                 }
                 
                 // If token is valid, authorise user (add details to security context)
@@ -63,6 +63,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     );
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+                } else {
+                	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
                 }
             }
         } catch (IllegalArgumentException e) {
