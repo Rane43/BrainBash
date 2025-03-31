@@ -33,6 +33,7 @@ class QuizControllerKarateTest {
 				FOLDER + "get_question_by_id.feature",
 				FOLDER + "create_question.feature",
 				FOLDER + "update_question.feature",
+				FOLDER + "delete_question.feature",
 				FOLDER + "delete_quiz.feature"
 		);
 	}
