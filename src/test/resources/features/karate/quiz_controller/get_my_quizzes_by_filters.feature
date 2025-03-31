@@ -1,7 +1,7 @@
 Feature: Fetch My Quizzes by filters: Title, Difficulty Rating, and Age Rating
 	Background: Login as Quiz Designer (testQuizDesigner)
-		* def quizzerResponse = call read("classpath:features/karate/helpers/login_as_quiz_designer.feature") 
-		* def token = quizzerResponse.response.token
+		* def quizDesigerResponse = call read("classpath:features/karate/helpers/login_as_quiz_designer.feature") 
+		* def token = quizDesigerResponse.response.token
 	
 	Scenario: Successfully get my quizzes by title only
 		Given url baseUrl

@@ -84,19 +84,6 @@ public class QuizController {
 		return CollectionModel.of(quizzes, createQuizLink, getCategoriesLink, getAgeRatingsLink, getDifficultyRatingsLink, getImagesLink);
 	}
 	
-	/*
-	@GetMapping("/mine/search") // {"Authorization": "Bearer {token}"} -- GET /api/quizzes/mine/search?middleTitle={}&difficultyRating={}&ageRating={} 
-	@PreAuthorize("hasRole('QUIZ_DESIGNER')")
-	public ResponseEntity<List<QuizSummaryDto>> getMyQuizSummariesByTitleAndFilters(
-			@RequestHeader("Authorization") String bearerToken,
-	        @RequestParam(required=false) String middleTitle, 
-	        @RequestParam(required=false) DifficultyRating difficultyRating,
-	        @RequestParam(required=false) AgeRating ageRating) throws UserNotFoundException, UnauthorizedAccessToQuizException {
-	    return ResponseEntity.status(HttpStatus.OK).body(
-	    		quizService.findMineBySearch(bearerToken, middleTitle, difficultyRating, ageRating));
-	}
-	*/
-	
 	@GetMapping("/search") // -- GET /api/quizzes/search?middleTitle={}&difficultyRating={}&ageRating={} 
 	@PreAuthorize("hasRole('QUIZZER')")
 	public ResponseEntity<List<QuizSummaryDto>> getQuizSummariesByTitleAndFilters(
