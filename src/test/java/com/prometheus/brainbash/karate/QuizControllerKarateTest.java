@@ -31,7 +31,8 @@ class QuizControllerKarateTest {
 				FOLDER + "get_all_quizzes_by_filters.feature",
 				FOLDER + "create_quiz.feature",
 				FOLDER + "delete_quiz.feature",
-				FOLDER + "get_question_by_id.feature"
+				FOLDER + "get_question_by_id.feature",
+				FOLDER + "create_question.feature"
 		);
 	}
 	
