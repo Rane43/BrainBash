@@ -25,9 +25,10 @@
  * 
  * @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
  * 
- * @TestInstance(Lifecycle.PER_CLASS) class RegistrationSeleniumTest { // URLs
- * private static final String REGISTRATION_PAGE_URL = "http://localhost:8082/";
- * private static final String HOMEPAGE_URL =
+ * @TestInstance(Lifecycle.PER_CLASS) class RegistrationSeleniumTest {
+ * 
+ * // URLs private static final String REGISTRATION_PAGE_URL =
+ * "http://localhost:8082/"; private static final String HOMEPAGE_URL =
  * "http://localhost:8082/#quizzer-dashboard";
  * 
  * // ELEMENT IDs private static final String REGISTRATION_LINK_ID =
@@ -43,7 +44,6 @@
  * @Autowired private DatabaseManager databaseManager;
  * 
  * @BeforeAll public void setupAll() { databaseManager.executeSetupScripts();
- * 
  * WebDriverManager.chromedriver().setup(); driver = new ChromeDriver(); wait =
  * new WebDriverWait(driver, Duration.ofSeconds(20)); // 20 second timeout }
  * 
@@ -52,7 +52,7 @@
  * 
  * // ------------- SUCCESSFUL REGISTER AS QUIZZER ----------------
  * 
- * @Test void successfulLogin() { // Given I am on the registration page
+ * @Test void successfulRegistration() { // Given I am on the registration page
  * driver.get(REGISTRATION_PAGE_URL);
  * wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(
  * REGISTRATION_LINK_ID))).click();
@@ -85,37 +85,5 @@
  * WebElement userIcon =
  * wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(USER_ICON_ID))
  * ); assertTrue(userIcon.isDisplayed(),
- * "User icon should be visible but is not."); }
- * 
- * 
- * // ------------- UNSUCCESSFUL REGISTRATION ----------------
- * 
- * @Test void unsuccessfulRegistration() { // Given I am on the registration
- * page driver.get(REGISTRATION_PAGE_URL);
- * wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(
- * REGISTRATION_LINK_ID))).click();
- * 
- * // And I enter a non-taken username final String username = "testQuizzer";
- * WebElement usernameElement =
- * wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(
- * USERNAME_FIELD_ID))); usernameElement.sendKeys(username);
- * 
- * // And I enter a valid password final String password = "TestPassword123!";
- * WebElement passwordElement =
- * wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(
- * PASSWORD_FIELD_ID))); passwordElement.sendKeys(password);
- * 
- * // And I choose my user role final Role role = Role.ROLE_QUIZZER; Select
- * roleDropdown = new
- * Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(
- * ROLE_DROPDOWN_ID)))); roleDropdown.selectByValue(role.toString());
- * 
- * // And I click the register button
- * wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(
- * REGISTER_BTN_ID))).click();
- * 
- * // Then a message appears saying username has been taken String errorMessage
- * = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(
- * ERROR_MESSAGE_ID))).getText(); assertEquals("Username is taken.",
- * errorMessage); } }
+ * "User icon should be visible but is not."); } }
  */

@@ -30,13 +30,13 @@
  * 
  * @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
  * 
- * @TestInstance(Lifecycle.PER_CLASS) class SearchQuizzesSeleniumTest { private
- * static final String HOMEPAGE_URL =
- * "http://localhost:8082/#quizzer-dashboard";
+ * @TestInstance(Lifecycle.PER_CLASS) class SearchQuizzesSeleniumTest {
  * 
- * private static final String SEARCH_BOX_ID = "search-bar"; private static
- * final String AGE_RATINGS_DROPDOWN_ID = "age-rating-dropdown"; private static
- * final String DIFFICULTY_RATINGS_DROPDOWN_ID = "difficulty-rating-dropdown";
+ * private static final String HOMEPAGE_URL =
+ * "http://localhost:8082/#quizzer-dashboard"; private static final String
+ * SEARCH_BOX_ID = "search-bar"; private static final String
+ * AGE_RATINGS_DROPDOWN_ID = "age-rating-dropdown"; private static final String
+ * DIFFICULTY_RATINGS_DROPDOWN_ID = "difficulty-rating-dropdown";
  * 
  * // DRIVER private WebDriver driver; private WebDriverWait wait;
  * 
@@ -55,14 +55,13 @@
  * @AfterAll public void teardownAll() { if (driver != null) { driver.quit(); }
  * databaseManager.clearDatabase(); }
  * 
- * 
  * // ------------ SUCCESSFULLY SEARCH BY FILTERS -------------
  * 
  * @Test void succesfullySearchByFilters() throws InterruptedException { //
  * Given I am logged in as a quizzer loginHelper.loginAs(Role.ROLE_QUIZZER);
  * 
- * // And I on the homepage wait.until((Function<WebDriver, Boolean>) webDriver
- * -> webDriver.getCurrentUrl().equals(HOMEPAGE_URL));
+ * // And I am on the homepage wait.until((Function<WebDriver, Boolean>)
+ * webDriver -> webDriver.getCurrentUrl().equals(HOMEPAGE_URL));
  * 
  * // When I enter search title final String searchText = "Geo";
  * wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(SEARCH_BOX_ID)
@@ -84,8 +83,8 @@
  * Thread.sleep(3000); // 3-second wait
  * 
  * List<WebElement> allCards =
- * wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
- * By.cssSelector("div.card[quiz-card]") ));
+ * wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector
+ * ("div.card[quiz-card]")));
  * 
  * // All Quizzes match Set<Long> quizCardIds = allCards.stream().map(card ->
  * Long.parseLong(card.getAttribute("id"))).collect(Collectors.toSet());

@@ -24,8 +24,9 @@
  * 
  * @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
  * 
- * @TestInstance(Lifecycle.PER_CLASS) class QuizPlaySeleniumTest { private
- * static final String HOMEPAGE_URL =
+ * @TestInstance(Lifecycle.PER_CLASS) class QuizPlaySeleniumTest {
+ * 
+ * private static final String HOMEPAGE_URL =
  * "http://localhost:8082/#quizzer-dashboard"; private static final String
  * QUIZ_ID = "1"; private static final String PLAY_BTN_ID = "play-btn"; private
  * static final String NEXT_BTN_ID = "next-btn"; private static final String
@@ -82,9 +83,7 @@
  * // Then a message appears detailing my best score so far and my score for the
  * game I just played. assertEquals("2!",
  * wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(
- * FINAL_RESULT_ID))).getText());
- * 
- * }
+ * FINAL_RESULT_ID))).getText()); }
  * 
  * }
  */

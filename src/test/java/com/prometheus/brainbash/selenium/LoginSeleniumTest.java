@@ -23,9 +23,11 @@
  * 
  * @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
  * 
- * @TestInstance(Lifecycle.PER_CLASS) class LoginSeleniumTest { // URLs private
- * static final String LOGIN_PAGE_URL = "http://localhost:8082/"; private static
- * final String HOMEPAGE_URL = "http://localhost:8082/#quizzer-dashboard";
+ * @TestInstance(Lifecycle.PER_CLASS) class LoginSeleniumTest {
+ * 
+ * // URLs private static final String LOGIN_PAGE_URL =
+ * "http://localhost:8082/"; private static final String HOMEPAGE_URL =
+ * "http://localhost:8082/#quizzer-dashboard";
  * 
  * // ELEMENT IDs private static final String USERNAME_FIELD_ID = "username";
  * private static final String PASSWORD_FIELD_ID = "password"; private static
@@ -74,7 +76,6 @@
  * wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(USER_ICON_ID))
  * ); assertTrue(userIcon.isDisplayed(),
  * "User icon should be visible but is not."); }
- * 
  * 
  * // ------------- UNSUCCESSFUL LOGIN ----------------
  * 

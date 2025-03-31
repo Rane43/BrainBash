@@ -28,15 +28,17 @@
  * 
  * @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
  * 
- * @TestInstance(Lifecycle.PER_CLASS) class QuizCreationSeleniumTest { private
- * static final String OPEN_CREATE_QUIZ_MODAL_BTN_ID = "create-quiz-button";
- * private static final String MODAL_ID = "quiz-modal"; private static final
- * String TITLE_INPUT_ID = "quiz-creation-title"; private static final String
- * DESCRIPTION_INPUT_ID = "quiz-description"; private static final String
- * AGE_RATING_DROPDOWN_ID = "modal-age-rating-dropdown"; private static final
- * String DIFFICULTY_RATING_DROPDOWN_ID = "modal-difficulty-rating-dropdown";
- * private static final String CATEGORY_DROPDOWN_ID = "modal-category-dropdown";
- * private static final String CREATE_QUIZ_BTN_ID = "submit-quiz-creation";
+ * @TestInstance(Lifecycle.PER_CLASS) class QuizCreationSeleniumTest {
+ * 
+ * private static final String OPEN_CREATE_QUIZ_MODAL_BTN_ID =
+ * "create-quiz-button"; private static final String MODAL_ID = "quiz-modal";
+ * private static final String TITLE_INPUT_ID = "quiz-creation-title"; private
+ * static final String DESCRIPTION_INPUT_ID = "quiz-description"; private static
+ * final String AGE_RATING_DROPDOWN_ID = "modal-age-rating-dropdown"; private
+ * static final String DIFFICULTY_RATING_DROPDOWN_ID =
+ * "modal-difficulty-rating-dropdown"; private static final String
+ * CATEGORY_DROPDOWN_ID = "modal-category-dropdown"; private static final String
+ * CREATE_QUIZ_BTN_ID = "submit-quiz-creation";
  * 
  * // DRIVER private WebDriver driver; private WebDriverWait wait;
  * 
@@ -97,8 +99,8 @@
  * // Modal disappears
  * 
  * List<WebElement> allCards =
- * wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
- * By.cssSelector("div.card[quiz-editor-card]") ));
+ * wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector
+ * ("div.card[quiz-editor-card]")));
  * 
  * // Check to see if card has been added boolean cardFound = false; for
  * (WebElement card : allCards) { WebElement cardBody =
@@ -113,7 +115,7 @@
  * // Check if this card satisfies the requirement if
  * (headerText.contains(newTitle) && paragraphText.contains(newDescription)) {
  * cardFound = true; // If any card matches the condition break; // Exit the
- * loop if we find a matching card } }
+ * loop if we find a matching card break; } }
  * 
  * // Assert that we found at least one card that satisfies the condition
  * assertTrue(cardFound); }
