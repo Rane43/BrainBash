@@ -25,7 +25,10 @@ class PointsControllerKarateTest {
 	
 	@Karate.Test
 	Karate runAllPointsControllerKarateTests() {
-		return Karate.run(FOLDER + "get_points_for_quiz.feature");
+		return Karate.run(
+				FOLDER + "get_points_for_quiz.feature",
+				FOLDER + "update_points.feature"
+		);
 	}
 	
 	@AfterAll

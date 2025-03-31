@@ -1,14 +1,14 @@
-Feature: Fetch Points for given quiz
+Feature: Update points for a given quiz
 	Background: Login as Quizzer (testQuizzer)
 		* def quizzerResponse = call read("classpath:features/karate/helpers/login_as_quizzer.feature") 
 		* def token = quizzerResponse.response.token
 		
-  Scenario: Successfully get points for quiz
+  Scenario: Successfully fetch difficulty ratings
   	Given url baseUrl
   	* header Authorization = 'Bearer ' + token
     And path '/api/points'
-    And param quiz_id = '1'
-    When method get
+    And request { quizId: '1', points: '2' }
+    When method put
     Then status 200
-    And match response == '1'
+    And match response == '2'
     

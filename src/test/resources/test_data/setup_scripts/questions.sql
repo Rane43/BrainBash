@@ -28,3 +28,4 @@ INSERT INTO questions VALUES (27,14,'How many continents are there?');
 INSERT INTO questions VALUES (28,14,'What is the capital of Germany?');
 INSERT INTO questions VALUES (29,15,'Question title... ?');
 
+ALTER TABLE questions ALTER COLUMN id RESTART WITH 30;

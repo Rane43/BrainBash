@@ -54,3 +54,4 @@ public class PointsController {
 		return pointsService.getPointsForUserForQuiz(username, pointsUpdateDto.getQuizId());
 	}
 }
+

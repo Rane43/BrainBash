@@ -13,3 +13,5 @@ INSERT INTO quizzes VALUES (3,12,'History Description 3','landscape1.webp','Hist
 INSERT INTO quizzes VALUES (3,13,'History Description 4','background-image.webp','History Quiz 4','ADULT','HISTORY','MEDIUM');
 INSERT INTO quizzes VALUES (3,14,'History Description 5','landscape1.webp','History Quiz 5','ADULT','HISTORY','MEDIUM');
 INSERT INTO quizzes VALUES (6,15,'New Quiz Just for testing','landscape2.webp','New Quiz','CHILDREN','SCIENCE','EASY');
+
+ALTER TABLE quizzes ALTER COLUMN id RESTART WITH 16;
