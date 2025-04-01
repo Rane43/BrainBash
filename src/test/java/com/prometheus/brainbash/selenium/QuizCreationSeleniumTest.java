@@ -52,7 +52,7 @@ class QuizCreationSeleniumTest {
     private DatabaseManager databaseManager;
     
 	@BeforeAll
-	public void setupAll() {
+	void setupAll() {
 		databaseManager.executeSetupScripts();
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = new ChromeOptions();
@@ -68,7 +68,7 @@ class QuizCreationSeleniumTest {
 	}
 	
 	@AfterAll
-	public void teardownAll() {
+	void teardownAll() {
 		if (driver != null) {
 			driver.quit();
 		}

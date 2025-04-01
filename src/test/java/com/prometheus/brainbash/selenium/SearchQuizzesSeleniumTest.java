@@ -56,7 +56,7 @@ class SearchQuizzesSeleniumTest {
     private QuizRepository quizRepo;
     
 	@BeforeAll
-	public void setupAll() {
+	void setupAll() {
 		databaseManager.executeSetupScripts();
 		WebDriverManager.chromedriver().setup();
 		
@@ -74,7 +74,7 @@ class SearchQuizzesSeleniumTest {
 	}
 	
 	@AfterAll
-	public void teardownAll() {
+	void teardownAll() {
 		if (driver != null) {
 			driver.quit();
 		}

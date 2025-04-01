@@ -51,7 +51,7 @@ class RegistrationSeleniumTest {
     private DatabaseManager databaseManager;
     
     @BeforeAll
-	public void setupAll() {
+	void setupAll() {
 		databaseManager.executeSetupScripts();
 		
 		WebDriverManager.chromedriver().setup();
@@ -67,7 +67,7 @@ class RegistrationSeleniumTest {
 	}
 	
 	@AfterAll
-	public void teardownAll() {
+	void teardownAll() {
 		if (driver != null) {
 			driver.quit();
 		}

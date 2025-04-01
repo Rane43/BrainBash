@@ -62,7 +62,7 @@ class LoginSeleniumTest {
 	}
 	
 	@AfterAll
-	public void teardownAll() {
+	void teardownAll() {
 		if (driver != null) {
 			driver.quit();
 		}

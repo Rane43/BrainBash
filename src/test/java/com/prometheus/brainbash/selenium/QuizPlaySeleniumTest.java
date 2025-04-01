@@ -45,7 +45,7 @@ class QuizPlaySeleniumTest {
     private DatabaseManager databaseManager;
     
 	@BeforeAll
-	public void setupAll() {
+	void setupAll() {
 		databaseManager.executeSetupScripts();
 		WebDriverManager.chromedriver().setup();
 		
@@ -62,7 +62,7 @@ class QuizPlaySeleniumTest {
 	}
 	
 	@AfterAll
-	public void teardownAll() {
+	void teardownAll() {
 		if (driver != null) {
 			driver.quit();
 		}
