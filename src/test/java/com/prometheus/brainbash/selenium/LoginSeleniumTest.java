@@ -52,7 +52,6 @@ class LoginSeleniumTest {
 		
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = new ChromeOptions();
-		options.addArguments("user-data-dir=/tmp/chrom-user-data");
 		options.addArguments("--headless");
 		options.addArguments("--no-sandbox");
 		options.addArguments("--disable-dev-shm-usage");

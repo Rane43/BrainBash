@@ -61,7 +61,6 @@ class SearchQuizzesSeleniumTest {
 		WebDriverManager.chromedriver().setup();
 		
 		ChromeOptions options = new ChromeOptions();
-		options.addArguments("user-data-dir=/tmp/chrom-user-data");
 		options.addArguments("--headless");
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--no-sandbox");
