@@ -62,6 +62,8 @@ class SearchQuizzesSeleniumTest {
 		
 		ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
+        String userDataDir = "/tmp/chrome_user_data_" + System.currentTimeMillis(); // Use a unique directory for each test run
+        options.addArguments("--user-data-dir=" + userDataDir);
         
 	    driver = new ChromeDriver(options);
 	    wait = new WebDriverWait(driver, Duration.ofSeconds(20));

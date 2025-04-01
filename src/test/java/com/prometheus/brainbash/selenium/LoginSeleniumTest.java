@@ -52,6 +52,8 @@ class LoginSeleniumTest {
 		
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = new ChromeOptions();
+		String userDataDir = "/tmp/chrome_user_data_" + System.currentTimeMillis(); // Use a unique directory for each test run
+        options.addArguments("--user-data-dir=" + userDataDir);
         options.addArguments("--remote-allow-origins=*");
         
 	    driver = new ChromeDriver(options);
