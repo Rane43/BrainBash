@@ -13,6 +13,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,11 @@ class QuizPlaySeleniumTest {
 	public void setupAll() {
 		databaseManager.executeSetupScripts();
 		WebDriverManager.chromedriver().setup();
-	    driver = new ChromeDriver();
+		
+		ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+        
+	    driver = new ChromeDriver(options);
 	    wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 	    
 	    loginHelper = new LoginHelper(driver);
