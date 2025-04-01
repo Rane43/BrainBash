@@ -12,6 +12,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -50,7 +51,7 @@ class QuizPlaySeleniumTest {
 		WebDriverManager.chromedriver().setup();
 		
 		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--headless");
+		// options.addArguments("--headless");
 		options.addArguments("--no-sandbox");
 		options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--remote-allow-origins=*");
@@ -84,13 +85,16 @@ class QuizPlaySeleniumTest {
 		
 		// And I answer all the questions (either right or wrong)
 		// Wait until the button containing the text "Berlin" is visible, then click it
-		wait.until(ExpectedConditions.visibilityOfElementLocated(
+		WebElement answerElement = wait.until(ExpectedConditions.visibilityOfElementLocated(
 		    By.xpath("//button[contains(text(), 'Berlin') or contains(text(), '7')]")
-		)).click();
-		
+		));
+		answerElement.click();
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(NEXT_BTN_ID))).click();
 		
-		Thread.sleep(2000); // 2-second wait for next page to load
+		
+		// Wait for answers to update
+		wait.until(ExpectedConditions.stalenessOf(answerElement));
+		
 		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(
 		    By.xpath("//button[contains(text(), 'Berlin') or contains(text(), '7')]")

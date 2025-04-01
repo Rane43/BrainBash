@@ -77,7 +77,7 @@ class QuizCreationSeleniumTest {
 	
 	// ----------- SUCCESSFULLY CREATE A GAME -------------
 	@Test
-	void successfullyCreateAGame() throws InterruptedException {
+	void successfullyCreateAGame() {
 		// Given I am logged in as a quiz designer
 		loginHelper.loginAs(Role.ROLE_QUIZ_DESIGNER);
 		

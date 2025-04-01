@@ -91,6 +91,9 @@ class SearchQuizzesSeleniumTest {
 		// And I on the homepage
 		wait.until((Function<WebDriver, Boolean>) webDriver -> webDriver.getCurrentUrl().equals(HOMEPAGE_URL));
 		
+		// Save question card
+		WebElement quizCard = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.card[quiz-card]")));
+		
 		// When I enter search title
 		final String searchText = "Geo";
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(SEARCH_BOX_ID))).sendKeys(searchText);
@@ -106,7 +109,9 @@ class SearchQuizzesSeleniumTest {
 		difficultyRatingDropdown.selectByValue(difficultyRating.toString());
 
 		// Then a list of quizzes are displayed matching those filters
-		Thread.sleep(3000); // 3-second wait
+		
+		// Wait for previous cards to disappear
+		wait.until(ExpectedConditions.stalenessOf(quizCard));
 		
 		List<WebElement> allCards = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
 				By.cssSelector("div.card[quiz-card]")

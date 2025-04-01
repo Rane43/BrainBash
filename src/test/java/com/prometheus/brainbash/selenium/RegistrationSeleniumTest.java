@@ -101,7 +101,7 @@ class RegistrationSeleniumTest {
 	    registerButton.click();
 		
 		// Then I am redirected to the homepage
-		wait.until((Function<WebDriver, Boolean>) driver -> driver.getCurrentUrl().equals(HOMEPAGE_URL));
+		wait.until((Function<WebDriver, Boolean>) webDriver -> webDriver.getCurrentUrl().equals(HOMEPAGE_URL));
 		assertEquals(HOMEPAGE_URL, driver.getCurrentUrl(), "Test quizzer should have been redirected to the homepage");
 		
 		// And my avatar appears in the top right to indicate I’m logged in
