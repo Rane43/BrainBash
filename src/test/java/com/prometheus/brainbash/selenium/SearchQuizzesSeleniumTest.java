@@ -84,7 +84,7 @@ class SearchQuizzesSeleniumTest {
 	
 	// ------------ SUCCESSFULLY SEARCH BY FILTERS -------------
 	@Test
-	void succesfullySearchByFilters() throws InterruptedException {
+	void succesfullySearchByFilters() {
 		// Given I am logged in as a quizzer
 		loginHelper.loginAs(Role.ROLE_QUIZZER);
 

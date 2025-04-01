@@ -72,7 +72,7 @@ class QuizPlaySeleniumTest {
 	
 	// ----------- SUCCESSFULLY PLAY A GAME -------------
 	@Test
-	void successfullyPlayAGame() throws InterruptedException {
+	void successfullyPlayAGame() {
 		// Given I am logged in as a quizzer
 		loginHelper.loginAs(Role.ROLE_QUIZZER);
 
