@@ -59,6 +59,7 @@ class RegistrationSeleniumTest {
 		ChromeOptions options = new ChromeOptions();
 		String userDataDir = "/path/to/unique/directory";
 		options.addArguments("user-data-dir=" + userDataDir);
+		options.addArguments("--headless");
 		options.addArguments("--no-sandbox");
 		options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--remote-allow-origins=*");
