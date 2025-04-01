@@ -47,7 +47,7 @@ class LoginSeleniumTest {
     private DatabaseManager databaseManager;
     
     @BeforeAll
-	public void setupAll() {
+	void setupAll() {
 		databaseManager.executeSetupScripts();
 		
 		WebDriverManager.chromedriver().setup();
