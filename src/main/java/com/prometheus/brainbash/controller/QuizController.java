@@ -52,7 +52,6 @@ public class QuizController {
 	}
 	
 	/* ------------------- CRUD QUIZZES -------------------------- */
-	// -- GET /api/quizzes/{id}
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('QUIZZER') or hasRole('QUIZ_DESIGNER')")
 	public ResponseEntity<QuizGameDto> getQuizById(@PathVariable long id) throws QuizNotFoundException {
@@ -85,7 +84,6 @@ public class QuizController {
 		return CollectionModel.of(quizzes, createQuizLink, getCategoriesLink, getAgeRatingsLink, getDifficultyRatingsLink, getImagesLink);
 	}
 	
-	// -- GET /api/quizzes/search?middleTitle={}&difficultyRating={}&ageRating={} 
 	@GetMapping("/search")
 	@PreAuthorize("hasRole('QUIZZER')")
 	public ResponseEntity<List<QuizSummaryDto>> getQuizSummariesByTitleAndFilters(
@@ -97,7 +95,6 @@ public class QuizController {
 	    		quizService.findBySearch(middleTitle, difficultyRating, ageRating));
 	}
 	
-	// -- POST /api/quizzes {request body}
 	@PostMapping 
 	@PreAuthorize("hasRole('QUIZ_DESIGNER')")
 	@Transactional
@@ -118,14 +115,12 @@ public class QuizController {
 
 	
 	/* ------------------- CRUD QUESTIONS -------------------------- */
-	// -- GET /api/quizzes/questions/{id}
 	@GetMapping("/questions/{id}") 
 	@PreAuthorize("hasRole('QUIZZER') or hasRole('QUIZ_DESIGNER')")
 	public ResponseEntity<QuestionDto> getQuestionById(@PathVariable long id) throws QuestionNotFoundException {
 		return ResponseEntity.status(HttpStatus.OK).body(questionService.findById(id));
 	}
 	
-	// {"Authorization": "Bearer {token}"} -- POST /api/quizzes/{quizId}/questions {request body}
 	@PostMapping("/{quizId}/questions")
 	@PreAuthorize("hasRole('QUIZ_DESIGNER')")
 	@Transactional
