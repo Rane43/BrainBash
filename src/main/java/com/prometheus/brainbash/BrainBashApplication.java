@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class BrainBashApplication {
-	// NGrok test
+	// Test
 	public static void main(String[] args) {
 		SpringApplication.run(BrainBashApplication.class, args);
 	}
