@@ -12,7 +12,7 @@ import com.prometheus.brainbash.model.Quiz;
 import com.prometheus.brainbash.model.User;
 
 public final class QuizMapper {
-	private QuizMapper() {};
+	private QuizMapper() {}
 	
 	public static void toQuizGameDto(Quiz quiz, QuizGameDto quizGameDto) {
 		quizGameDto.setId(quiz.getId());

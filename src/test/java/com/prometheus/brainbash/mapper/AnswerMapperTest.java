@@ -29,7 +29,7 @@ class AnswerMapperTest {
         assertEquals(100L, answerDto.getId());
         assertEquals("Sample Answer", answerDto.getText());
         assertTrue(answerDto.isCorrect());
-        assertEquals(1L, answerDto.getQuestion_id());
+        assertEquals(1L, answerDto.getQuestionId());
     }
 
     @Test

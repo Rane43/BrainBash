@@ -36,7 +36,7 @@ public class QuizService implements IQuizService {
 
 	@Override
 	public List<QuizSummaryDto> findAll() {
-		return quizRepo.findAll().stream().map((quiz) -> {
+		return quizRepo.findAll().stream().map(quiz -> {
 			QuizSummaryDto quizSummaryDto = new QuizSummaryDto();
 			QuizMapper.toQuizSummaryDto(quiz, quizSummaryDto);
 			return quizSummaryDto;

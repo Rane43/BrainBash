@@ -12,5 +12,5 @@ public class AnswerDto {
     
     private boolean correct;
     
-    private long question_id;
+    private long questionId;
 }

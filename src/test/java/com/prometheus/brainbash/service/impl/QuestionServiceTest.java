@@ -45,7 +45,7 @@ class QuestionServiceTest {
 	private final String unauthorizedAccessToQuizExceptionMessage = "You do not have access to quiz with id '" + quizId + "'";
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         jwtService = mock(IJwtService.class);
         userRepo = mock(UserRepository.class);
         quizRepo = mock(QuizRepository.class);

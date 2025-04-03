@@ -52,7 +52,8 @@ public class QuizController {
 	}
 	
 	/* ------------------- CRUD QUIZZES -------------------------- */
-	@GetMapping("/{id}") // -- GET /api/quizzes/{id}
+	// -- GET /api/quizzes/{id}
+	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('QUIZZER') or hasRole('QUIZ_DESIGNER')")
 	public ResponseEntity<QuizGameDto> getQuizById(@PathVariable long id) throws QuizNotFoundException {
 		return ResponseEntity.status(HttpStatus.OK).body(quizService.findById(id));
@@ -84,7 +85,8 @@ public class QuizController {
 		return CollectionModel.of(quizzes, createQuizLink, getCategoriesLink, getAgeRatingsLink, getDifficultyRatingsLink, getImagesLink);
 	}
 	
-	@GetMapping("/search") // -- GET /api/quizzes/search?middleTitle={}&difficultyRating={}&ageRating={} 
+	// -- GET /api/quizzes/search?middleTitle={}&difficultyRating={}&ageRating={} 
+	@GetMapping("/search")
 	@PreAuthorize("hasRole('QUIZZER')")
 	public ResponseEntity<List<QuizSummaryDto>> getQuizSummariesByTitleAndFilters(
 	        @RequestParam(required=false) String middleTitle, 
@@ -95,8 +97,8 @@ public class QuizController {
 	    		quizService.findBySearch(middleTitle, difficultyRating, ageRating));
 	}
 	
-	
-	@PostMapping // -- POST /api/quizzes {request body}
+	// -- POST /api/quizzes {request body}
+	@PostMapping 
 	@PreAuthorize("hasRole('QUIZ_DESIGNER')")
 	@Transactional
 	public ResponseEntity<Long> createQuiz(@RequestHeader("Authorization") String bearerToken, @Valid @RequestBody QuizCreationDto quizCreationDto) throws UserNotFoundException {
@@ -116,13 +118,15 @@ public class QuizController {
 
 	
 	/* ------------------- CRUD QUESTIONS -------------------------- */
-	@GetMapping("/questions/{id}")  // -- GET /api/quizzes/questions/{id}
+	// -- GET /api/quizzes/questions/{id}
+	@GetMapping("/questions/{id}") 
 	@PreAuthorize("hasRole('QUIZZER') or hasRole('QUIZ_DESIGNER')")
 	public ResponseEntity<QuestionDto> getQuestionById(@PathVariable long id) throws QuestionNotFoundException {
 		return ResponseEntity.status(HttpStatus.OK).body(questionService.findById(id));
 	}
 	
-	@PostMapping("/{quizId}/questions") // {"Authorization": "Bearer {token}"} -- POST /api/quizzes/{quizId}/questions {request body}
+	// {"Authorization": "Bearer {token}"} -- POST /api/quizzes/{quizId}/questions {request body}
+	@PostMapping("/{quizId}/questions")
 	@PreAuthorize("hasRole('QUIZ_DESIGNER')")
 	@Transactional
 	public ResponseEntity<Long> createQuestion(

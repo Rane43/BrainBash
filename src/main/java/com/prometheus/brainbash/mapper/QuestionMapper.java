@@ -35,9 +35,7 @@ public class QuestionMapper {
 			Answer answer = new Answer();
 			AnswerMapper.toAnswer(answerReqDto, question, answer);
 			return answer;
-		}).forEach((answer) -> {
-			question.getAnswers().add(answer);
-		});;
+		}).forEach(answer -> question.getAnswers().add(answer));
 	}
 	
 	// Private constructor to hide public one
