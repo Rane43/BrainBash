@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class BrainBashApplication {
-	// Test
+	// Test for Continuous Build and Delivery
 	public static void main(String[] args) {
 		SpringApplication.run(BrainBashApplication.class, args);
 	}
