@@ -40,7 +40,7 @@ class PointsServiceTest {
 	
 	
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		// Example User
 		user = new User();
 		user.setId(1L);
@@ -161,14 +161,12 @@ class PointsServiceTest {
 	
 	@Test
 	void testUserNotFoundWhileGettingPoints() {
-		when(userRepo.findByUsername(username)).thenReturn(Optional.of(user));
-		when(quizRepo.findById(quizId)).thenReturn(Optional.empty());
-		when(pointsRepo.findByUserAndQuiz(user, quiz)).thenReturn(null);
+		when(userRepo.findByUsername(username)).thenReturn(Optional.empty());
 		
-		Throwable e = assertThrows(QuizNotFoundException.class, () -> {
+		Throwable e = assertThrows(UserNotFoundException.class, () -> {
 			pointsService.getPointsForUserForQuiz(username, quizId);
 		});
-		assertEquals("Quiz with id: " + quizId + ", cannot be found.", e.getMessage());
+		assertEquals("User with username: " + username + ", cannot be found.", e.getMessage());
 	}
 	
 	@Test

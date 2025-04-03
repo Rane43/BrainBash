@@ -6,5 +6,5 @@ import com.prometheus.brainbash.exception.UserNotFoundException;
 public interface IPointsService {
 	void updatePoints(String username, Long quizId, int newPoints) throws UserNotFoundException, QuizNotFoundException;
 	
-	int getPointsForUserForQuiz(String username, long quiz_id) throws UserNotFoundException, QuizNotFoundException;
+	int getPointsForUserForQuiz(String username, long quizId) throws UserNotFoundException, QuizNotFoundException;
 }

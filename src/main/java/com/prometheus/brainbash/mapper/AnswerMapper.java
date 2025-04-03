@@ -11,7 +11,7 @@ public class AnswerMapper {
 		answerDto.setId(answer.getId());
 		answerDto.setText(answer.getText());
 		answerDto.setCorrect(answer.isCorrect());
-		answerDto.setQuestion_id(answer.getQuestion().getId());
+		answerDto.setQuestionId(answer.getQuestion().getId());
 	}
 	
 	public static void toAnswer(AnswerDto answerDto, Question question, Answer answer) {
@@ -24,7 +24,7 @@ public class AnswerMapper {
 		answer.setText(answerRequestDto.getText());
 		answer.setQuestion(question);
 		answer.setCorrect(answerRequestDto.isCorrect());
-	};
+	}
 	
 	// Private constructor to hide public one
 	private AnswerMapper() {}
