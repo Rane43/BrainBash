@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+    environment {
+        SONARQUBE_URL = 'http://SonarQube:9000'
+        SONARQUBE_TOKEN = 'sqp_18b8348220412320396d3e2bf77cda19a668de54'
+    }
+    tools {
+        maven 'Maven'
+    }
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git(
+                    branch: 'dev',
+                    url: 'https://github.com/Rane43/BrainBash.git'
+                )
+            }
+        }
+        stage('Clean Project') {
+            steps {
+                sh "mvn clean"
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh "mvn package"
+            }
+        }
+
+        stage('Verify') {
+            steps {
+                sh "mvn verify jacoco:report"
+            }
+        }
+ 
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube Scanner') {
+                    script {
+                        // Trigger SonarQube analysis and retrieve task ID
+                        sh(script: """
+                        mvn sonar:sonar \
+                          -Dsonar.projectKey=individual-project \
+                          -Dsonar.projectName='individual-project' \
+                          -Dsonar.host.url=$SONARQUBE_URL \
+                          -Dsonar.token=$SONARQUBE_TOKEN
+                        """, returnStdout: true).trim()
+                    }
+                }
+            }
+        }
+    }
+}
